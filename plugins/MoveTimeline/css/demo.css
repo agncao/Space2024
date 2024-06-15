@@ -1,0 +1,17 @@
+.demo{
+	padding:10px;
+}
+.demo button{
+	padding:5px;
+	margin:5px;
+}
+.timelinepoint {
+	width:6px;
+	height:6px;
+	top:8px;
+}
+.timelinepoint:hover {
+	top:7px;
+	width:8px;
+	height:8px;
+}

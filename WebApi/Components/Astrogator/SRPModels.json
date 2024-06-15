@@ -1,0 +1,12 @@
+[
+    {
+        "$type":"SRPSpherical",
+        "description": "太阳辐射压（SRP）摄动模型参数，SRPSpherical类型",
+        "Name": "Spherical SRP",
+        "Description": "球形光压模型",
+        "UserComment": "球形光压模型",
+        "ShadowModel": "DualCone",
+        "SunPosition": "Apparent",
+        "EclipsingBodies":[]
+    }
+]

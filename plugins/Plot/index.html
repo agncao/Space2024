@@ -1,0 +1,105 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: alan.lau
+ * @Date: 2022-11-07 11:36:27
+ * @LastEditors: alan.lau
+ * @LastEditTime: 2022-11-29 09:52:48
+-->
+<script src="/plugins/Plot/js/third/vue.js"></script>
+<script src="/plugins/Plot/js/third/element.js"></script>
+<!-- <script src="/plugins/Weather/js/config.js"></script> -->
+<!-- <script src="/plugins/Weather/js/debris/Debris.js"></script> -->
+<!-- <script src="/plugins/Weather/js/day.js"></script> -->
+<!-- <script src="/plugins/Weather/js/third/satellite.js"></script> -->
+<!-- <script src="/plugins/Weather/js/debris/eMyOrbit.js"></script> -->
+<!-- <script src="/plugins/Weather/js/debris/eMySatellite.js"></script> -->
+<!-- <script src="/plugins/Weather/js/postProcessStages/rain.js"></script>
+<script src="/plugins/Weather/js/postProcessStages/snow.js"></script>
+<script src="/plugins/Weather/js/postProcessStages/fog.js"></script> -->
+<!-- <script src="/plugins/Plot/js/tools/eMyTool.js"></script> -->
+<!-- <script type="module" src="/plugins/Plot/js/tools/eMyToolLineAdd.js"></script> -->
+<!-- <script type="module" src="/plugins/Plot/js/map/eMyMapWnd.js"></script> -->
+<!-- <script src="/plugins/Plot/js/map/eMyMap.js"></script>
+<script src="/plugins/Plot/js/layer/eMyPlotLayer.js"></script> -->
+<script src="/plugins/Plot/js/index.js"></script>
+<script src="/plugins/Plot/js/plot.bundle.js"></script>
+
+<script type="module" src="/plugins/Plot/js/appVue.js"></script>
+<link rel="stylesheet" href="/plugins/Plot/css/element.css">
+
+<div id="plot">
+    <div id="plugins_Plot" style="display:none;" class="demo">
+        <div class="btn_box">
+            <!-- <el-button class="btn" type="primary" onclick="Plugins.values['Plugins_Weather'].addEntity();">addEntity
+            </el-button>
+            <el-button class="btn" type="primary" onclick="Plugins.values['Plugins_Weather'].addCzml();">addCzml
+            </el-button>
+            <el-button class="btn" type="primary" onclick="Plugins.values['Plugins_Weather'].addPrimitives();">
+                addPrimitives</el-button>
+            <el-button class="btn" type="primary" onclick="Plugins.values['Plugins_Weather'].clear();">clear</el-button> -->
+            <el-radio-group v-model="radio1" @change="handleRadioChange">
+                <el-radio-button label="打开"></el-radio-button>
+                <el-radio-button label="保存"></el-radio-button>
+                <el-radio-button label="点"></el-radio-button>
+                <el-radio-button label="线段"></el-radio-button>
+                <el-radio-button label="折线"></el-radio-button>
+                <el-radio-button label="多边形"></el-radio-button>
+                <el-radio-button label="矩形"></el-radio-button>
+                <el-radio-button label="圆形"></el-radio-button>
+                <el-radio-button label="圆弧"></el-radio-button>
+                <el-radio-button label="曲线"></el-radio-button>
+                <el-radio-button label="拱形"></el-radio-button>
+                <el-radio-button label="曲面"></el-radio-button>
+                <el-radio-button label="椭圆"></el-radio-button>
+                <el-radio-button label="直细箭头"></el-radio-button>
+                <el-radio-button label="粗尖头箭头"></el-radio-button>
+                <el-radio-button label="粗直箭头"></el-radio-button>
+                <el-radio-button label="进攻方向"></el-radio-button>
+                <el-radio-button label="进攻方向（尾）"></el-radio-button>
+                <el-radio-button label="分队战斗行动"></el-radio-button>
+                <el-radio-button label="分队战斗行动（尾）"></el-radio-button>
+                <el-radio-button label="双箭头"></el-radio-button>
+                <el-radio-button label="矩形旗"></el-radio-button>
+                <el-radio-button label="三角旗"></el-radio-button>
+                <el-radio-button label="曲面旗"></el-radio-button>
+                <el-radio-button label="集结地"></el-radio-button>
+            </el-radio-group>
+        </div>
+    </div>
+    <input id="file-input" type="file" name="name" accept=".json" @change="handleChange" style="display: none" />
+</div>
+
+<script>
+
+</script>
+<style>
+    .demo {
+        padding: 10px;
+    }
+
+    .demo .el-button {
+        padding: 5px;
+        margin: 5px;
+    }
+
+    .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .el-button {
+        margin: 0;
+        width: 100%;
+    }
+
+    .btn_box {
+        display: flex;
+        width: 100%;
+        height: 300px;
+
+        justify-content: space-around;
+        align-items: center;
+    }
+</style>

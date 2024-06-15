@@ -1,0 +1,12 @@
+{
+	"id": "Plugins_routing",
+	"centralBody":"Moon",
+	"main":"index.ftl",
+	"menu":
+	{
+		"parent": "Menu_FENXI",
+		"icon": "plugins/routing/routing.png",
+		"name": "路径分析",
+		"click": "click"
+	}
+}

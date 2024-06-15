@@ -1,0 +1,135 @@
+{
+  "Description": "此文件存放常用的HPOP积分器配置，这样前端请求时就可以直接引用名称而不必提供具体配置了!",
+  "LastEditBy": {
+    "20231212": "blitheli,初次编写"
+  },
+  "Propagators": [
+    {
+      "Name": "Earth_Point_Mass",
+      "Description": "地球质点引力",
+      "UserComment": "STK的缺省积分器",
+
+      "CentralBodyName": "Earth",
+
+      "GravityModel": {
+        "$type": "TwoBody",
+        "Mu": 3.986004415E14
+      }
+    },
+    {
+      "Name": "Earth_Hpop_default_v10",
+      "Description": "地球高精度轨道积分器",
+      "UserComment": "STK的缺省积分器",
+
+      "CentralBodyName": "Earth",
+
+      "GravityModel": {
+        "$type": "GravityField",
+        "GravityFileName": "EGM2008.grv",
+        "Degree": 21,
+        "Order": 21,
+        "EOPfilePath": "EOP-v1.1.txt",
+        "SolidTideType": "Permanent tide only"
+      },
+      "ThirdBodyForce": [
+        {
+          "ThirdBodyName": "Moon"
+        },
+        {
+          "ThirdBodyName": "Sun"
+        }
+      ],
+      "AtmosphericModel": {
+        "$type": "JacchiaRoberts",
+        "Description": "大气密度模型:JacchiaRoberts类型",
+        "DragModelType": "Spherical",
+        "AtmosDataSource": "Constant Values",
+        "F10p7Avg": 150.0,
+        "Kp": 3.0
+      },
+      "SRPModel": {
+        "$type": "SRPSpherical",
+        "Description": "光压模型:SRPSpherical类型",
+        "ShadowModel": "DualCone",
+        "SunPosition": "Apparent",
+        "EclipsingBodies": [ "Earth", "Moon" ]
+      }
+    },
+
+    {
+      "Name": "CisLunar",
+      "Description": "地月转移积分器",
+      "UserComment": "STK的缺省积分器(stk中RKF78的MaxAbsErr为1e-11),此处默认为1e-10，略有区别)",
+
+      "CentralBodyName": "Earth",
+
+      "GravityModel": {
+        "$type": "GravityField",
+        "GravityFileName": "WGS84.grv",
+        "Degree": 8,
+        "Order": 8,
+        "EOPfilePath": "EOP-v1.1.txt",
+        "SolidTideType": "None"
+      },
+      "ThirdBodyForce": [
+        {
+          "ThirdBodyName": "Moon",
+          "GravSource": "CbFile",
+          "Mu": 4.90280030555540e+012
+        },
+        {
+          "ThirdBodyName": "Sun",
+          "GravSource": "CbFile",
+          "Mu": 1.3271244004193938E20
+        }
+      ]
+    },
+
+    {
+      "Name": "Moon_Point_Mass",
+      "Description": "月球质点引力",
+      "UserComment": "自定义,Cb文件",
+
+      "CentralBodyName": "Moon",
+
+      "GravityModel": {
+        "$type": "TwoBody",
+        "Mu": 4.90280030555540e+012
+      }
+    },
+
+    {
+      "Name": "Moon_Hpop_default_v10",
+      "Description": "月球高精度轨道积分器(未测试)",
+      "UserComment": "STK的缺省积分器(光压中,太阳位置为True，STK中为Apparent)",
+
+      "CentralBodyName": "Moon",
+      "GravityModel": {
+        "$type": "GravityField",
+        "GravityFileName": "LP150Q.grv",
+        "Degree": 48,
+        "Order": 48,
+        "SolidTideType": "Permanent tide only"
+      },
+      "ThirdBodyForce": [
+        {
+          "ThirdBodyName": "Earth",
+          "GravSource": "CbFile",
+          "Mu": 3.986004418e+012
+        },
+        {
+          "ThirdBodyName": "Sun",
+          "GravSource": "CbFile",
+          "Mu": 1.327122E20
+        }
+      ],
+      "SRPModel": {
+        "$type": "SRPSpherical",
+        "Description": "光压模型:SRPSpherical类型",
+        "ShadowModel": "DualCone",
+        "SunPosition": "True",
+        "EclipsingBodies": [ "Earth", "Moon" ]
+      }
+    }
+  ]
+}

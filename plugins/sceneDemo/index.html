@@ -1,0 +1,15 @@
+<!-- 引入相关js文件 -->
+<script src="/plugins/sceneDemo/js/sceneDemo.js"></script>
+
+<!-- 引入相关css文件 -->
+<link rel="stylesheet" href="/plugins/sceneDemo/css/demo.css">
+
+<!-- 定义界面内容 -->
+<div id="plugins_sceneDemo_container" style="display:none;" class="demo">
+    <button  onclick="Plugins.values['Plugins_sceneDemo'].createScene();">新建场景</button>
+    <button  onclick="Plugins.values['Plugins_sceneDemo'].rename();">重命名场景</button>
+    <button  onclick="Plugins.values['Plugins_sceneDemo'].addPointEntity();">添加点对象</button>
+    <button  onclick="Plugins.values['Plugins_sceneDemo'].addSatelliteEntity();">添加卫星对象</button>
+    <button  onclick="Plugins.values['Plugins_sceneDemo'].clearEntities();">移除所有对象</button>
+    <button  onclick="Plugins.values['Plugins_sceneDemo'].clear();">移除场景</button>
+</div>

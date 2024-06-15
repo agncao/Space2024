@@ -1,0 +1,12 @@
+{
+	"id": "Plugins_SubClass",
+	"main":"index.html",
+	"menu":
+	{
+		"enable":true,
+		"parent": "Menu_FENXI",
+		"icon": "plugins/routing/routing.png",
+		"name": "子类引入测试",
+		"click": "click"
+	}
+}

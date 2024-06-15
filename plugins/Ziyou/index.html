@@ -1,0 +1,47 @@
+<!-- 引入相关js文件 -->
+<script src="/plugins/Ziyou/js/Ziyou.js"></script>
+
+<!-- 引入相关css文件 -->
+<link rel="stylesheet" href="/plugins/Ziyou/css/Ziyou.css">
+
+<!-- 定义界面内容 -->
+<div id="plugins_Ziyou" style="display:none;" class="ziyou">
+
+  <table>
+    <tr>
+      <td>服务地址:</td>
+      <td>
+        <input id="Ziyou_webAPI" type="text" value="http://astrox.cn:8765/ziyou" />
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td style="width: 70px">目标:</td>
+      <td>
+        <label class="labelInput plugins_Ziyou_targeted" value=""></label>
+      </td>
+      <td style="width: 95px">
+        <button onclick="Plugins.values['Plugins_Ziyou'].selectEntity('plugins_Ziyou_targeted')">选择…</button>
+      </td>
+    </tr>
+
+    <tr>
+      <td>开始时间:</td>
+      <td>
+        <input id="Ziyou_epoch" type="text" timechange="true" dataValue="DDateUTC"
+          onClick="WdatePicker({dateFmt:'yyyy-MM-ddTHH:mm:ss.sZ'})" />
+      </td>
+      <td></td>
+    </tr>
+  </table>
+
+  <div style="text-align: center; padding-top: 10px; border-top: 1px white solid;">
+    <!-- 调用WebAPI算法 -->
+    <button onclick="Plugins.values['Plugins_Ziyou'].invokeZiyouApi('a');">算法1</button>
+    <button onclick="Plugins.values['Plugins_Ziyou'].invokeZiyouApi('b');">算法2</button>
+    <button onclick="Plugins.values['Plugins_Ziyou'].invokeZiyouApi('c');">算法3</button>
+    <button onclick="Plugins.values['Plugins_Ziyou'].invokeZiyouApi('d');">算法4</button>
+  </div>
+
+
+</div>

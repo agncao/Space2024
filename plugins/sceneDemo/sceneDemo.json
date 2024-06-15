@@ -1,0 +1,13 @@
+{
+	"description":"json文件名必须和上级文件夹名称一致，以下带有_description的内容都可以删掉",
+	"id": "Plugins_sceneDemo",
+	"main":"index.html",
+	"menu":
+	{
+		"parent": "Menu_Plugins",
+		"icon": "plugins/sceneDemo/Demo.png",
+		"name": "场景接口示例",
+		"width": 120,
+		"click": "click"
+	}
+}

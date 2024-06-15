@@ -1,0 +1,10 @@
+﻿{
+  "Text": "引力场文件的配置文件,确保此处的文件名在GravityModel文件夹有对应的.grv文件",
+  "LastUpdate": "2023-04-08",
+
+  "CentralBody": {
+    "Earth": [ "EGM2008.grv", "WGS84.grv" ],
+    "Moon": [ "GL0660B.grv", "GL0900D.grv", "LP150Q.grv" ],
+    "Mars":["MRO110C.grv"]
+  }
+}

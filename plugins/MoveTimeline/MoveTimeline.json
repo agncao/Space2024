@@ -1,0 +1,12 @@
+{
+	"id": "Plugins_Moveline",
+	"main":"index.html",
+	"menu":
+	{
+		"enable":true,
+		"parent": "Menu_FENXI",
+		"icon": "plugins/MoveTimeline/Demo.png",
+		"name": "Moveline插件",
+		"click": "click"
+	}
+}

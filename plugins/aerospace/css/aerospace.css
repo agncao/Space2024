@@ -1,0 +1,55 @@
+#divMessage0_chart.message table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 4px; /* 设置上下左右边距都为4px */
+}
+
+#divMessage0_chart.message  table caption{
+    font-size: 2em;
+    font-weight: bold;
+    margin: 1em 0;
+}
+
+#divMessage0_chart.message th, #divMessage0_chart.message td{
+    border: 1px solid #999;
+    text-align: center;
+    padding: 20px 0;
+}
+
+#divMessage0_chart.message  table thead tr{
+    background-color: #f024c4;
+
+    color: #fff;
+}
+
+#divMessage0_chart.message  table tfoot tr td{
+    text-align: right;
+    padding-right: 20px;
+}
+.data-layout {
+    border: 5px solid;
+    border-image: linear-gradient(to right, #d396f6, hsl(274, 98%, 47%)) 1;
+    /*background-image: radial-gradient(circle, #d396f6, hsl(274, 98%, 47%));  从外侧到内侧的渐变 */
+
+  }
+
+.data-content{
+    width: 100%;
+    background-color: #fff;
+}
+.posture-data-content{
+    width: 100%;
+}
+.posture-data-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.posture-data-content table td, .posture-data-content table th {
+    border: none;
+    padding: 10px;  
+}
+
+posture-data-content table colgroup col:first-child {
+    width: 35%;
+}

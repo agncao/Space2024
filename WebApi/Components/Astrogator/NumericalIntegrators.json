@@ -1,0 +1,38 @@
+[
+    
+    {
+        "$type":"RKF4",
+        "description": "龙哥-库塔 4阶数值积分器参数",
+        "Name": "RKF4",
+        "Description": "龙哥-库塔 4阶数值积分器",
+        "UserComment": "龙哥-库塔 4阶数值积分器",
+        "StepSize": 5
+    },
+    {
+        "$type":"RKF4th5th",
+        "description": "龙哥-库塔 4(5)阶数值积分器参数",
+        "Name": "RKF4th5th",
+        "Description": "龙哥-库塔 4(5)阶数值积分器",
+        "UserComment": "龙哥-库塔 4(5)阶数值积分器",
+        "UseFixedStep": false,
+        "InitialStep": 5,
+        "MaxStep":86400,
+        "MinStep":1,
+        "MaxAbsErr": 1e-10,
+        "MaxRelErr": 1e-13,
+        "MaxIterations":100
+    },
+    {
+        "$type":"RKF7th8th",
+        "description": "龙哥-库塔 7(8)阶数值积分器参数",
+        "Name": "RKF7th8th",
+        "Description": "龙哥-库塔 7(8)阶数值积分器",
+        "UserComment": "龙哥-库塔 7(8)阶数值积分器",
+        "UseFixedStep": false,
+        "InitialStep": 60,
+        "MaxStep":86400,
+        "MaxAbsErr": 1e-10,
+        "MaxRelErr": 1e-13,
+        "MaxIterations":100
+    }
+]

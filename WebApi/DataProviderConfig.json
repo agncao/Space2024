@@ -1,0 +1,3492 @@
+{
+	"Description": "此配置文件应拷贝到程序的配置目录里，作为DataProvider的缺省显示组件",
+	"TODO": "DataProviders",
+	"Note": [
+		"1. name字段用于界面显示使用",
+		"2. class用于生成对象使用，其中DataPrvGroup用于分组",
+		"3. params:用于生成对象时做完参数使用，params.name默认为上级的name、isDefault是否为默认模板，用于显示在“数据显示”设置面板",
+		"4. availableForObjects用于定义对那些对象有效，默认全部对象都有效，其中值有：",
+		"   Ground Location：Facility,Place,Target",
+		"   Vehicle：Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+		"   Planet：Planet",
+		"   Access：Access",
+		"   other：Antenna,AreaTarget,LineTarget,Radar,Receiver,Sensor,Star,Transmitter"
+	],
+	"LastUpdate": [
+		"2022-12-28: zpc 编写样例，用于测试",
+		"2023-03-03: zpc 调整DataProviders结构适应根据VGT的对象自动创建对应的数据提供对象",
+		"2023-03-09: zpc 新增Lighting Times数据提供对象",
+		"2023-03-15: lyf 完善LLA，LLR，Point(Fixed)...",
+		"2023-03-20: lyf 新增Report_LatLon_Sc, Report_LLA_Sc",
+		"2023-03-24: zpc 新增Azimuth Elevation Mask,Report_Azimuth_Elevation_Mask_Site",
+		"2023-03-27: lyf 修改部分title为中文,新增Report_Azimuth_Elevation_Mask_Sc",
+		"2003-03-27_1: zpc 新增Graphic_Azimuth_Elevation_Site",
+		"2023-03-27_2: lyf 新增Lighting AER Report,Lighting AER Graphic",
+		"2023-03-30: lyf 修改Graphic_SolarIntensityGroundLocation_all,改成中文",
+		"2023-03-31: lyf 新增Report_SolarAER_Vehicle,Graphic_SolarAER_Vehicle",
+		"2023-03-31: zpc 修改Azimuth Elevation Mask的实现方式，从Entity的遮罩数据里直接获取",
+		"2023-04-01: lyf 修改中文注释",
+		"2023-06-08: lyf 增加VectorInAxes，未完成！",
+		"2023-06-21: lyf 标题改为中文",
+		"2023-08-15: zpc 增加CoverageDefinition！",
+		"2023-09-13: lyf 增加Report_Detic_LLAV_Sc",
+		"2023-09-28: zpc 新增Percent Coverage报告",
+		"2023-10-09: zpc 新增Coverage By Asset报告",
+		"2023-10-11: zpc 新增报告Global Coverage、Coverage By Asset、Gap Duration、Access Duration、Percent Satisfied、Grid Stats、Grid Stats Over Time、Value By Grid Point、Value By Grid Point At Time",
+		"2023-10-13: zpc 添加统计表Global Coverage、Gap Duration、Access Duration、Percent Satisfied、Grid Stats Over Time",
+		"2023-11-03: lyf 覆盖报告名称修改",
+		"2023-11-13: zpc 新增GridPointLocations报告",
+		"2024-03-13: zpc 新增Angles数据提供对象和日月夹角报告AngleSunMoon",
+		"2024-03-18: zpc 新增Beta Angle数据提供对象,新增Report_Beta_Angle,Graphic_Beta_Angle"
+	],
+	"DataProviders": [
+		{
+			"name": "Angles",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "Angles",
+				"availableForObjects": "Access, Aircraft, Antenna, AreaTarget, Facility, GroundVehicle, LaunchVehicle, LineTarget, Missile, Place, Planet, Radar, Receiver, Satellite, SatelliteCollection, Scenario, Sensor, Ship, Star, Target, Transmitter",
+				"params": {
+					"preData": "SunMoon"
+				}
+			}
+		},
+		{
+			"name": "Beta Angle",
+			"class": "BetaAngle",
+			"availableForObjects": "LaunchVehicle, Missile, Satellite",
+			"availability": "Reports",
+			"params": {}
+		},
+		
+		{
+			"name": "Azimuth Elevation Mask",
+			"class": "AzimuthElevationMaskGroundLocation",
+			"availableForObjects": "Facility,Place,Target",
+			"availability": "Reports",
+			"params": {}
+		},
+		{
+			"name": "LLA State",
+			"class": "LLAStateGroundLocation",
+			"availableForObjects": "Facility,Place,Target",
+			"params": {}
+		},
+		{
+			"name": "LLA State",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "LLAStateVehicle",
+				"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+				"params": {
+					"preData": "Fixed"
+				}
+			}
+		},
+		{
+			"name": "LLR State",
+			"class": "LLRStateGroundLocation",
+			"availableForObjects": "Facility,Place,Target",
+			"params": {}
+		},
+		{
+			"name": "LLR State",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "LLRStateVehicle",
+				"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+				"params": {
+					"preData": "Fixed,ICRF,J2000,Inertial"
+				}
+			}
+		},
+		{
+			"name": "Cartesian Position",
+			"class": "CartesianPositionGroundLocation",
+			"availableForObjects": "Facility,Place,Target",
+			"params": {}
+		},
+		{
+			"name": "Cartesian Position",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "CartesianPositionVehicle",
+				"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+				"params": {
+					"vgt": "Center",
+					"preData": "Fixed,ICRF,J2000,Inertial"
+				}
+			}
+		},
+		{
+			"name": "Cartesian Velocity",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "CartesianVelocitySatellite",
+				"availableForObjects": "Satellite",
+				"params": {
+					"vgt": "Center",
+					"preData": "Fixed,ICRF,J2000,Inertial"
+				}
+			}
+		},
+		{
+			"name": "Cartesian Velocity",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "CartesianVelocityOtherVehicles",
+				"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Ship",
+				"params": {
+					"vgt": "Center",
+					"preData": "Fixed,ICRF,J2000,Inertial"
+				}
+			}
+		},
+		{
+			"name": "Points Choose System",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "PointInSystem",
+				"availableForObjects": "Access,Aircraft,Antenna,AreaTarget,Facility,GroundVehicle,LaunchVehicle,LineTarget,Missile,Place,Planet,Radar,Receiver,Satellite,SatelliteCollection,Scenario,Sensor,Ship,Target,Transmitter",
+				"params": {
+					"allowUI": true,
+					"preDataRequired": true
+				}
+			}
+		},
+		{
+			"name": "Points(SAT1_LVLH)",
+			"class": "PointInSystem",
+			"availableForObjects": "Access,Aircraft,Antenna,AreaTarget,Facility,GroundVehicle,LaunchVehicle,LineTarget,Missile,Place,Planet,Radar,Receiver,Satellite,SatelliteCollection,Scenario,Sensor,Ship,Target,Transmitter",
+			"params": {
+				"system": "Satellite/Satellite LVLH"
+			}
+		},
+		{
+			"name": "Points(Fixed)",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "PointInSystem",
+				"availableForObjects": "Access,Aircraft,Antenna,AreaTarget,Facility,GroundVehicle,LaunchVehicle,LineTarget,Missile,Place,Planet,Radar,Receiver,Satellite,SatelliteCollection,Scenario,Sensor,Ship,Target,Transmitter",
+				"params": {
+					"system": "Fixed"
+				}
+			}
+		},
+		{
+			"name": "Points(J2000)",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "PointInSystem",
+				"availableForObjects": "Access,Aircraft,Antenna,AreaTarget,Facility,GroundVehicle,LaunchVehicle,LineTarget,Missile,Place,Planet,Radar,Receiver,Satellite,SatelliteCollection,Scenario,Sensor,Ship,Target,Transmitter",
+				"params": {
+					"system": "J2000"
+				}
+			}
+		},
+		{
+			"name": "Points(ICRF)",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "PointInSystem",
+				"availableForObjects": "Aircraft,Facility,GroundVehicle,LaunchVehicle,LineTarget,Missile,Place,Planet,Radar,Receiver,Satellite,SatelliteCollection,Scenario,Sensor,Ship,Target,Transmitter",
+				"params": {
+					"system": "ICRF"
+				}
+			}
+		},
+		{
+			"name": "Points(Inertial)",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "PointInSystem",
+				"availableForObjects": "Aircraft,Facility,GroundVehicle,LaunchVehicle,LineTarget,Missile,Place,Planet,Radar,Receiver,Satellite,SatelliteCollection,Scenario,Sensor,Ship,Target,Transmitter",
+				"params": {
+					"system": "Inertial"
+				}
+			}
+		},
+		{
+			"name": "Vector Choose Axes",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "VectorInAxes",
+				"availableForObjects": "Aircraft,Antenna,Facility,GroundVehicle,LaunchVehicle,Missile,Place,Planet,Satellite,Scenario,Sensor,Ship,Target,Transmitter",
+				"params": {
+					"allowUI": true,
+					"preDataRequired": true
+				}
+			}
+		},
+		{
+			"name": "Vectors(Fixed)",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "VectorInAxes",
+				"availableForObjects": "Aircraft,Facility,GroundVehicle,LaunchVehicle,LineTarget,Missile,Place,Planet,Radar,Receiver,Satellite,SatelliteCollection,Scenario,Sensor,Ship,Target,Transmitter",
+				"params": {
+					"preData": "Fixed"
+				}
+			}
+		},
+		{
+			"name": "Vectors(J2000)",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "VectorInAxes",
+				"availableForObjects": "Aircraft,Facility,GroundVehicle,LaunchVehicle,LineTarget,Missile,Place,Planet,Radar,Receiver,Satellite,SatelliteCollection,Scenario,Sensor,Ship,Target,Transmitter",
+				"params": {
+					"preData": "J2000"
+				}
+			}
+		},
+		{
+			"name": "Vectors(ICRF)",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "VectorInAxes",
+				"availableForObjects": "Aircraft,Facility,GroundVehicle,LaunchVehicle,LineTarget,Missile,Place,Planet,Radar,Receiver,Satellite,SatelliteCollection,Scenario,Sensor,Ship,Target,Transmitter",
+				"params": {
+					"preData": "ICRF"
+				}
+			}
+		},
+		{
+			"name": "Vectors(Inertial)",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "VectorInAxes",
+				"availableForObjects": "Aircraft,Facility,GroundVehicle,LaunchVehicle,LineTarget,Missile,Place,Planet,Radar,Receiver,Satellite,SatelliteCollection,Scenario,Sensor,Ship,Target,Transmitter",
+				"params": {
+					"preData": "Inertial"
+				}
+			}
+		},
+		{
+			"name": "Vectors(LVLH)",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "VectorInAxes",
+				"availableForObjects": "Aircraft,Facility,GroundVehicle,LaunchVehicle,LineTarget,Missile,Place,Planet,Radar,Receiver,Satellite,SatelliteCollection,Scenario,Sensor,Ship,Target,Transmitter",
+				"params": {
+					"preData": "LVLH"
+				}
+			}
+		},
+		{
+			"name": "Vectors(VNC)",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "VectorInAxes",
+				"availableForObjects": "Aircraft,Facility,GroundVehicle,LaunchVehicle,LineTarget,Missile,Place,Planet,Radar,Receiver,Satellite,SatelliteCollection,Scenario,Sensor,Ship,Target,Transmitter",
+				"params": {
+					"preData": "VNC"
+				}
+			}
+		},
+		{
+			"name": "Vectors(VVLH)",
+			"class": "DataPrvGroup",
+			"group": {
+				"class": "VectorInAxes",
+				"availableForObjects": "Aircraft,Facility,GroundVehicle,LaunchVehicle,LineTarget,Missile,Place,Planet,Radar,Receiver,Satellite,SatelliteCollection,Scenario,Sensor,Ship,Target,Transmitter",
+				"params": {
+					"preData": "VVLH"
+				}
+			}
+		},
+		{
+			"name": "Access Data",
+			"class": "Access",
+			"availability": "Reports|Graphs|Dynamic Displays|Strip Charts",
+			"params": {}
+		},
+		{
+			"name": "Lighting Times",
+			"class": "DataPrvGroup",
+			"availability": "Reports|Graphs|Dynamic Displays|Strip Charts",
+			"group": {
+				"class": "LightingTimes",
+				"params": {
+					"preData": "SunLight,Penumbra,Umbra"
+				}
+			}
+		},
+		{
+			"name": "Lighting AER",
+			"class": "LightingAERGroundLocation",
+			"availableForObjects": "Facility,Place,Target",
+			"availability": "Reports|Graphs|Dynamic Displays|Strip Charts",
+			"params": {}
+		},
+		{
+			"name": "Lighting AER",
+			"class": "DataPrvGroup",
+			"availability": "Reports|Graphs|Dynamic Displays|Strip Charts",
+			"group": {
+				"class": "LightingAERVehicle",
+				"availableForObjects": "Satellite,LaunchVehicle,Missile",
+				"params": {
+					"preData": "ECIVVLH,ECFVVLH,BodyFixed"
+				}
+			}
+		},
+		{
+			"name": "Solar Intensity",
+			"class": "SolarIntensityGroundLocation",
+			"availableForObjects": "Facility,Place,Target",
+			"availability": "Reports|Graphs|Dynamic Displays|Strip Charts",
+			"params": {
+				"preData": "Datas"
+			}
+		},
+		{
+			"name": "Solar Intensity",
+			"class": "SolarIntensityVehicle",
+			"availableForObjects": "Aircraft,LaunchVehicle,Missile,Satellite",
+			"availability": "Reports|Graphs|Dynamic Displays|Strip Charts",
+			"params": {
+				"preData": "Datas"
+			}
+		},
+		{
+			"name": "Coverage Definition",
+			"class": "CoverageDefinition",
+			"availableForObjects": "AttitudeCoverage, AttitudeFigureOfMerit, CoverageDefinition, FigureOfMerit",
+			"params": {}
+		},
+		{
+			"name": "Grid Point Locations",
+			"class": "GridPointLocations",
+			"availableForObjects": "AttitudeCoverage,CoverageDefinition",
+			"params": {
+			}
+		},
+		{
+			"name": "FOM Definition",
+			"class": "FOMDefinition",
+			"availableForObjects": "AttitudeFigureOfMerit, FigureOfMerit, ObjectCoverage",
+			"params": {}
+		},
+		{
+			"name": "Satisfied by Time",
+			"class": "SatisfiedByTime",
+			"availableForObjects": "FigureOfMerit",
+			"params": {}
+		},
+		{
+			"name":"Percent Coverage",
+			"class":"PercentCoverage",
+			"availableForObjects":"CoverageDefinition",
+			"params":{}
+		},
+		{
+			"name":"Coverage By Asset",
+			"class":"CoverageByAsset",
+			"availableForObjects":"CoverageDefinition",
+			"params":{}
+		},
+		{
+			"name":"Global Coverage",
+			"class":"GlobalCoverage",
+			"availableForObjects":"AttitudeCoverage,CoverageDefinition",
+			"params":{}
+		},
+		{
+			"name":"Coverage Gap Duration",
+			"class":"CoverageGapDuration",
+			"availableForObjects":"AttitudeCoverage,CoverageDefinition",
+			"params":{}
+		},
+		{
+			"name":"Access Duration",
+			"class":"AccessDuration",
+			"availableForObjects":"AttitudeCoverage,CoverageDefinition",
+			"params":{}
+		},
+		{
+			"name":"Static Satisfaction",
+			"class":"StaticSatisfaction",
+			"availableForObjects":"FigureOfMerit",
+			"params":{}
+		},
+		{
+			"name": "Overall Value",
+			"class": "OverallValue",
+			"availableForObjects": "AttitudeFigureOfMerit, FigureOfMerit",
+			"params": {}
+		},
+		{
+			"name": "Overall Value By Time",
+			"class": "OverallValueByTime",
+			"availableForObjects": "AttitudeFigureOfMerit, FigureOfMerit",
+			"params": {}
+		},
+		{
+			"name": "Value By Point",
+			"class": "ValueByPoint",
+			"availableForObjects": "FigureOfMerit",
+			"params": {}
+		},
+		{
+			"name": "Time Value By Point",
+			"class": "TimeValueByPoint",
+			"availableForObjects": "FigureOfMerit",
+			"params": {
+				"allowUI": true,
+				"preDataRequired": true
+			}
+		}
+		
+	],
+	"ReportAndGraphStyles": [
+		{
+			"id": "Report_Azimuth_Elevation_Mask_Site",
+			"class": "Report",
+			"availableForObjects": "Facility,Place,Target",
+			"params": {
+				"name": "地形遮罩参数",
+				"isDefault": true,
+				"header": {
+					"title": "地形遮罩(方位角-高度角)"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Azimuth Elevation Mask-Point Number",
+							"dataFormat": {
+								"typeSize": 0
+							}
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "方位角",
+							"epath": "Azimuth Elevation Mask-Azimuth"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "高度角",
+							"epath": "Azimuth Elevation Mask-Elevation"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graphic_Azimuth_Elevation_Site",
+			"class": "Graph",
+			"availableForObjects": "Facility,Place,Target",
+			"params": {
+				"name": "地形遮罩参数",
+				"isDefault": true,
+				"layout": {
+					"title": "地形遮罩(方位角-高度角)"
+				},
+				"content": {
+					"class": "GXY",
+					"axes": {
+						"xAxis": {
+							"title": "方位角",
+							"element": {
+								"class": "RElement",
+								"params": {
+									"epath": "Azimuth Elevation Mask-Azimuth"
+								}
+							}
+						},
+						"yAxis": {
+							"title": "高度角",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"epath": "Azimuth Elevation Mask-Elevation"
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},	
+		{
+			"id": "Report_LLA_Position_Site",
+			"class": "Report",
+			"availableForObjects": "Facility,Place,Target",
+			"params": {
+				"name": "大地纬度-经度-高度",
+				"isDefault": true,
+				"header": {
+					"title": "大地纬度-大地经度-大地高度"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "大地纬度",
+							"epath": "LLA State-Lat"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "大地经度",
+							"epath": "LLA State-Lon"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "大地高度",
+							"epath": "LLA State-Alt"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Report_LLA_Position_Sc",
+			"class": "Report",
+			"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "大地纬度-经度-高度",
+				"isDefault": true,
+				"header": {
+					"title": "大地纬度-大地经度-大地高度"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLA State-Fixed-Lat"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLA State-Fixed-Lon"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLA State-Fixed-Alt"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLA State-Fixed-Lat Rate",
+							"dataFormat": {
+								"typeSize": 6
+							}
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLA State-Fixed-Lon Rate",
+							"dataFormat": {
+								"typeSize": 6
+							}
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLA State-Fixed-Alt Rate",
+							"dataFormat": {
+								"typeSize": 6
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graphic_LLA_Position_Sc",
+			"class": "Graph",
+			"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "大地纬度-经度-高度",
+				"isDefault": true,
+				"layout": {
+					"title": "大地纬度-大地经度-大地高度"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "时间",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "角度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "大地纬度",
+										"epath": "LLA State-Fixed-Lat"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "大地经度",
+										"epath": "LLA State-Fixed-Lon"
+									}
+								}
+							]
+						},
+						"y2Axis": {
+							"title": "高度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "大地高度",
+										"epath": "LLA State-Fixed-Alt"
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report_Detic_LatLon_Sc",
+			"class": "Report",
+			"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "大地纬度-经度",
+				"isDefault": true,
+				"header": {
+					"title": "大地纬度-大地经度"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "大地纬度",
+							"epath": "LLA State-Fixed-Lat"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "大地经度",
+							"epath": "LLA State-Fixed-Lon"
+						}
+					}
+				]
+			}
+		},		
+		{
+			"id": "Report_Detic_LLAV_Sc",
+			"class": "Report",
+			"availableForObjects": "Satellite",
+			"params": {
+				"name": "大地纬度-经度-高度-速度大小",
+				"isDefault": true,
+				"header": {
+					"title": "大地纬度-大地经度-大地高度-速度大小"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "大地纬度",
+							"epath": "LLA State-Fixed-Lat"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "大地经度",
+							"epath": "LLA State-Fixed-Lon"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "大地高度",
+							"epath": "LLA State-Fixed-Alt"
+						}
+					},					
+					{
+						"class": "RElement",
+						"params": {
+							"title": "速度大小",
+							"epath": "Cartesian Velocity-Fixed-speed",
+							"dataFormat": {
+								"typeSize": 6
+							}
+						}
+					}					
+				]
+			}
+		},		
+		{
+			"id": "Report_LLR_Position_Site",
+			"class": "Report",
+			"availableForObjects": "Facility,Place,Target",
+			"params": {
+				"name": "地心纬度-经度-距离",
+				"isDefault": true,
+				"header": {
+					"title": "地心纬度-地心经度-地心距离"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLR State-Centric Lat"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLR State-Centric Lon"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLR State-Rad"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Report_LLR_Position_Sc",
+			"class": "Report",
+			"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "地心纬度-经度-距离",
+				"isDefault": true,
+				"header": {
+					"title": "地心纬度-地心经度-地心距离"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLR State-Fixed-Centric Lat"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLR State-Fixed-Centric Lon"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLR State-Fixed-Rad"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLR State-Fixed-Centric Lat Rate",
+							"dataFormat": {
+								"typeSize": 6
+							}
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLR State-Fixed-Centric Lon Rate",
+							"dataFormat": {
+								"typeSize": 6
+							}
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "LLR State-Fixed-Rad Rate",
+							"dataFormat": {
+								"typeSize": 6
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graphic_LLR_Position_Sc",
+			"class": "Graph",
+			"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "地心纬度-经度-距离",
+				"isDefault": true,
+				"layout": {
+					"title": "地心纬度-地心经度-地心距离"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "时间",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "角度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "地心纬度",
+										"epath": "LLR State-Fixed-Centric Lat"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "地心经度",
+										"epath": "LLR State-Fixed-Centric Lon"
+									}
+								}
+							]
+						},
+						"y2Axis": {
+							"title": "高度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "地心距离",
+										"epath": "LLR State-Fixed-Rad"
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report-Cartesian-Position-Site",
+			"class": "Report",
+			"availableForObjects": "Facility,Place,Target",
+			"params": {
+				"name": "固定系位置",
+				"isDefault": true,
+				"header": {
+					"title": "Fixed系位置"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Cartesian Position-x"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Cartesian Position-y"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Cartesian Position-z"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Report-J2000-Position-Velocity-Sc",
+			"class": "Report",
+			"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "J2000系位置-速度",
+				"isDefault": true,
+				"header": {
+					"title": "J2000系位置、速度"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Cartesian Position-J2000-x"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Cartesian Position-J2000-y"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Cartesian Position-J2000-z"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "vx",
+							"epath": "Cartesian Velocity-J2000-x"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "vy",
+							"epath": "Cartesian Velocity-J2000-y"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "vz",
+							"epath": "Cartesian Velocity-J2000-z"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graph-J2000-Position-Velocity-Sc",
+			"class": "Graph",
+			"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "J2000系位置-速度",
+				"isDefault": true,
+				"layout": {
+					"title": "J2000系位置、速度"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "时间",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "距离",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"epath": "Cartesian Position-J2000-x",
+										"style": {
+											"color": "red"
+										}
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"epath": "Cartesian Position-J2000-y"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"epath": "Cartesian Position-J2000-z"
+									}
+								}
+							]
+						},
+						"y2Axis": {
+							"title": "速度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "vx",
+										"epath": "Cartesian Velocity-J2000-x"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "vy",
+										"epath": "Cartesian Velocity-J2000-y"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "vz",
+										"epath": "Cartesian Velocity-J2000-z"
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report-Fixed-Position-Velocity-Sc",
+			"class": "Report",
+			"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "固定系位置-速度",
+				"isDefault": true,
+				"header": {
+					"title": "Fixed系 位置、速度"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Cartesian Position-Fixed-x"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Cartesian Position-Fixed-y"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Cartesian Position-Fixed-z"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "vx",
+							"epath": "Cartesian Velocity-Fixed-x"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "vy",
+							"epath": "Cartesian Velocity-Fixed-y"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "vz",
+							"epath": "Cartesian Velocity-Fixed-z"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graph-Fixed-Position-Velocity-Sc",
+			"class": "Graph",
+			"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "固定系位置-速度",
+				"isDefault": true,
+				"layout": {
+					"title": "Fixed系位置、速度"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "时间",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "距离",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"epath": "Cartesian Position-Fixed-x",
+										"style": {
+											"color": "red"
+										}
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"epath": "Cartesian Position-Fixed-y"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"epath": "Cartesian Position-Fixed-z"
+									}
+								}
+							]
+						},
+						"y2Axis": {
+							"title": "速度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "vx",
+										"epath": "Cartesian Velocity-Fixed-x"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "vy",
+										"epath": "Cartesian Velocity-Fixed-y"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "vz",
+										"epath": "Cartesian Velocity-Fixed-z"
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report-Inertial-Position-Velocity-Sc",
+			"class": "Report",
+			"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "惯性系位置、速度",
+				"isDefault": true,
+				"header": {
+					"title": "Inertial系位置、速度"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Cartesian Position-Inertial-x"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Cartesian Position-Inertial-y"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Cartesian Position-Inertial-z"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "vx",
+							"epath": "Cartesian Velocity-Inertial-x"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "vy",
+							"epath": "Cartesian Velocity-Inertial-y"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "vz",
+							"epath": "Cartesian Velocity-Inertial-z"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graph-Inertial-Position-Velocity-Sc",
+			"class": "Graph",
+			"availableForObjects": "Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "惯性系位置、速度",
+				"isDefault": true,
+				"layout": {
+					"title": "Inertial系位置、速度"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "Time",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "距离",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"epath": "Cartesian Position-Inertial-x",
+										"style": {
+											"color": "red"
+										}
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"epath": "Cartesian Position-Inertial-y"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"epath": "Cartesian Position-Inertial-z"
+									}
+								}
+							]
+						},
+						"y2Axis": {
+							"title": "速度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "vx",
+										"epath": "Cartesian Velocity-Inertial-x"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "vy",
+										"epath": "Cartesian Velocity-Inertial-y"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "vz",
+										"epath": "Cartesian Velocity-Inertial-z"
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report_Access",
+			"class": "Report",
+			"availableForObjects": "Access",
+			"params": {
+				"name": "可见性",
+				"isDefault": true,
+				"header": {
+					"title": "可见性报告"
+				},
+				"content": [
+					{
+						"class": "RSection",
+						"params": {
+							"multiInstance": {
+								"includeNameWithTitle": true
+							}
+						}
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Access Data-Access Number",
+							"dataFormat": {
+								"typeSize": 0
+							}
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "开始时刻",
+							"epath": "Access Data-Start Time"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "结束时刻",
+							"epath": "Access Data-Stop Time"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "持续时间",
+							"epath": "Access Data-Duration",
+							"summaryOptions": {
+								"statistics": {
+									"max": true,
+									"min": true,
+									"mean": true,
+									"total": true
+								}
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graphic_Access",
+			"class": "Graph",
+			"availableForObjects": "Access",
+			"params": {
+				"name": "可见性",
+				"isDefault": true,
+				"layout": {
+					"title": "可见性"
+				},
+				"content": {
+					"class": "GInterval",
+					"axes": {
+						"timeAxis": {
+							"title": "Time",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "Times",
+							"elements": [
+								{
+									"class": "RElements",
+									"params": {
+										"title": "Times",
+										"epath": "Access Data",
+										"elements": [
+											"Start Time",
+											"Stop Time"
+										]
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report_Lighting_Times",
+			"class": "Report",
+			"availableForObjects": "Facility,Place,Target,Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "光照时间(全光照、半影、全影)",
+				"isDefault": true,
+				"serverKey": "LightingTimes",
+				"header": {
+					"title": "光照时间段"
+				},
+				"content": [
+					{
+						"class": "RSection",
+						"params": {
+							"title": "光照时间段"
+						}
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "开始时刻",
+							"epath": "Lighting Times-SunLight-Start Time"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "结束时刻",
+							"epath": "Lighting Times-SunLight-Stop Time"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "持续时间",
+							"epath": "Lighting Times-SunLight-Duration",
+							"summaryOptions": {
+								"statistics": {
+									"max": true,
+									"min": true,
+									"mean": true,
+									"total": true
+								}
+							}
+						}
+					},
+					{
+						"class": "RSection",
+						"params": {
+							"title": "半影时间段"
+						}
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "开始时刻",
+							"epath": "Lighting Times-Penumbra-Start Time"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "结束时刻",
+							"epath": "Lighting Times-Penumbra-Stop Time"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "持续时间",
+							"epath": "Lighting Times-Penumbra-Duration",
+							"summaryOptions": {
+								"statistics": {
+									"max": true,
+									"min": true,
+									"mean": true,
+									"total": true
+								}
+							}
+						}
+					},
+					{
+						"class": "RSection",
+						"params": {
+							"title": "全影时间段"
+						}
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "开始时刻",
+							"epath": "Lighting Times-Umbra-Start Time"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "结束时刻",
+							"epath": "Lighting Times-Umbra-Stop Time"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "持续时间",
+							"epath": "Lighting Times-Umbra-Duration",
+							"summaryOptions": {
+								"statistics": {
+									"max": true,
+									"min": true,
+									"mean": true,
+									"total": true
+								}
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graphic_Lighting_Times",
+			"class": "Graph",
+			"availableForObjects": "Facility,Place,Target,Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "光照时间(全光照、半影、全影)",
+				"isDefault": true,
+				"serverKey": "LightingTimes",
+				"layout": {
+					"title": "光照时间段"
+				},
+				"content": {
+					"class": "GInterval",
+					"axes": {
+						"timeAxis": {
+							"title": "Time",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "",
+							"elements": [
+								{
+									"class": "RElements",
+									"params": {
+										"title": "全影",
+										"epath": "Lighting Times-Umbra",
+										"elements": [
+											"Start Time",
+											"Stop Time"
+										]
+									}
+								},
+								{
+									"class": "RElements",
+									"params": {
+										"title": "半影",
+										"epath": "Lighting Times-Penumbra",
+										"elements": [
+											"Start Time",
+											"Stop Time"
+										]
+									}
+								},
+								{
+									"class": "RElements",
+									"params": {
+										"title": "光照",
+										"epath": "Lighting Times-SunLight",
+										"elements": [
+											"Start Time",
+											"Stop Time"
+										]
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report_SunLight_Times",
+			"class": "Report",
+			"availableForObjects": "Facility,Place,Target,Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "全光照时间段",
+				"isDefault": true,
+				"serverKey": "LightingTimes",
+				"header": {
+					"title": "全光照时间段"
+				},
+				"content": [
+					{
+						"class": "RSection",
+						"params": {
+							"title": "全光照时间段"
+						}
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "开始时刻",
+							"epath": "Lighting Times-SunLight-Start Time"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "结束时刻",
+							"epath": "Lighting Times-SunLight-Stop Time"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "持续时间",
+							"epath": "Lighting Times-SunLight-Duration",
+							"summaryOptions": {
+								"statistics": {
+									"max": true,
+									"min": true,
+									"mean": true,
+									"total": true
+								}
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Report_Penumbra_Times",
+			"class": "Report",
+			"availableForObjects": "Facility,Place,Target,Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "半影时间段",
+				"isDefault": true,
+				"serverKey": "LightingTimes",
+				"header": {
+					"title": "半影时间段"
+				},
+				"content": [
+					{
+						"class": "RSection",
+						"params": {
+							"title": "半影时间段"
+						}
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "开始时刻",
+							"epath": "Lighting Times-Penumbra-Start Time"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "结束时刻",
+							"epath": "Lighting Times-Penumbra-Stop Time"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "持续时间",
+							"epath": "Lighting Times-Penumbra-Duration",
+							"summaryOptions": {
+								"statistics": {
+									"max": true,
+									"min": true,
+									"mean": true,
+									"total": true
+								}
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Report_Umbra_Times",
+			"class": "Report",
+			"availableForObjects": "Facility,Place,Target,Aircraft,GroundVehicle,LaunchVehicle,Missile,Satellite,Ship",
+			"params": {
+				"name": "阴影时间段",
+				"isDefault": true,
+				"serverKey": "LightingTimes",
+				"header": {
+					"title": "全影时间段"
+				},
+				"content": [
+					{
+						"class": "RSection",
+						"params": {
+							"title": "全影时间段"
+						}
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "开始时刻",
+							"epath": "Lighting Times-Umbra-Start Time"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "结束时刻",
+							"epath": "Lighting Times-Umbra-Stop Time"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "持续时间",
+							"epath": "Lighting Times-Umbra-Duration",
+							"summaryOptions": {
+								"statistics": {
+									"max": true,
+									"min": true,
+									"mean": true,
+									"total": true
+								}
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Report_SolarAERGroundLocation",
+			"class": "Report",
+			"availableForObjects": "Facility,Place,Target",
+			"params": {
+				"name": "太阳方位角-高度角-距离",
+				"isDefault": true,
+				"header": {
+					"title": "视太阳方位角、高度角、距离"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Lighting AER-Azimuth",
+							"title": "方位角"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "高度角",
+							"epath": "Lighting AER-Elevation"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "距离",
+							"epath": "Lighting AER-Range"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graph_SolarAERGroundLocation",
+			"class": "Graph",
+			"availableForObjects": "Facility,Place,Target",
+			"params": {
+				"name": "太阳方位角-高度角-距离",
+				"isDefault": true,
+				"layout": {
+					"title": "视太阳方位角、高度角、距离"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "Time",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "角度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"epath": "Lighting AER-Azimuth",
+										"style": {
+											"color": "red"
+										}
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"epath": "Lighting AER-Elevation",
+										"style": {
+											"color": "green"
+										}
+									}
+								}
+							]
+						},
+						"y2Axis": {
+							"title": "距离",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"epath": "Lighting AER-Range",
+										"style": {
+											"color": "blue"
+										}
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report_SolarAERVehicle",
+			"class": "Report",
+			"availableForObjects": "Satellite,LaunchVehicle,Missile",
+			"params": {
+				"name": "太阳方位角-高度角-距离",
+				"isDefault": true,
+				"header": {
+					"title": "视太阳方位角、高度角、距离"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Lighting AER-ECIVVLH-Azimuth",
+							"title": "方位角"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "高度角",
+							"epath": "Lighting AER-ECIVVLH-Elevation"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "距离",
+							"epath": "Lighting AER-ECIVVLH-Range"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graph_SolarAERVehicle",
+			"class": "Graph",
+			"availableForObjects": "Satellite,LaunchVehicle,Missile",
+			"params": {
+				"name": "太阳方位角-高度角-距离",
+				"isDefault": true,
+				"layout": {
+					"title": "视太阳方位角、高度角、距离"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "时间",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "角度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "方位角",
+										"epath": "Lighting AER-ECIVVLH-Azimuth",
+										"style": {
+											"color": "red"
+										}
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "高度角",
+										"epath": "Lighting AER-ECIVVLH-Elevation",
+										"style": {
+											"color": "green"
+										}
+									}
+								}
+							]
+						},
+						"y2Axis": {
+							"title": "距离",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "距离",
+										"epath": "Lighting AER-ECIVVLH-Range",
+										"style": {
+											"color": "blue"
+										}
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report_SolarIntensityGroundLocation_all",
+			"class": "Report",
+			"availableForObjects": "Facility,Place,Target",
+			"params": {
+				"name": "光照强度等参数",
+				"serverKey": "SolarIntensity",
+				"isDefault": true,
+				"header": {
+					"title": "光照强度、视太阳高度角等参数"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Solar Intensity-Intensity",
+							"title": "光照强度",
+							"dataFormat": {
+								"typeSize": 4
+							}
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "阴影强度",
+							"epath": "Solar Intensity-Percent Shadow",
+							"dataFormat": {
+								"typeSize": 4
+							}
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "视太阳方位角",
+							"epath": "Solar Intensity-Apparent Solar Azimuth"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "视太阳高度角",
+							"epath": "Solar Intensity-Apparent Solar Elevation"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "视太阳距离",
+							"epath": "Solar Intensity-Apparent Solar Range",
+							"dataFormat": {
+								"typeSize": 3
+							}
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "视太阳地面角",
+							"epath": "Solar Intensity-Solar Grazing Angle"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "地形高度角",
+							"epath": "Solar Intensity-Terrain Elevation"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "视太阳圆盘半角",
+							"epath": "Solar Intensity-Solar Disk Half Angle"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graphic_SolarIntensityGroundLocation_all",
+			"class": "Graph",
+			"availableForObjects": "Facility,Place,Target",
+			"params": {
+				"name": "光照强度等参数",
+				"serverKey": "SolarIntensity",
+				"isDefault": true,
+				"layout": {
+					"title": "光照强度、视太阳高度角等参数"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "时间",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "光照强度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "光照强度",
+										"epath": "Solar Intensity-Intensity",
+										"style": {
+											"color": "red"
+										}
+									}
+								}
+							]
+						},
+						"y2Axis": {
+							"title": "角度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "太阳方位角",
+										"epath": "Solar Intensity-Apparent Solar Azimuth"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "太阳高度角",
+										"epath": "Solar Intensity-Apparent Solar Elevation"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "地形高度角",
+										"epath": "Solar Intensity-Terrain Elevation"
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report_SolarIntensityGroundLocation",
+			"class": "Report",
+			"availableForObjects": "Facility,Place,Target",
+			"params": {
+				"name": "光照强度",
+				"serverKey": "SolarIntensity",
+				"isDefault": true,
+				"header": {
+					"title": "光照强度参数(全可见为1，不可见为0)"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Solar Intensity-Intensity",
+							"title": "光照强度",
+							"dataFormat": {
+								"typeSize": 4
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graphic_SolarIntensityGroundLocation",
+			"class": "Graph",
+			"availableForObjects": "Facility,Place,Target",
+			"params": {
+				"name": "光照强度",
+				"serverKey": "SolarIntensity",
+				"isDefault": true,
+				"layout": {
+					"title": "光照强度参数(全可见为1，不可见为0)"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "Time",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "光照强度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "光照强度",
+										"epath": "Solar Intensity-Intensity",
+										"style": {
+											"color": "red"
+										}
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report_SolarIntensityVehcile",
+			"class": "Report",
+			"availableForObjects": "LaunchVehicle,Missile,Satellite",
+			"params": {
+				"name": "光照强度",
+				"serverKey": "SolarIntensity",
+				"isDefault": true,
+				"header": {
+					"title": "光照强度参数(全可见为1，不可见为0)"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Solar Intensity-Intensity",
+							"title": "光照强度",
+							"dataFormat": {
+								"typeSize": 4
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graphic_SolarIntensityVehcile",
+			"class": "Graph",
+			"availableForObjects": "LaunchVehicle,Missile,Satellite",
+			"params": {
+				"name": "光照强度",
+				"serverKey": "SolarIntensity",
+				"isDefault": true,
+				"layout": {
+					"title": "光照强度"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "Time",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "光照强度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "光照强度",
+										"epath": "Solar Intensity-Intensity",
+										"style": {
+											"color": "red"
+										}
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report_GridPointInformation",
+			"class": "Report",
+			"availableForObjects": "AttitudeCoverage,CoverageDefinition",
+			"params": {
+				"name": "网格点信息",
+				"isDefault": true,
+				"header": {
+					"title": "网格点信息"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "序号",
+							"epath": "Grid Point Locations-Point Number",
+							"dataFormat": {
+								"typeSize": 0
+							}
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "纬度",
+							"epath": "Grid Point Locations-Latitude"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "经度",
+							"epath": "Grid Point Locations-Longitude"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "高度",
+							"epath": "Grid Point Locations-Altitude"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "面积",
+							"epath": "Grid Point Locations-Area",
+							"dataFormat": {
+								"typeSize": 6
+							}
+						}
+					}
+				]
+			}
+		},
+		
+		{
+			"id": "Report_PercentCoverage",
+			"class": "Report",
+			"availableForObjects": "CoverageDefinition",
+			"params": {
+				"name": "覆盖百分比",
+				"isDefault": true,
+				"header": {
+					"title": ""
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "覆盖定义",
+							"epath": "Coverage Definition-Coverage Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "覆盖百分比(%)",
+							"epath": "Percent Coverage-Percent Coverage"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "累积百分比(%)",
+							"epath": "Percent Coverage-Percent Accum Coverage"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graphic_PercentCoverage",
+			"class": "Graph",
+			"availableForObjects": "CoverageDefinition",
+			"params": {
+				"name": "覆盖百分比",
+				"isDefault": true,
+				"layout": {
+					"title": "当前-累计覆盖百分比"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "时间",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "覆盖百分比",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "当前百分比",
+										"epath": "Percent Coverage-Percent Coverage"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "累计百分比",
+										"epath": "Percent Coverage-Percent Accum Coverage"
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+
+		{
+			"id": "Report_CoverageByAsset",
+			"class": "Report",
+			"availableForObjects": "CoverageDefinition",
+			"params": {
+				"name": "所有资源覆盖统计",
+				"isDefault": true,
+				"header": {
+					"title": ""
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "覆盖定义",
+							"epath": "Coverage Definition-Coverage Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "资源名称",
+							"epath": "Coverage By Asset-Asset Name"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "最小(%)",
+							"epath": "Coverage By Asset-Minimum % Coverage"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "最大(%)",
+							"epath": "Coverage By Asset-Maximum % Coverage"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "平均(%)",
+							"epath": "Coverage By Asset-Average % Coverage"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "累积(%)",
+							"epath": "Coverage By Asset-Accumulated % Coverage"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Report_GlobalCoverage",
+			"class": "Report",
+			"availableForObjects": "AttitudeCoverage,CoverageDefinition",
+			"params": {
+				"name": "整体覆盖时间段",
+				"isDefault": true,
+				"header": {
+					"title": "整体覆盖时间段"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "覆盖定义",
+							"epath": "Coverage Definition-Coverage Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "序号",
+							"epath": "Global Coverage-Global Coverage Number",
+							"dataFormat": {
+								"typeSize": 0
+							}
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "开始时刻",
+							"epath": "Global Coverage-Global Coverage Start"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "结束时刻",
+							"epath": "Global Coverage-Global Coverage End"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "持续时间",
+							"epath": "Global Coverage-Duration"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "百分比（%）",
+							"epath": "Global Coverage-Percent"
+						}
+					}
+				]
+			}
+		},	
+
+		{
+			"id": "Report_AccessDuration",
+			"class": "Report",
+			"availableForObjects": "AttitudeCoverage,CoverageDefinition",
+			"params": {
+				"name": "覆盖时长统计",
+				"isDefault": true,
+				"header": {
+					"title": ""
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "覆盖定义",
+							"epath": "Coverage Definition-Coverage Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "持续时间",
+							"epath": "Access Duration-Duration"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "之上(%)",
+							"epath": "Access Duration-Percent Over"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "之下(%)",
+							"epath": "Access Duration-Percent Under"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graphic_AccessDuration",
+			"class": "Graph",
+			"availableForObjects": "AttitudeCoverage,CoverageDefinition",
+			"params": {
+				"name": "覆盖时长统计",
+				"isDefault": true,
+				"layout": {
+					"title": "覆盖时长统计"
+				},
+				"content": {
+					"class": "GXY",
+					"axes": {
+						"xAxis": {
+							"title": "持续时间",
+							"element": {
+								"class": "RElement",
+								"params": {
+									"title": "持续时间",
+									"epath": "Access Duration-Duration"
+								}
+							}
+						},
+						"yAxis": {
+							"title": "百分比",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "之上(%)",
+										"epath": "Access Duration-Percent Over"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "之下(%)",
+										"epath": "Access Duration-Percent Under"
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report_CoverageGapDuration",
+			"class": "Report",
+			"availableForObjects": "AttitudeCoverage,CoverageDefinition",
+			"params": {
+				"name": "覆盖间隔时长统计",
+				"isDefault": true,
+				"header": {
+					"title": ""
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "覆盖定义",
+							"epath": "Coverage Definition-Coverage Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "持续时间",
+							"epath": "Coverage Gap Duration-Duration"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "之上(%)",
+							"epath": "Coverage Gap Duration-Percent Over"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "之下(%)",
+							"epath": "Coverage Gap Duration-Percent Under"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graphic_CoverageGapDuration",
+			"class": "Graph",
+			"availableForObjects": "AttitudeCoverage,CoverageDefinition",
+			"params": {
+				"name": "覆盖间隔时长统计",
+				"isDefault": true,
+				"layout": {
+					"title": "覆盖间隔时长统计"
+				},
+				"content": {
+					"class": "GXY",
+					"axes": {
+						"xAxis": {
+							"title": "持续时间",
+							"element": {
+								"class": "RElement",
+								"params": {
+									"epath": "Coverage Gap Duration-Duration"
+								}
+							}
+						},
+						"yAxis": {
+							"title": "百分比",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "之上(%)",
+										"epath": "Coverage Gap Duration-Percent Over"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "之下(%)",
+										"epath": "Coverage Gap Duration-Percent Under"
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		
+		{
+			"id": "Report_ValueByGridPoint",
+			"class": "Report",
+			"availableForObjects": "FigureOfMerit",
+			"params": {
+				"name": "网格点静态值",
+				"isDefault": true,
+				"header": {
+					"title": "网格点静态值"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "覆盖定义",
+							"epath": "Coverage Definition-Coverage Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "FOM定义",
+							"epath": "FOM Definition-FOM Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "大地纬度",
+							"epath": "Value By Point-Latitude"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "大地经度",
+							"epath": "Value By Point-Longitude"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "大地高度",
+							"epath": "Value By Point-Altitude"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "覆盖品质数值",
+							"epath": "Value By Point-FOM Value"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Report_ValueByGridPointAtTime",
+			"class": "Report",
+			"availableForObjects": "FigureOfMerit",
+			"params": {
+				"name": "网格点动态值",
+				"isDefault": true,
+				"header": {
+					"title": "网格点动态值"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "覆盖定义",
+							"epath": "Coverage Definition-Coverage Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "FOM定义",
+							"epath": "FOM Definition-FOM Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "大地纬度",
+							"epath": "Time Value By Point-Latitude"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "大地经度",
+							"epath": "Time Value By Point-Longitude"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "大地高度",
+							"epath": "Time Value By Point-Altitude"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "覆盖品质数值",
+							"epath": "Time Value By Point-FOM Value"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Report_GridStats",
+			"class": "Report",
+			"availableForObjects": "AttitudeFigureOfMerit,FigureOfMerit",
+			"params": {
+				"name": "网格点静态统计值",
+				"isDefault": true,
+				"header": {
+					"title": "网格点静态统计值"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "覆盖定义",
+							"epath": "Coverage Definition-Coverage Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "FOM定义",
+							"epath": "FOM Definition-FOM Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "最小值",
+							"epath": "Overall Value-Minimum"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "最大值",
+							"epath": "Overall Value-Maximum"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "平均值",
+							"epath": "Overall Value-Average"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Report_GridStatsOverTime",
+			"class": "Report",
+			"availableForObjects": "AttitudeFigureOfMerit,FigureOfMerit",
+			"params": {
+				"name": "网格点动态统计值",
+				"isDefault": true,
+				"header": {
+					"title": "网格点动态统计值"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "覆盖定义",
+							"epath": "Coverage Definition-Coverage Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "FOM定义",
+							"epath": "FOM Definition-FOM Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "最小值",
+							"epath": "Overall Value By Time-Minimum"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "最大值",
+							"epath": "Overall Value By Time-Maximum"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "平均值",
+							"epath": "Overall Value By Time-Average"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graphic_GridStatsOverTime",
+			"class": "Graph",
+			"availableForObjects": "AttitudeFigureOfMerit,FigureOfMerit",
+			"params": {
+				"name": "网格点动态统计值",
+				"isDefault": true,
+				"layout": {
+					"title": "网格点动态统计值"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "时间",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "覆盖品质数值",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "最小值",
+										"epath": "Overall Value By Time-Minimum"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "最大值",
+										"epath": "Overall Value By Time-Maximum"
+									}
+								},
+								{
+									"class": "RElement",
+									"params": {
+										"title": "平均值",
+										"epath": "Overall Value By Time-Average"
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},		
+		{
+			"id": "Report_PercentSatisfied",
+			"class": "Report",
+			"availableForObjects": "FigureOfMerit",
+			"params": {
+				"name": "网格点静态值满足率",
+				"isDefault": true,
+				"header": {
+					"title": "网格点静态值满足率"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "覆盖定义",
+							"epath": "Coverage Definition-Coverage Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "FOM定义",
+							"epath": "FOM Definition-FOM Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "满足的(%)",
+							"epath": "Static Satisfaction-Percent Satisfied"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "满足的面积",
+							"epath": "Static Satisfaction-Area Satisfied"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Report_SatisfiedByTime",
+			"class": "Report",
+			"availableForObjects": "AttitudeFigureOfMerit, FigureOfMerit, ObjectCoverage",
+			"params": {
+				"name": "网格点动态值满足率",
+				"isDefault": true,
+				"header": {
+					"title": "网格点动态值满足率"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "覆盖定义",
+							"epath": "Coverage Definition-Coverage Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "FOM定义",
+							"epath": "FOM Definition-FOM Properties"
+						}
+					},
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "满足的(%)",
+							"epath": "Satisfied by Time-Percent Satisfied"
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"title": "满足的面积",
+							"epath": "Satisfied by Time-Area Satisfied"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graphic_SatisfiedByTime",
+			"class": "Graph",
+			"availableForObjects": "AttitudeFigureOfMerit,FigureOfMerit",
+			"params": {
+				"name": "网格点动态值满足率",
+				"isDefault": true,
+				"layout": {
+					"title": "网格点动态值满足率"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "时间",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "满足百分比",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "满足的(%)",
+										"epath": "Satisfied by Time-Percent Satisfied"
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report_Angles_SunMoon",
+			"class": "Report",
+			"availableForObjects": "Access, Aircraft, Antenna, AreaTarget, Facility, GroundVehicle, LaunchVehicle, LineTarget, Missile, Place, Planet, Radar, Receiver, Satellite, SatelliteCollection, Scenario, Sensor, Ship, Star, Target, Transmitter",
+			"params": {
+				"name": "日月夹角",
+				"isDefault": false,
+				"header": {
+					"title": "日月夹角"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Angles-SunMoon-Angle",
+							"title": "角度",
+							"dataFormat": {
+								"typeSize": 3
+							}
+						}
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Angles-SunMoon-AngleRate",
+							"title": "角度变化率",
+							"dataFormat": {
+								"typeSize": 6
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graph_Angles_SunMoon",
+			"class": "Graph",
+			"availableForObjects": "Access, Aircraft, Antenna, AreaTarget, Facility, GroundVehicle, LaunchVehicle, LineTarget, Missile, Place, Planet, Radar, Receiver, Satellite, SatelliteCollection, Scenario, Sensor, Ship, Star, Target, Transmitter",
+			"params": {
+				"name": "日月夹角",
+				"isDefault": false,
+				"layout": {
+					"title": "日月夹角"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "Time",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "角度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "角度",
+										"epath": "Angles-SunMoon-Angle",
+										"style": {
+											"color": "red"
+										}
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "Report_BetaAngle",
+			"class": "Report",
+			"availableForObjects": "LaunchVehicle, Missile, Satellite",
+			"params": {
+				"name": "Beta角度",
+				"isDefault": false,
+				"header": {
+					"title": "Beta角度"
+				},
+				"content": [
+					{
+						"class": "RSection"
+					},
+					{
+						"class": "RLine"
+					},
+					{
+						"class": "RElementTime"
+					},
+					{
+						"class": "RElement",
+						"params": {
+							"epath": "Beta Angle-Beta Angle",
+							"title": "Beta角度",
+							"dataFormat": {
+								"typeSize": 3
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "Graph_BetaAngle",
+			"class": "Graph",
+			"availableForObjects": "LaunchVehicle, Missile, Satellite",
+			"params": {
+				"name": "Beta角度",
+				"isDefault": false,
+				"layout": {
+					"title": "Beta角度"
+				},
+				"content": {
+					"class": "GTimeXY",
+					"axes": {
+						"timeAxis": {
+							"title": "Time",
+							"element": {
+								"class": "RElementTime"
+							}
+						},
+						"yAxis": {
+							"title": "角度",
+							"elements": [
+								{
+									"class": "RElement",
+									"params": {
+										"title": "Beta角",
+										"epath": "Beta Angle-Beta Angle",
+										"style": {
+											"color": "red"
+										}
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		}
+
+		
+	]
+	
+}
