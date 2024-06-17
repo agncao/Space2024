@@ -14,9 +14,9 @@
         Chart: "Chart"
     }
     let _formulaConfig = null;
-    let _postureChart = { series: [], xAxis: [], yAxis: [], legend: [] };
-    
-    let _postureChartType = {Time:0};
+    let _postureChart = { series: [], xAxis: [], yAxis: [], legend: { data: [] } };
+
+    let _postureChartType = { Time: { id: 0, name: 'time' } };
 
     const fn = {
 
@@ -97,6 +97,14 @@
                 height: style.area[1]
             });
             $(div).addClass(item.Display.Box.Class);
+
+            // 生成 title
+            let titleDiv = document.createElement("div");
+            titleDiv.setAttribute('id', divId + '_title');
+            titleDiv.setAttribute('class', 'data-title');
+            div.appendChild(titleDiv);
+            titleDiv.innerText = item.Display.Box.Name;
+
             return div;
         },
         generateWindowId: function (windowType, index) {
@@ -424,7 +432,18 @@
             gaugeChart.setOption(chartOptions);
         },
 
+        /**
+         *  { 
+                    min: bizData.min, 
+                    max: bizData.max, 
+                    current: bizData.value 
+                }
+         * @param {*} divContent 
+         * @param {*} setting 
+         * @param {*} bizData 
+         */
         generateTemperatureChart: function (divContent, setting, bizData) {
+            initRange.init(divContent.id, { min: 0, max: 100, current: 80 });
         },
 
         generatePostureReport: function (divContent, setting, reportResult) {
@@ -494,15 +513,14 @@
             if (!graphResult || !graphResult.res) return;
 
             for (const key in graphResult.res) {
-                const result = graphResult.res[key];
                 //如果result不是对象就 continue
-                if (typeof result !== 'object') continue;
+                if (typeof graphResult.res[key] !== 'object') continue;
                 // 使用正则表达式匹配键名
                 const match = key.match(/^y(\d*)$/);
                 if (match) {    // y轴
-                    dataChart.setPostureYSeries(res,key, match);
+                    dataChart.setPostureYSeries(graphResult.res, key, match);
                 } else {    // x轴
-                    dataChart.setPostureXAxis(res,key);
+                    dataChart.setPostureXAxis(graphResult.res, key);
                 }
             }
 
@@ -524,27 +542,29 @@
                 legend: _postureChart.legend
 
             };
+            console.log("chartOptions: ", chartOptions);
             chart.setOption(chartOptions);
         },
-        setPostureXAxis:function(res,key){
+        setPostureXAxis: function (res, key) {
             let xRes = res[key];
             if (_postureChart.xAxis.length <= 0) {   //不存在当前x轴数据
-                _postureChart.xAxis = [{ type: '', splitLine: { show: true } }];
+                _postureChart.xAxis = [{ type: '', splitLine: { show: false } }];
             }
             _postureChart.xAxis[0].type = key;
-            if(res['charType'] !== _postureChartType.Time){
-                let val = xRes.values ? xRes.values : null;
-                _postureChart.xAxis[0].data.push(val ? val.values : []);
+            if (key != _postureChartType.Time.name) {
+                let xdata = xRes.values ? xRes.values : null;
+                let xVal = xdata && xdata.values && xdata.values.length > 0 ? xdata.values[0] : [];
+                _postureChart.xAxis[0].data.push(xVal);
             }
         },
         /**
-         * 
-         * @param {*} ydata 
+         * 设置姿态统计图的echart series
+         * @param {*} res 
          * @param {*} key 
          * @param {*} ymatch 如果key==='y',match[1] 将是空字符串，这时 index 将保持为 0。
          *      如果key为y{数字}，如 y2，则 match[1] 为 2，index 将被设置为 2 - 1 = 1
          */
-        setPostureYSeries: function (res,key, ymatch) {
+        setPostureYSeries: function (res, key, ymatch) {
             let ydata = res[key];
             let index = 0;
             if (ymatch[1]) {
@@ -552,8 +572,7 @@
             }
             let yAxis = _postureChart.yAxis[index];
             if (!yAxis) {
-                yAxis = { type: 'value', name: ydata.title, position: index === 0 ? 'left' : 'right' };
-                yAxis.axisLabel = { formatter: '{value} °' };
+                yAxis = { type: 'value', boundaryGap: [0, '100%'], splitLine: { show: false }, name: ydata.title, position: index === 0 ? 'left' : 'right' };
                 _postureChart.yAxis.push(yAxis);
             }
 
@@ -563,21 +582,74 @@
                 if (_postureChart.series.length > 0) {
                     for (let j = 0; j < _postureChart.series.length; j++) {
                         if (_postureChart.series[j].dimensionName === y[i].dimensionName) {
-                            _postureChart.series[j].data.push(y[i].values[0]);
+                            dataChart.doSetPostureYSeries(res, key, i, j);
                             isSeriesFinded = true;
                             break;
                         }
                     }
                 }
                 if (!isSeriesFinded) {
-                    let series = { name: ydata.title, type: 'line', data: [y[i].values[0]], dimensionName: y[i].dimensionName };
-                    if (y.length === 1) {
-                        series.yAxisIndex = index;
-                    }
-                    _postureChart.series.push(series);
-                    _postureChart.legend.push(y[i].title);
+                    dataChart.initPostureYSeries(res, key, i, index);
                 }
             }
+        },
+        /**
+         * 设置姿态统计图的echart series
+         * @param {*} res 
+         * @param {*} key 
+         * @param {*} yIndex 
+         * @param {*} seriesIndex 
+         */
+        doSetPostureYSeries: function (res, key, yIndex, seriesIndex) {
+            let y = res[key].values;
+            if (res.chartType === _postureChartType.Time.id) {
+                if (10 <= _postureChart.series[seriesIndex].data.length) {
+                    _postureChart.series[seriesIndex].data.shift();
+                }
+                let timeValue = dataChart.getPostureChartTimeValue(res, false);
+                let seriesData = { name: timeValue, value: [timeValue, y[yIndex].values[0]] };
+                _postureChart.series[seriesIndex].data.push(seriesData);
+            } else {
+                _postureChart.series[seriesIndex].data.push(y[yIndex].values[0]);
+            }
+
+        },
+        /**
+         * 初始化姿态统计图的echart series
+         * @param {*} res 
+         * @param {*} ydata 
+         * @param {*} i 
+         */
+        initPostureYSeries: function (res, key, i, ymatchIndex) {
+            let ydata = res[key];
+            let y = ydata.values;
+            let series = { name: ydata.title, type: 'line', dimensionName: y[i].dimensionName, data: [] };
+            if (y.length === 1) {
+                series.yAxisIndex = ymatchIndex;
+            }
+            if (res.chartType === _postureChartType.Time.id) {
+                let timeValue = this.getPostureChartTimeValue(res, false);
+                series.data.push({ name: timeValue, value: [timeValue, y[i].values[0]] });
+            } else {
+                series.data = [y[i].values[0]];
+            }
+            _postureChart.series.push(series);
+            _postureChart.legend.data.push(y[i].title);
+
+        },
+        /**
+         * 
+         * @param {*} res 
+         * @param {*} isDate 需要返回日期类型则true，需要返回字符串则false
+         * @returns 
+         */
+        getPostureChartTimeValue: function (res, isDate) {
+            let xRes = res[_postureChartType.Time.name]
+            let val = xRes.values && xRes.values.values && xRes.values.values.length > 0 ? xRes.values.values[0] : null;
+            if (!val) return new Date("1970-01-01 00:00:00");
+            let date = new Date(val);
+            if (isDate) return date;
+            return date.toLocaleString();
         }
     }
 
