@@ -14,12 +14,36 @@
         Chart: "Chart"
     }
     let _formulaConfig = null;
+
+    let _formula = {
+        timeSettings: [],
+        bizSettings: [],
+        messageSettings: [],
+        postureReportSettings: [],
+        postureChartSettings: []
+    };
     let _postureChart = { series: [], xAxis: [], yAxis: [], legend: { data: [] } };
 
     let _postureChartType = { Time: { id: 0, name: 'time' } };
 
     const fn = {
-
+        init: function (formulaConfig) {
+            if (!formulaConfig || !formulaConfig.Settings) return;
+            for (let i = 0; i < formulaConfig.Settings.length; i++) {
+                let item = formulaConfig.Settings[i];
+                if (item.WindowType == _boxType.Time) {
+                    _formula.timeSettings.push(item);
+                } else if (item.WindowType == _boxType.Business) {
+                    _formula.bizSettings.push(item);
+                } else if (item.WindowType == _boxType.Message) {
+                    _formula.messageSettings.push(item);
+                } else if (item.WindowType == _boxType.Report) {
+                    _formula.postureReportSettings.push(item);
+                } else if (item.WindowType == _boxType.Chart) {
+                    _formula.postureChartSettings.push(item);
+                }
+            }
+        },
         parseBoxStyle: function (setting) {
             let displaySetting = setting.Display;
             let result = {};
@@ -82,7 +106,7 @@
         generateChartContainerId: function (parentWin, index) {
             return parentWin.getAttribute("id") + "_chart";
         },
-        openBoxWindow: function (style, item, index) {
+        openBoxWindow: function (style, item, index, needTitle) {
             let windowType = item.WindowType;
             let divId = fn.generateWindowId(windowType, index);
             let div = document.createElement("div");
@@ -99,11 +123,13 @@
             $(div).addClass(item.Display.Box.Class);
 
             // 生成 title
-            let titleDiv = document.createElement("div");
-            titleDiv.setAttribute('id', divId + '_title');
-            titleDiv.setAttribute('class', 'data-title');
-            div.appendChild(titleDiv);
-            titleDiv.innerText = item.Display.Box.Name;
+            if (needTitle) {
+                let titleDiv = document.createElement("div");
+                titleDiv.setAttribute('id', divId + '_title');
+                titleDiv.setAttribute('class', 'data-title');
+                div.appendChild(titleDiv);
+                titleDiv.innerText = item.Display.Box.Name;
+            }
 
             return div;
         },
@@ -140,7 +166,7 @@
             });
             dataParser.parseBizzData(bizzList);
             dataParser.parseMessageData(messageList);
-            dataChart.generateTimeGrid(null, null, spaceData.Posture.time);
+            dataChart.generateTimeGrid(spaceData.Posture.time);
             dataParser.parsePostureData(spaceData.Posture);
         },
         parseMessageData: function (messageList) {
@@ -273,7 +299,7 @@
             }
         }
     };
-    const dataChart = {
+    let dataChart = {
         generateMessageGrid: function (divContent, display, messageList) {
             if (!divContent) {
                 let box = document.getElementById(fn.generateWindowId(_boxType.Message, 0));
@@ -281,7 +307,6 @@
                 divContent = document.getElementById(fn.generateChartContainerId(box, 0));
             }
 
-            console.log("generateMessageGrid: ", messageList);
             let table = document.createElement("table");
             let thead = document.createElement("thead");
             let tbody = document.createElement("tbody");
@@ -307,69 +332,58 @@
                 tbody.appendChild(tbodyTr);
             });
         },
-        generateTimeGrid: function (divContent, timeSetting, spaceTime) {
-            if (!spaceTime) return;
-            if (!divContent) {
-                let box = document.getElementById(fn.generateWindowId(_boxType.Time, 0));
-                if (!box) return;
-                divContent = document.getElementById(fn.generateChartContainerId(box, 0));
-                divContent.innerHTML = "";
-            }
-            if (!timeSetting) {
-                let arr = _formulaConfig.Settings.filter(item => item.WindowType == _boxType.Time);
-                if (arr && arr.length > 0) {
-                    timeSetting = arr[0];
-                }
-            }
-            //将sendTimeStamp转换成时间对象
-            let spaceBjTime = spaceTime.replace("UTCG", "");
-            let time = spaceBjTime ? moment(spaceBjTime) : null;
-
+        initTimeGrid: function (divContent, timeSetting) {
             //生成一个一行两列的table
             let table = document.createElement("table");
             let tbody = document.createElement("tbody");
             table.appendChild(tbody);
             divContent.appendChild(table);
 
-            //计算一下需要多少行
             let items = [];
-            let displayItems = timeSetting.Display.Items.split(',');
-            let subItems = displayItems.filter(item => item.trim() !== "" &&
-                item.trim().toUpperCase() !== "UTC" &&
-                item.trim().toUpperCase() !== "UTCG" &&
-                item.trim().toUpperCase() !== "UTC/UTCG" &&
-                item.trim().toUpperCase() !== "UTCG/UTC");
-            if (subItems.length < displayItems.length) {
-                items.push("UTC/UTCG");
-                items.push(...subItems);
-            } else {
-                items.push(...displayItems);
-            }
-            const cellCount = 2;
-            const rowCount = items.length / cellCount;
+            items.push(timeSetting.Display.Items);
 
-            for (let i = 0; i < rowCount; i++) {
-                let tbodyTr = document.createElement("tr");
-                tbody.appendChild(tbodyTr);
-                for (let j = 0; j < cellCount; j++) {
-                    let tbodyTd = document.createElement("td");
-                    tbodyTr.appendChild(tbodyTd);
+            let tbodyTr = document.createElement("tr");
+            tbody.appendChild(tbodyTr);
+            let tbodyTd = document.createElement("td");
+            tbodyTr.appendChild(tbodyTd);
 
-                    let innerText = "";
-                    if (!time) return;
-                    if (items[(i + 1) * j].toUpperCase() === "UTC/UTCG") {
-                        innerText = time.utc().format();
-                    } else if (items[(i + 1) * j].toUpperCase() === "EPSEC") {
-                        let precision = timeSetting.Precision ? timeSetting.Precision : 0;
-                        var dateObj = moment(_formulaConfig.EpochStartTime, "YYYY-MM-DD HH:mm:ss");
-                        let epochSeconds = time.valueOf() - dateObj.valueOf();
-                        innerText = parseFloat((epochSeconds / 1000).toFixed(precision));;
-                    } else {
-                        innerText = "北京时间: " + time.format("YYYY-MM-DD HH:mm:ss");
-                    }
-                    tbodyTd.innerText = items[(i + 1) * j] + ": " + innerText;
+            tbodyTd.innerText = items ? items[0] + ": --" : "";
+        },
+        generateTimeGrid: function (spaceTime) {
+            if (!spaceTime) return;
+            if (!_formula || _formula.timeSettings.length == 0) return;
+
+            //将sendTimeStamp转换成时间对象
+            let spaceBjTime = spaceTime.replace("UTCG", "");
+            let time = spaceBjTime ? moment(spaceBjTime) : null;
+
+            for (let i = 0; i < _formula.timeSettings.length; i++) {
+                let timeSetting = _formula.timeSettings[i];
+                let items = [];
+                items.push(timeSetting.Display.Items);
+                if (!items) continue;
+                let box = document.getElementById(fn.generateWindowId(_boxType.Time, i));
+                if (!box) continue;
+                divContent = document.getElementById(fn.generateChartContainerId(box, i));
+                //用jquery选择divContent里的table下的tbody元素下的tr里的第一个td
+                let firstTd = $("#" + divContent.id).find('table > tbody > tr:first-child > td:first-child');
+                if (!firstTd) continue;
+
+
+                let innerText = "--";
+                if (!time) return;
+                if (items[0].toUpperCase().indexOf("UTC") > -1 || items[0].toUpperCase().indexOf("UTCG") > -1) {
+                    innerText = time.utc().format();
+                } else if (items[0].toUpperCase() === "EPSEC") {
+                    let precision = timeSetting.Precision ? timeSetting.Precision : 0;
+                    var dateObj = moment(_formulaConfig.EpochStartTime, "YYYY-MM-DD HH:mm:ss");
+                    let epochSeconds = time.valueOf() - dateObj.valueOf();
+                    innerText = parseFloat((epochSeconds / 1000).toFixed(precision));;
+                } else {
+                    innerText = "北京时间: " + time.format("YYYY-MM-DD HH:mm:ss");
                 }
-
+                //
+                firstTd.text(items[0] + ": " + innerText);
             }
         },
         generateGaugeChart: function (divContent, setting, bizData) {
@@ -438,12 +452,19 @@
                     max: bizData.max, 
                     current: bizData.value 
                 }
+                , { min: 0, max: 100, current: 80 }
          * @param {*} divContent 
          * @param {*} setting 
          * @param {*} bizData 
          */
         generateTemperatureChart: function (divContent, setting, bizData) {
-            initRange.init(divContent.id, { min: 0, max: 100, current: 80 });
+            let thermometerChart = ThermometerChart.init(divContent.id);
+            thermometerChart.setOption({
+                min: bizData.min,
+                max: bizData.max,
+                current: bizData.value
+            });
+
         },
 
         generatePostureReport: function (divContent, setting, reportResult) {
@@ -523,6 +544,8 @@
                     dataChart.setPostureXAxis(graphResult.res, key);
                 }
             }
+
+            //{chartType:0,y:{....values:[{经度}{纬度}]},y2:{}}
 
             let chart = echarts.init(divContent);
             let chartOptions = {
@@ -685,44 +708,47 @@
             let self = this;
             HttpClient.build().get(WebApi.spaceData.formulaUrl, data => {
                 _formulaConfig = data;
-                self.showBizWindow();
-                self.showGridWindow(_boxType.Message);
-                self.showGridWindow(_boxType.Time);
-                self.showGridWindow(_boxType.Report);
-                self.showGridWindow(_boxType.Chart);
+                fn.init(data);
+                self.showMultiWindow(_formula.bizSettings);
+                self.showMultiWindow(_formula.timeSettings);
+                self.showGridWindow(_formula.messageSettings);
+                self.showGridWindow(_formula.postureReportSettings);
+                self.showGridWindow(_formula.postureChartSettings);
             });
         },
 
-        showBizWindow: function () {
-            var bizConfigArray = _formulaConfig.Settings.filter(item => item.WindowType == _boxType.Business);
-            if (!bizConfigArray || bizConfigArray.length == 0) return;
+        showMultiWindow: function (boxSettings) {
+            if (!boxSettings || boxSettings.length == 0) return;
 
-            if (document.getElementById(fn.generateWindowId(bizConfigArray[0].WindowType, 0))) {
+            if (document.getElementById(fn.generateWindowId(boxSettings[0].WindowType, 0))) {
                 return;
             }
             var i = 0;
-            for (let i = 0; i < bizConfigArray.length; i++) {
-                let bizConfig = bizConfigArray[i];
+            for (let i = 0; i < boxSettings.length; i++) {
+                let setting = boxSettings[i];
                 //生成样式
-                let style = fn.parseBoxStyle(bizConfig);
+                let style = fn.parseBoxStyle(setting);
                 //生成窗体
-                let subWindow = fn.openBoxWindow(style, bizConfig, i);
+                let subWindow = setting.WindowType === _boxType.Time ?
+                    fn.openBoxWindow(style, setting, i, false) :
+                    fn.openBoxWindow(style, setting, i, true);
                 //生成图表容器
-                let chartContainer = fn.generateChartContainer(bizConfig.Display, subWindow);
+                let chartContainer = fn.generateChartContainer(setting.Display, subWindow);
 
-                if (bizConfig.Display.ChartType == "Gauge") {
-                    dataChart.generateGaugeChart(chartContainer, bizConfig, { value: 0, min: 0, max: 0 });
-                } else if (bizConfig.Display.ChartType == "Thermometer") {
-                    dataChart.generateTemperatureChart(chartContainer, bizConfig, { value: 0, min: 0, max: 0 });
+                if (setting.Display.ChartType == "Gauge") {
+                    dataChart.generateGaugeChart(chartContainer, setting, { value: 0, min: 0, max: 0 });
+                } else if (setting.Display.ChartType == "Thermometer") {
+                    dataChart.generateTemperatureChart(chartContainer, setting, { value: 0, min: 0, max: 0 });
+                } else if (setting.WindowType === _boxType.Time) {
+                    dataChart.initTimeGrid(chartContainer, setting);
                 }
 
             };
         },
-        showGridWindow: function (winType) {
-            let boxSettings = _formulaConfig.Settings.filter(item => item.WindowType == winType);
-            if (!boxSettings || boxSettings.length == 0) return;
+        showGridWindow: function (boxSettings) {
+            if (!boxSettings) return;
 
-            if (document.getElementById(fn.generateWindowId(winType, 0))) {
+            if (document.getElementById(fn.generateWindowId(boxSettings[0].WindowType, 0))) {
                 return;
             }
 
@@ -730,16 +756,14 @@
             //生成样式
             let style = fn.parseBoxStyle(boxSetting);
             //生成窗体
-            let subWindow = fn.openBoxWindow(style, boxSetting, 0);
+            let subWindow = fn.openBoxWindow(style, boxSetting, 0, true);
             //生成图表容器
             let chartContainer = fn.generateChartContainer(boxSetting.Display, subWindow);
-            if (winType === _boxType.Message) {
+            if (boxSetting.WindowType === _boxType.Message) {
                 dataChart.generateMessageGrid(chartContainer, boxSetting.Display, []);
-            } else if (winType === _boxType.Time) {
-                dataChart.generateTimeGrid(chartContainer, boxSetting, null);
-            } else if (winType === _boxType.Report) {
+            } else if (boxSetting.WindowType === _boxType.Report) {
                 dataChart.generatePostureReport(chartContainer, boxSetting, null);
-            } else if (winType === _boxType.Chart) {
+            } else if (boxSetting.WindowType === _boxType.Chart) {
                 dataChart.generatePostureChart(chartContainer, boxSetting, null);
             }
         }

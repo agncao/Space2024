@@ -52,6 +52,24 @@
     padding-right: 20px;
 }
 
+.time-layout {
+    font-size: 2em;
+    font-weight: bold;
+    color: #0EFCFF;
+}
+
+.time-layout table {
+    width: 100%;
+    /* border-collapse: collapse; */
+    /* margin: 4px; */
+    /* 设置上下左右边距都为4px */
+
+    tbody {
+        margin: 0;
+    }
+}
+
+
 .data-layout {
     border: 2px solid #25a5bb;
     box-shadow: inset 0 0 5px rgba(37, 197, 211, .8);
