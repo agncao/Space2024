@@ -1,0 +1,20 @@
+[
+   {
+     "$type": "EngineConstant",
+     "Name": "Constant_Thrust_Isp",
+     "Description": "常值推力、比冲 发动机",
+     "UserComment": "常值推力、比冲 发动机",
+     "Thrust": 500.0,
+     "Isp": 300.0,
+     "g":9.80665
+   },
+   {
+     "$type": "EngineConstAcc",
+     "Name": "Constant_Acceleration_Isp",
+     "Description": "常值加速度、比冲 发动机",
+     "UserComment": "常值加速度、比冲 发动机",
+     "Acceleration": 0.5,
+     "Isp": 300.0,
+     "g":9.80665
+   }
+]

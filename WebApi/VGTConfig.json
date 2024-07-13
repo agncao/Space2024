@@ -1,0 +1,1259 @@
+{
+	"Description": "此配置文件应拷贝到程序的配置目录里，作为VGT的缺省显示组件",
+	"TODO": "坐标系等",
+	"Editor": "liyunfei",
+	"LastUpdate": [
+		"20220723,更新了L1-L5的点，增加了Libration Axes等",
+		"20220831,增加了System: Fixed,Inertial等",
+		"20230331, 增加了Axes: VVLH(CBF)",
+		"20240318, 新增了角度：Beta_Sun、Beta_Moon，平面：Trajectory,Body.XY"
+	],
+	"Point": [
+		{
+			"name": "Center",
+			"isDefault": true,
+			"config": {
+				"type": "Entity"
+			}
+		},
+		{
+			"name": "L1",
+			"entityTypes": [
+				"CentralBody"
+			],
+			"config": {
+				"type": "Libration",
+				"pointType": "L1"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Point Name:</td><td>{{point.tipname}}</td></tr>",
+				"<tr><td>Point Parent:</td><td>{{point.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Central bodies aligned axes of selected libration point between one primary and multiple secondary central bodies with with X-axis along position of libration point relative to primary center of mass and Z-axis along orbit normal of libration point relative to primary center of mass.</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "L2",
+			"entityTypes": [
+				"CentralBody"
+			],
+			"config": {
+				"type": "Libration",
+				"pointType": "L2"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Point Name:</td><td>{{point.tipname}}</td></tr>",
+				"<tr><td>Point Parent:</td><td>{{point.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Central bodies aligned axes of selected libration point between one primary and multiple secondary central bodies with with X-axis along position of libration point relative to primary center of mass and Z-axis along orbit normal of libration point relative to primary center of mass.</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "L3",
+			"entityTypes": [
+				"CentralBody"
+			],
+			"config": {
+				"type": "Libration",
+				"pointType": "L3"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Point Name:</td><td>{{point.tipname}}</td></tr>",
+				"<tr><td>Point Parent:</td><td>{{point.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Central bodies aligned axes of selected libration point between one primary and multiple secondary central bodies with with X-axis along position of libration point relative to primary center of mass and Z-axis along orbit normal of libration point relative to primary center of mass.</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "L4",
+			"entityTypes": [
+				"CentralBody"
+			],
+			"config": {
+				"type": "Libration",
+				"pointType": "L4"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Point Name:</td><td>{{point.tipname}}</td></tr>",
+				"<tr><td>Point Parent:</td><td>{{point.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Central bodies aligned axes of selected libration point between one primary and multiple secondary central bodies with with X-axis along position of libration point relative to primary center of mass and Z-axis along orbit normal of libration point relative to primary center of mass.</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "L5",
+			"entityTypes": [
+				"CentralBody"
+			],
+			"config": {
+				"type": "Libration",
+				"pointType": "L5"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Point Name:</td><td>{{point.tipname}}</td></tr>",
+				"<tr><td>Point Parent:</td><td>{{point.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Central bodies aligned axes of selected libration point between one primary and multiple secondary central bodies with with X-axis along position of libration point relative to primary center of mass and Z-axis along orbit normal of libration point relative to primary center of mass.</td></tr>",
+				"</table>"
+			]
+		}
+	],
+	"Vector": [
+		{
+			"name": "East",
+			"entityTypes": "Entity",
+			"isDefault": false,
+			"config": {
+				"type": "Fixed",
+				"definedInAxes": "TopoCentric",
+				"components": "Y"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Fixed in Axes</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Vector fixed by its components in reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Unit vector perpendicular to surface normal of central body reference ellipsoid and directed toward local east.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{vector.parent}} {{vector.definedInAxes}}</td></tr>",
+				"<tr><td>Orientation:</td><td>Cartesian</td></tr>",
+				"<tr><td>X:</td><td>0.000</td></tr>",
+				"<tr><td>Y:</td><td>1.000</td></tr>",
+				"<tr><td>Z:</td><td>0.000</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "North",
+			"entityTypes": "Entity",
+			"isDefault": false,
+			"config": {
+				"type": "Fixed",
+				"definedInAxes": "TopoCentric",
+				"components": "-X"
+			}
+		},
+		{
+			"name": "South",
+			"entityTypes": "Entity",
+			"isDefault": false,
+			"config": {
+				"type": "Fixed",
+				"definedInAxes": "TopoCentric",
+				"components": "X"
+			}
+		},
+		{
+			"name": "West",
+			"entityTypes": "Entity",
+			"isDefault": false,
+			"config": {
+				"type": "Fixed",
+				"definedInAxes": "TopoCentric",
+				"components": "-Y"
+			}
+		},
+		{
+			"name": "Zenith(Detic)",
+			"entityTypes": "Entity",
+			"isDefault": false,
+			"config": {
+				"type": "Fixed",
+				"definedInAxes": "TopoCentric",
+				"components": "Z"
+			}
+		},
+		{
+			"name": "Zenith(Centric)",
+			"entityTypes": "Entity",
+			"isDefault": false,
+			"config": {
+				"type": "Fixed",
+				"definedInAxes": "RadialCentric",
+				"components": "Z"
+			}
+		},
+		{
+			"name": "Nadir(Centric)",
+			"entityTypes": "Entity",
+			"isDefault": true,
+			"config": {
+				"type": "Fixed",
+				"definedInAxes": "RadialCentric",
+				"components": "-Z"
+			}
+		},
+		{
+			"name": "Nadir(Detic)",
+			"entityTypes": "Entity",
+			"isDefault": false,
+			"config": {
+				"type": "Fixed",
+				"definedInAxes": "TopoCentric",
+				"components": "-Z"
+			}
+		},
+		{
+			"name": "Earth",
+			"isDefault": false,
+			"config": {
+				"type": "Displacement",
+				"initialPoint": "Center",
+				"finalPoint": "Earth Center"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Displacement</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Displacement vector between origin and destination object points.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Displacement vector to {{vector.finalPoint}}</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin Point:</td><td>{{vector.initialPoint}}</td></tr>",
+				"<tr><td>Destination Point:</td><td>{{vector.finalPoint}}</td></tr>",
+				"<tr><td>Apparent:</td><td>False</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Earth(True)",
+			"isDefault": false,
+			"config": {
+				"type": "Displacement",
+				"initialPoint": "Center",
+				"finalPoint": "Earth Center"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Displacement</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Displacement vector between origin and destination object points.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Displacement vector to {{vector.finalPoint}}</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin Point:</td><td>{{vector.initialPoint}}</td></tr>",
+				"<tr><td>Destination Point:</td><td>{{vector.finalPoint}}</td></tr>",
+				"<tr><td>Apparent:</td><td>False</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Sun",
+			"isDefault": true,
+			"config": {
+				"type": "Displacement",
+				"initialPoint": "Center",
+				"finalPoint": "Sun Center"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Displacement</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Displacement vector between origin and destination object points.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Displacement vector to {{vector.finalPoint}}</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin Point:</td><td>{{vector.initialPoint}}</td></tr>",
+				"<tr><td>Destination Point:</td><td>{{vector.finalPoint}}</td></tr>",
+				"<tr><td>Apparent:</td><td>False</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Sun(True)",
+			"isDefault": false,
+			"config": {
+				"type": "Displacement",
+				"initialPoint": "Center",
+				"finalPoint": "Sun Center"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Displacement</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Displacement vector between origin and destination object points.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Displacement vector to {{vector.finalPoint}}</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin Point:</td><td>{{vector.initialPoint}}</td></tr>",
+				"<tr><td>Destination Point:</td><td>{{vector.finalPoint}}</td></tr>",
+				"<tr><td>Apparent:</td><td>False</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Moon",
+			"isDefault": true,
+			"config": {
+				"type": "Displacement",
+				"initialPoint": "Center",
+				"finalPoint": "Moon Center"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Displacement</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Displacement vector between origin and destination object points.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Displacement vector to {{vector.finalPoint}}</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin Point:</td><td>{{vector.initialPoint}}</td></tr>",
+				"<tr><td>Destination Point:</td><td>{{vector.finalPoint}}</td></tr>",
+				"<tr><td>Apparent:</td><td>False</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Moon(True)",
+			"isDefault": false,
+			"config": {
+				"type": "Displacement",
+				"initialPoint": "Center",
+				"finalPoint": "Moon Center"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Displacement</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Displacement vector between origin and destination object points.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Displacement vector to {{vector.finalPoint}}</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin Point:</td><td>{{vector.initialPoint}}</td></tr>",
+				"<tr><td>Destination Point:</td><td>{{vector.finalPoint}}</td></tr>",
+				"<tr><td>Apparent:</td><td>False</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "NorthPole",
+			"entityTypes": "CentralBody",
+			"isDefault": false,
+			"config": {
+				"type": "Fixed",
+				"definedInAxes": "Fixed",
+				"components": "Z"
+			}
+		},
+		{
+			"name": "N_Position",
+			"isDefault": false,
+			"config": {
+				"type": "Displacement",
+				"initialPoint": "Center"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Displacement</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Displacement vector between origin and destination object points.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Displacement vector to {{vector.finalPoint}}</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin Point:</td><td>{{vector.initialPoint}}</td></tr>",
+				"<tr><td>Destination Point:</td><td>{{vector.finalPoint}}</td></tr>",
+				"<tr><td>Apparent:</td><td>False</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Position",
+			"isDefault": false,
+			"config": {
+				"type": "Displacement",
+				"finalPoint": "Center"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Displacement</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Displacement vector between origin and destination object points.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Position vector relative to central body center.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin Point:</td><td>{{vector.centralBody}} Center</td></tr>",
+				"<tr><td>Destination Point:</td><td>{{vector.finalPoint}}</td></tr>",
+				"<tr><td>Apparent:</td><td>False</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Position(Earth)",
+			"entityTypes": "Entity",
+			"isDefault": false,
+			"config": {
+				"type": "Displacement",
+				"initialPoint": "Earth Center",
+				"finalPoint": "Center"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Displacement</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Displacement vector between origin and destination object points.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Position vector relative to central body center.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin Point:</td><td>{{vector.initialPoint}}</td></tr>",
+				"<tr><td>Destination Point:</td><td>{{vector.finalPoint}}</td></tr>",
+				"<tr><td>Apparent:</td><td>False</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Position(Moon)",
+			"entityTypes": "Entity",
+			"isDefault": false,
+			"config": {
+				"type": "Displacement",
+				"initialPoint": "Moon Center",
+				"finalPoint": "Center"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Displacement</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Displacement vector between origin and destination object points.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Position vector relative to central body center.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin Point:</td><td>{{vector.initialPoint}}</td></tr>",
+				"<tr><td>Destination Point:</td><td>{{vector.finalPoint}}</td></tr>",
+				"<tr><td>Apparent:</td><td>False</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Position(Sun)",
+			"entityTypes": "Entity",
+			"isDefault": false,
+			"config": {
+				"type": "Displacement",
+				"initialPoint": "Sun Center",
+				"finalPoint": "Center"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Displacement</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Displacement vector between origin and destination object points.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Position vector relative to central body center.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin Point:</td><td>{{vector.initialPoint}}</td></tr>",
+				"<tr><td>Destination Point:</td><td>{{vector.finalPoint}}</td></tr>",
+				"<tr><td>Apparent:</td><td>False</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Velocity",
+			"entityTypes": [
+				"Satellite",
+				"Aircraft",
+				"Missile",
+				"GroundVehicle",
+				"Ship",
+				"LaunchVehicle"
+			],
+			"isDefault": true,
+			"config": {
+				"type": "Derivative",
+				"vector": "Position",
+				"referenceAxes": "Inertial"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Velocity</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Derivative vector relative to reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Velocity vector width respect central body inertial system.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Vector :</td><td>{{vector.parent}} Position</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{vector.centralBody}} Inertial</td></tr>",
+				"<tr><td>Differencing Time Step:</td><td>1/60 sec</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Velocity(CBF)",
+			"entityTypes": [
+				"Satellite",
+				"Aircraft",
+				"Missile",
+				"GroundVehicle",
+				"Ship",
+				"LaunchVehicle"
+			],
+			"isDefault": true,
+			"config": {
+				"type": "Derivative",
+				"vector": "Position",
+				"referenceAxes": "Fixed"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Velocity</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Derivative vector relative to reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Velocity vector width respect central body inertial system.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Vector :</td><td>{{vector.parent}} Position</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{vector.centralBody}} Fixed</td></tr>",
+				"<tr><td>Differencing Time Step:</td><td>1/60 sec</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Velocity(Earth)",
+			"entityTypes": "Entity",
+			"isDefault": false,
+			"config": {
+				"type": "Derivative",
+				"vector": "Position(Earth)",
+				"referenceAxes": "Earth Inertial"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Velocity</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Derivative vector relative to reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Velocity vector width respect central body inertial system.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Vector :</td><td>{{vector.parent}} Position</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{vector.referenceAxes}}</td></tr>",
+				"<tr><td>Differencing Time Step:</td><td>1/60 sec</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Velocity(Earth(CBF))",
+			"entityTypes": "Satellite",
+			"isDefault": false,
+			"config": {
+				"type": "Derivative",
+				"vector": "Position(Earth)",
+				"referenceAxes": "Earth Fixed"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td colspan=\"2\">Vector Based on a Template</td></tr>",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Velocity</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Derivative vector relative to reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Velocity relative to Earth center width respect to fixed Axes.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Vector :</td><td>{{vector.parent}} Position({{vector.centralBody}})</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{vector.referenceAxes}}</td></tr>",
+				"<tr><td>Differencing Time Step:</td><td>1/60 sec</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Velocity(Moon)",
+			"entityTypes": [
+				"Satellite"
+			],
+			"isDefault": false,
+			"config": {
+				"type": "Derivative",
+				"vector": "Position(Moon)",
+				"referenceAxes": "Moon Inertial"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Velocity</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Derivative vector relative to reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Velocity vector width respect central body inertial system.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Vector :</td><td>{{vector.parent}} Position</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{vector.referenceAxes}}</td></tr>",
+				"<tr><td>Differencing Time Step:</td><td>1/60 sec</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Velocity(Sun)",
+			"entityTypes": "Satellite",
+			"isDefault": false,
+			"config": {
+				"type": "Derivative",
+				"vector": "Position(Sun)",
+				"referenceAxes": "Sun Inertial"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Vector Name:</td><td>{{vector.name}}</td></tr>",
+				"<tr><td>Vector Parent:</td><td>{{vector.parent}}</td></tr>",
+				"<tr><td>Vector Type:</td><td>Velocity</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Derivative vector relative to reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Velocity vector width respect central body inertial system.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Vector :</td><td>{{vector.parent}} Position</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{vector.referenceAxes}}</td></tr>",
+				"<tr><td>Differencing Time Step:</td><td>1/60 sec</td></tr>",
+				"</table>"
+			]
+		}
+	],
+	"Axes": [
+		{
+			"name": "Fixed",
+			"isDefault": true,
+			"entityTypes": "CentralBody",
+			"config": {
+				"type": "CentralBodyFixed"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Axes Name:</td><td>{{axes.tipname}}</td></tr>",
+				"<tr><td>Axes Parent:</td><td>{{axes.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>CentralBody Fixed axes.</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Inertial",
+			"isDefault": true,
+			"entityTypes": "CentralBody",
+			"config": {
+				"type": "CentralBodyInertial"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Axes Name:</td><td>{{axes.tipname}}</td></tr>",
+				"<tr><td>Axes Parent:</td><td>{{axes.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>CentralBody Inertial axes.</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "ICRF",
+			"isDefault": true,
+			"config": {
+				"type": "ICRF"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Axes Name:</td><td>{{axes.tipname}}</td></tr>",
+				"<tr><td>Axes Parent:</td><td>{{axes.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>International Celestial Reference Frame.</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "J2000",
+			"isDefault": true,
+			"config": {
+				"type": "J2000"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Axes Name:</td><td>{{axes.tipname}}</td></tr>",
+				"<tr><td>Axes Parent:</td><td>{{axes.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Earth Mean Equator and Equinox of J2000 epoch.</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Body",
+			"isDefault": true,
+			"entityTypes": "Entity",
+			"config": {
+				"type": "Entity"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Axes Name:</td><td>{{axes.tipname}}</td></tr>",
+				"<tr><td>Axes Parent:</td><td>{{axes.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Body fixed axes.</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "ICR",
+			"isDefault": false,
+			"entityTypes": "Satellite",
+			"config": {
+				"type": "AlignedConstrained",
+				"principalAxis": "Z",
+				"principal": "Position",
+				"referenceAxis": "X",
+				"reference": "Velocity"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Axes Name:</td><td>{{axes.tipname}}</td></tr>",
+				"<tr><td>Axes Parent:</td><td>{{axes.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Axes aligned and constrained to position and velocity vectors along trajectory of point relative to reference system.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>In-Track Cross-Track Radial axes with Z-axis along position vector and X-axis toward inertial velocity vector.</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "TopoCentric",
+			"isDefault": true,
+			"entityTypes": "Entity",
+			"config": {
+				"type": "EntityTopoCentric"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Axes Name:</td><td>{{axes.tipname}}</td></tr>",
+				"<tr><td>Axes Parent:</td><td>{{axes.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Topocentric axes with Z-axis along surface normal of central body reference ellipsoid and X-axis toward local south direction.</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "RadialCentric",
+			"isDefault": false,
+			"entityTypes": "Entity",
+			"config": {
+				"type": "EntityRadialCentric"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Axes Name:</td><td>{{axes.tipname}}</td></tr>",
+				"<tr><td>Axes Parent:</td><td>{{axes.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Topocentric axes with Z-axis along surface normal of central body reference ellipsoid and X-axis toward local south direction.</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Libration",
+			"isDefault": false,
+			"entityTypes": "CentralBody",
+			"config": {
+				"type": "Libration"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Axes Name:</td><td>{{axes.tipname}}</td></tr>",
+				"<tr><td>Axes Parent:</td><td>{{axes.parent}}</td></tr>",
+				"<tr><td>Axes Type:</td><td>Libration</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Central bodies aligned axes of selected libration point between one primary and multiple secondary central bodies with with X-axis along position of libration point relative to primary center of mass and Z-axis along orbit normal of libration point relative to primary center of mass.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>libration point axes</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "LVLH",
+			"isDefault": true,
+			"entityTypes": "Satellite",
+			"config": {
+				"type": "AlignedConstrained",
+				"principalAxis": "X",
+				"principal": "Position",
+				"referenceAxis": "Y",
+				"reference": "Velocity"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Axes Name:</td><td>{{axes.tipname}}</td></tr>",
+				"<tr><td>Axes Parent:</td><td>{{axes.parent}}</td></tr>",
+				"<tr><td>Axes Type:</td><td>AlignedConstrained</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>Axes aligned and constrained to position and velocity vectors along trajectory of point relative to reference system.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Local-Vertical Local-Horizontal axes with X-axis along position vector and Y-axis toward inertial velocity vector.</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "LVLH(Earth)",
+			"isDefault": false,
+			"entityTypes": "Satellite",
+			"config": {
+				"type": "AlignedConstrained",
+				"principalAxis": "X",
+				"principal": "Position(Earth)",
+				"referenceAxis": "Y",
+				"reference": "Velocity(Earth)"
+			}
+		},
+		{
+			"name": "LVLH(Moon)",
+			"isDefault": false,
+			"entityTypes": "Satellite",
+			"config": {
+				"type": "AlignedConstrained",
+				"principalAxis": "X",
+				"principal": "Position(Moon)",
+				"referenceAxis": "Y",
+				"reference": "Velocity(Moon)"
+			}
+		},
+		{
+			"name": "VVLH",
+			"isDefault": true,
+			"entityTypes": "Satellite",
+			"config": {
+				"type": "AlignedConstrained",
+				"principalAxis": "Z",
+				"principal": "N_Position",
+				"referenceAxis": "X",
+				"reference": "Velocity"
+			}
+		},
+		{
+			"name": "VVLH(CBF)",
+			"isDefault": true,
+			"entityTypes": "Satellite",
+			"config": {
+				"type": "AlignedConstrained",
+				"principalAxis": "Z",
+				"principal": "Nadir(Centric)",
+				"referenceAxis": "X",
+				"reference": "Velocity(CBF)"
+			}
+		},
+		{
+			"name": "VVLH(Earth)",
+			"isDefault": false,
+			"entityTypes": "Satellite",
+			"config": {
+				"type": "AlignedConstrained",
+				"principalAxis": "Z",
+				"principal": "Earth",
+				"referenceAxis": "X",
+				"reference": "Velocity(Earth)"
+			}
+		},
+		{
+			"name": "VVLH(Moon)",
+			"isDefault": false,
+			"entityTypes": "Satellite",
+			"config": {
+				"type": "AlignedConstrained",
+				"principalAxis": "Z",
+				"principal": "Moon",
+				"referenceAxis": "X",
+				"reference": "Velocity(Moon)"
+			}
+		},
+		{
+			"name": "VNC",
+			"isDefault": true,
+			"entityTypes": "Satellite",
+			"config": {
+				"type": "AlignedConstrained",
+				"principalAxis": "X",
+				"principal": "Velocity",
+				"referenceAxis": "Z",
+				"reference": "Position"
+			}
+		},
+		{
+			"name": "VNC(Earth)",
+			"isDefault": false,
+			"entityTypes": "Satellite",
+			"config": {
+				"type": "AlignedConstrained",
+				"principalAxis": "X",
+				"principal": "Velocity(Earth)",
+				"referenceAxis": "Z",
+				"reference": "Position(Earth)"
+			}
+		},
+		{
+			"name": "VNC(Moon)",
+			"isDefault": false,
+			"entityTypes": "Satellite",
+			"config": {
+				"type": "AlignedConstrained",
+				"principalAxis": "X",
+				"principal": "Velocity(Moon)",
+				"referenceAxis": "Z",
+				"reference": "Position(Moon)"
+			}
+		},
+		{
+			"name": "VNC(Sun)",
+			"isDefault": false,
+			"entityTypes": "Satellite",
+			"config": {
+				"type": "AlignedConstrained",
+				"principalAxis": "X",
+				"principal": "Velocity(Sun)",
+				"referenceAxis": "Z",
+				"reference": "Position(Sun)"
+			}
+		}
+	],
+	"System": [
+		{
+			"name": "Fixed",
+			"entityTypes": "CentralBody",
+			"config": {
+				"origin": "Center",
+				"axes": "Fixed"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">System Name:</td><td>{{system.name}}</td></tr>",
+				"<tr><td>System Parent:</td><td>{{system.parent}}</td></tr>",
+				"<tr><td>System Type:</td><td>Assembled</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>System assembled from origin point and reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Object centered {{system.axes}} axes.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin　Point:</td><td>{{system.parent}} {{system.origin}}</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{system.parent}} {{system.axes}}</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Inertial",
+			"entityTypes": "CentralBody",
+			"config": {
+				"origin": "Center",
+				"axes": "Inertial"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">System Name:</td><td>{{system.name}}</td></tr>",
+				"<tr><td>System Parent:</td><td>{{system.parent}}</td></tr>",
+				"<tr><td>System Type:</td><td>Assembled</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>System assembled from origin point and reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Object centered {{system.axes}} axes.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin　Point:</td><td>{{system.parent}} {{system.origin}}</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{system.parent}} {{system.axes}}</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "ICRF",
+			"config": {
+				"origin": "Center",
+				"axes": "ICRF"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">System Name:</td><td>{{system.name}}</td></tr>",
+				"<tr><td>System Parent:</td><td>{{system.parent}}</td></tr>",
+				"<tr><td>System Type:</td><td>Assembled</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>System assembled from origin point and reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Object centered {{system.axes}} axes.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin　Point:</td><td>{{system.parent}} {{system.origin}}</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{system.parent}} {{system.axes}}</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "J2000",
+			"config": {
+				"origin": "Center",
+				"axes": "J2000"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">System Name:</td><td>{{system.name}}</td></tr>",
+				"<tr><td>System Parent:</td><td>{{system.parent}}</td></tr>",
+				"<tr><td>System Type:</td><td>Assembled</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>System assembled from origin point and reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Object centered {{system.axes}} axes.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin　Point:</td><td>{{system.parent}} {{system.origin}}</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{system.parent}} {{system.axes}}</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Body",
+			"entityTypes": "Entity",
+			"config": {
+				"origin": "Center",
+				"axes": "Body"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">System Name:</td><td>{{system.name}}</td></tr>",
+				"<tr><td>System Parent:</td><td>{{system.parent}}</td></tr>",
+				"<tr><td>System Type:</td><td>Assembled</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>System assembled from origin point and reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Body fixed system.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin　Point:</td><td>{{system.parent}} {{system.origin}}</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{system.parent}} {{system.axes}}</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "TopoCentric",
+			"entityTypes": "Entity",
+			"config": {
+				"origin": "Center",
+				"axes": "TopoCentric"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">System Name:</td><td>{{system.name}}</td></tr>",
+				"<tr><td>System Parent:</td><td>{{system.parent}}</td></tr>",
+				"<tr><td>System Type:</td><td>Assembled</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>System assembled from origin point and reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Object centered topocentric axes with Z-axis along surface normal of central body reference ellipsoid and X-axis toward local south direction..</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin　Point:</td><td>{{system.parent}} {{system.origin}}</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{system.parent}} {{system.axes}}</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "RadialCentric",
+			"entityTypes": "Entity",
+			"config": {
+				"origin": "Center",
+				"axes": "RadialCentric"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">System Name:</td><td>{{system.name}}</td></tr>",
+				"<tr><td>System Parent:</td><td>{{system.parent}}</td></tr>",
+				"<tr><td>System Type:</td><td>Assembled</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>System assembled from origin point and reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Object centered radial centric axes with Z-axis along position vector and X-axis toward local south direction.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin　Point:</td><td>{{system.parent}} {{system.origin}}</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{system.parent}} {{system.axes}}</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "ICR",
+			"entityTypes": "Satellite",
+			"config": {
+				"origin": "Center",
+				"axes": "ICR"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">System Name:</td><td>{{system.name}}</td></tr>",
+				"<tr><td>System Parent:</td><td>{{system.parent}}</td></tr>",
+				"<tr><td>System Type:</td><td>Assembled</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>System assembled from origin point and reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Object centered In-Track Cross-Track Radial axes with Z-axis along position vector and X-axis toward inertial velocity vector.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin　Point:</td><td>{{system.parent}} {{system.origin}}</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{system.parent}} {{system.axes}}</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "VVLH",
+			"entityTypes": "Satellite",
+			"config": {
+				"origin": "Center",
+				"axes": "VVLH"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">System Name:</td><td>{{system.name}}</td></tr>",
+				"<tr><td>System Parent:</td><td>{{system.parent}}</td></tr>",
+				"<tr><td>System Type:</td><td>Assembled</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>System assembled from origin point and reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Object centered Vehicle Velocity Local Horizontal axes with Z-axis opposite to position vector and X-axis toward inertial velocity vector.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin　Point:</td><td>{{system.parent}} {{system.origin}}</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{system.parent}} {{system.axes}}</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "LVLH",
+			"entityTypes": "Satellite",
+			"config": {
+				"origin": "Center",
+				"axes": "LVLH"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">System Name:</td><td>{{system.name}}</td></tr>",
+				"<tr><td>System Parent:</td><td>{{system.parent}}</td></tr>",
+				"<tr><td>System Type:</td><td>Assembled</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>System assembled from origin point and reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Object centered Local-Vertical Local-Horizontal axes with X-axis along position vector and Y-axis toward inertial velocity vector.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin　Point:</td><td>{{system.parent}} {{system.origin}}</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{system.parent}} {{system.axes}}</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "VNC",
+			"entityTypes": "Satellite",
+			"config": {
+				"origin": "Center",
+				"axes": "VNC"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">System Name:</td><td>{{system.name}}</td></tr>",
+				"<tr><td>System Parent:</td><td>{{system.parent}}</td></tr>",
+				"<tr><td>System Type:</td><td>Assembled</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>System assembled from origin point and reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Object centered Velocity Normal Co-Normal axes with X-axis along inertial velocity vector and Z-axis toward position vector.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin　Point:</td><td>{{system.parent}} {{system.origin}}</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{system.parent}} {{system.axes}}</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "L1",
+			"entityTypes": "CentralBody",
+			"config": {
+				"origin": "L1",
+				"axes": "Libration"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">System Name:</td><td>{{system.name}}</td></tr>",
+				"<tr><td>System Parent:</td><td>{{system.parent}}</td></tr>",
+				"<tr><td>System Type:</td><td>Assembled</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>System assembled from origin point and reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>L1 libration point system aligned with Libration axes and centered on L1 point.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin　Point:</td><td>{{system.parent}} {{system.origin}}</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{system.parent}} {{system.axes}}</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "L2",
+			"entityTypes": "CentralBody",
+			"config": {
+				"origin": "L2",
+				"axes": "Libration"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">System Name:</td><td>{{system.name}}</td></tr>",
+				"<tr><td>System Parent:</td><td>{{system.parent}}</td></tr>",
+				"<tr><td>System Type:</td><td>Assembled</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>System assembled from origin point and reference axes.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>L2 libration point system aligned with Libration axes and centered on L2 point.</td></tr>",
+				"<tr><td colspan=\"2\" class=\"line\"></td></tr>",
+				"<tr><td>Origin　Point:</td><td>{{system.parent}} {{system.origin}}</td></tr>",
+				"<tr><td>Reference Axes:</td><td>{{system.parent}} {{system.axes}}</td></tr>",
+				"</table>"
+			]
+		}
+	],
+	"Angle": [
+		{
+			"name": "SunMoon",
+			"entityTypes": "Entity",
+			"isDefault": true,
+			"config": {
+				"type": "BetweenVectors",
+				"fromVector": "Sun",
+				"toVector": "Moon"
+			}
+		},
+		{
+			"name": "SunMoon",
+			"entityTypes": "Entity",
+			"isDefault": true,
+			"config": {
+				"type": "BetweenVectors",
+				"fromVector": "Sun",
+				"toVector": "Moon"
+			}
+		},
+		{
+			"name": "Beta_Sun",
+			"entityTypes": "Satellite",
+			"isDefault": true,
+			"config": {
+				"type": "ToPlane",
+				"referencePlane": "Trajectory",
+				"referenceVector": "Sun",
+				"signed":"Positive"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Angle Name:</td><td>{{angle.tipname}}</td></tr>",
+				"<tr><td>Angle Parent:</td><td>{{angle.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>太阳向量与轨道面的夹角</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Beta_Moon",
+			"entityTypes": "Satellite",
+			"isDefault": true,
+			"config": {
+				"type": "ToPlane",
+				"referencePlane": "Trajectory",
+				"referenceVector": "Moon",
+				"signed":"Positive"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Angle Name:</td><td>{{angle.tipname}}</td></tr>",
+				"<tr><td>Angle Parent:</td><td>{{angle.parent}}</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>月球向量与轨道面的夹角</td></tr>",
+				"</table>"
+			]
+		}
+	],
+	"Plane":[
+		{
+			"name": "Body.XY",
+			"entityTypes":"Entity",
+			"isDefault": true
+		},
+		{
+			"name": "LocalHorizontal",
+			"entityTypes":"Entity",
+			"isDefault": false,
+			"config":{
+				"type": "Quadrant",
+				"frame" : "TopoCentric",
+     			"quadrant" : "XY",
+				"axis1Label":"North",
+				"axis2Label":"East"
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Plane Name:</td><td>{{plane.tipname}}</td></tr>",
+				"<tr><td>Plane Parent:</td><td>{{plane.parent}}</td></tr>",
+				"<tr><td>Plane Type:</td><td>Quadrant</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Type Description:</td><td>One of six quadrants of reference system.</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td>Local horizontal plane based on central body reference ellipsoid with X-axis toward local north and Y-axis toward local east.</td></tr>",
+				"</table>"
+			]
+		},
+		{
+			"name": "Trajectory",
+			"entityTypes":"Satellite",
+			"isDefault": false,
+			"config":{
+				"type": "Trajectory",
+				"point" : "Center",
+				"referenceSystem" : "Inertial",
+				"rotationOffset" : 0
+			},
+			"tips": [
+				"<table style=\"width:300px;\">",
+				"<tr><td style=\"width:120px;\">Plane Name:</td><td>{{plane.tipname}}</td></tr>",
+				"<tr><td>Plane Parent:</td><td>{{plane.parent}}</td></tr>",
+				"<tr><td>Plane Type:</td><td>Trajectory</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">相对于参考系，点沿轨迹的瞬时位置和速度平面。</td></tr>",
+				"<tr><td style=\"vertical-align: top;\">Description:</td><td></td></tr>",
+				"</table>"
+			]
+		}
+	]
+}

@@ -1,0 +1,121 @@
+{
+	"Text": "此文件作为基本姿态文件的配置文件",
+	"BaseUrl_info": "基类WebApi(http://IP:Port需在外部文件配置)，需加上下面具体某个姿态的url",
+	"BaseUrl": "BasicAttitude",
+	"Controllers": 
+	[
+		{
+			"Name_Info": "//  Name显示为前端页面下拉框文字：Nadir Alignment With ECI velocity constraint",
+			"Name": "对地正飞(惯性速度约束)",
+			"type": "NadirAlign_EciVelocityConstr",
+			"Desp_Info": "说明，显示在前端下拉框下方的说明Text里",
+			"Desp": "<p>VVLH</p><p>+Z轴指向中心天体中心方向</p><p>+X轴约束在惯性系速度方向</p>",
+			"entityTypes":["Satellite", "LaunchVehicle", "Missile"],
+			"OrientationName":"VVLH",
+			"axes": 
+			{
+				"principalAxis": "Z",
+				"principal": "Nadir(Centric)",
+				"referenceAxis": "X",
+				"reference": "Velocity"
+			}
+		},
+
+		{
+			"Name_Info":"Nadir Alignment With ECF velocity constraint",
+			"Name": "对地正飞(地固速度约束)",
+			"type": "NadirAlign_EcfVelocityConstr",
+			"Desp": "<p>VVLH(CBF)</p><p>+Z轴指向中心天体中心方向</p><p>+X轴约束在Fixed系速度方向</p>",
+			"entityTypes":["Satellite", "LaunchVehicle", "Missile"],
+			"axes": 
+			{
+				"principalAxis": "Z",
+				"principal": "Nadir(Centric)",
+				"referenceAxis": "X",
+				"reference": "Velocity(CBF)"
+			}
+		},
+		{
+			"Name": "前向贴地",
+			"type": "EcfVelocityAlign_ClampToTerrainConstr",
+			"Desp": "<p>+X轴指向Fixed速度方向</p><p>+Z轴约束在地形法线方向</p>"
+		},
+		{
+			"Name_Info":"ECF velocity Alignment with radial constraint",
+			"Name": "前向顶飞(地固速度方向)",
+			"type": "EcfVelocityAlign_RadialConstr",
+			"Desp": "<p>+X轴指向Fixed速度方向</p><p>+Z轴约束在天顶方向</p>",
+			"axes": 
+			{
+				"principalAxis": "X",
+				"principal": "Velocity(CBF)",
+				"referenceAxis": "Z",
+				"reference": "Zenith(Centric)"
+			}
+		},
+		{
+			"Name_Info":"ECI velocity Alignment with nadir constraint",
+			"Name": "前向正飞(惯性速度方向)",
+			"type": "EciVelocityAlign_NadirConstr",
+			"Desp": "<p>+X轴指向惯性系速度方向</p><p>+Z轴约束在中心天体中心方向</p>",
+			"axes": 
+			{
+				"principalAxis": "X",
+				"principal": "Velocity",
+				"referenceAxis": "Z",
+				"reference": "Nadir(Centric)"
+			}
+		},
+
+		{
+			"Name_Info":"ECF velocity Alignment with nadir constraint",
+			"Name": "前向正飞(地固速度方向)",
+			"type": "EcfVelocityAlign_NadirConstr",
+			"Desp": "<p>+X轴指向Fixed速度方向</p><p>+Z轴约束在中心天体中心方向</p>",
+			"axes": 
+			{
+				"principalAxis": "X",
+				"principal": "Velocity(CBF)",
+				"referenceAxis": "Z",
+				"reference": "Nadir(Centric)"
+			}
+		},
+
+		{
+			"Name_Info":"Sun Alignment with nadir constraint",
+			"Name": "对日定向",
+			"type": "SunAlign_NadirConstr",
+			"Desp": "<p>+X轴指向太阳方向</p><p>+Z轴约束在中心天体中心方向</p>",
+			"entityTypes":["Satellite", "Missile"],
+			"axes": 
+			{
+				"principalAxis": "X",
+				"principal": "Sun",
+				"referenceAxis": "Z",
+				"reference": "Nadir(Centric)"
+			}
+		},
+
+		{
+			"Name_Info":"Nadir alignment with Sun constraint",
+			"Name": "对地定向",
+			"type": "NadirAlign_SunConstr",
+			"Desp": "<p>+X轴指向中心天体中心方向</p><p>+Z轴约束在太阳方向</p>",
+			"entityTypes":["Satellite"],
+			"axes": 
+			{
+				"principalAxis": "X",
+				"principal": "Nadir(Centric)",
+				"referenceAxis": "Z",
+				"reference": "Sun"
+			}
+		},
+
+		{
+			"Name_Info":"Aligned and Constrained",
+			"Name": "自定义方向和约束",
+			"type": "AlignedAndConstrained_Constr",
+			"Desp": "<p>使用对齐的和有约束的向量对对固定的轴进行定向。</p>"
+		}
+	]
+}

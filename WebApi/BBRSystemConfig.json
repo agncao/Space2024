@@ -1,0 +1,24 @@
+﻿{
+  "Text": "此文件作为Orbit System中的BBR 坐标系的配置文件",
+
+  //  基类WebApi(http://IP:Port需在外部文件配置)，需加上下面具体某个Controller的url
+  "BaseUrl": "OrbitSystem",
+
+  "Controllers": [
+    {
+      //  Name显示为前端页面下拉框文字
+      "Name": "Earth-Moon",
+      "url": "EarthMoonLibration",
+      //  说明，显示在前端下拉框下方的说明Text里
+      "Desp": "<p>地球-月球会和坐标系,原点在地球</p>"
+    },
+    {      
+      "Name": "Sun-Earth",
+      "url": "SunEarthLibration",      
+      "Desp": "<p>太阳-地球会和坐标系,原点在地球</p>"
+    }
+  ]
+
+
+
+}

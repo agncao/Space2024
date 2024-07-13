@@ -1,0 +1,41 @@
+
+<script src="/plugins/MoveTimeline/js/MoveTimelineClass.js"></script>
+
+<script type="module" src="/plugins/MoveTimeline/js/SubClass.js"></script>
+<link rel="stylesheet" href="/plugins/MoveTimeline/css/demo.css">
+
+
+
+<div id="Plugins_Moveline_Div_AddStep" style="display:none;" class="demo">
+    <div>
+        选择的时间值：
+        </span><input id = "Plugins_Moveline_Div_AddStep_time" type="text" readonly="readonly" style="width:200px;height:25px" vaule=""/>
+    </div>
+    <div style = "margin-top:5px;margin-bottom:5px">
+        请选择该时间点执行的步长：
+        <select id="Plugins_Moveline_Div_AddStep_value">
+            
+        </select>
+    </div>
+    <button  onclick="Plugins.values['Plugins_Moveline'].AddStep();">保存</button>
+    <button  onclick="Plugins.values['Plugins_Moveline'].DeleteStep();">删除</button>
+</div>
+
+<div id="Plugins_Moveline_Div_AddView" style="display:none;" class="demo">
+    <div>
+        选择的时间值：
+        </span><input id = "Plugins_Moveline_Div_AddView_time" type="text" readonly="readonly" style="width:200px;height:25px" vaule=""/>
+    </div>
+    <div style = "margin-top:5px">
+        请选择该时间点执行的视角名称：
+        <select id="Plugins_Moveline_Div_AddView_value" style="width:150px;height:25px" >
+            
+        </select>
+    </div>
+    <div style = "margin-top:5px;margin-bottom:5px">
+        是否连续变换到下一个视角：
+        <input type="checkbox" id="Plugins_Moveline_Div_AddView_IsFlyto" />
+    </div>
+    <button  onclick="Plugins.values['Plugins_Moveline'].AddView();">保存</button>
+    <button  onclick="Plugins.values['Plugins_Moveline'].DeleteView();">删除</button>
+</div>

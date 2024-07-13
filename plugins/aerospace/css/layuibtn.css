@@ -1,0 +1,11 @@
+.layui-layer-setwin .layui-layer-close {
+    color: white;
+    border-radius: 4px;
+    border: 1px solid white;
+    width: 20px;
+    height: 20px;
+}
+
+.layui-icon-close:before {
+    font-weight: 800
+}

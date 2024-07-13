@@ -1,0 +1,487 @@
+<script src="/plugins/Debris/js/vue.js"></script>
+<script src="/plugins/Debris/js/element.js"></script>
+
+
+<script src="/plugins/Debris/js/config.js"></script>
+<script src="/plugins/Debris/js/debris/Debris.js"></script>
+<script src="/plugins/Debris/js/day.js"></script>
+<script src="/plugins/Debris/js/third/satellite.js"></script>
+<script src="/plugins/Debris/js/debris/eMyOrbit.js"></script>
+<script src="/plugins/Debris/js/debris/eMySatellite.js"></script>
+
+<script src="/plugins/Debris/js/appVue.js"></script>
+<script src="/plugins/Debris/js/DebrisObject.js"></script>
+
+<link rel="stylesheet" href="/plugins/Debris/css/element.css">
+<style>
+    .demo {
+        padding: 10px;
+    }
+
+    .demo .el-button {
+        padding: 5px;
+        margin: 5px;
+    }
+</style>
+<div id="app">
+    <div id="plugins_Debris" style="display:none;" class="demo">
+        <div class="table-box">
+            <el-tabs v-model="activeName" @tab-click="handleSwitchTab">
+                <el-tab-pane label="查询页" name="first">
+                    <el-table :header-cell-style="{ borderColor: '#222', background: '#1e5cad', color: '#dddddd' }"
+                        :data="tableData" border stripe style="width: 1440px" :height="206">
+                        <el-table-column prop="showOrbit" label="选择" width="50">
+                            <template slot-scope="scope">
+                                <div @click="handleSearchCheckChange(false, scope.row)" v-if="scope.row.showOrbit">-
+                                </div>
+                                <div @click="handleSearchCheckChange(true, scope.row)" v-else>+</div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column sortable prop="satnum" label="ID"></el-table-column>
+                        <el-table-column sortable prop="name" label="名称"></el-table-column>
+                        <el-table-column sortable prop="intldes" label="国际代码"></el-table-column>
+                        <el-table-column sortable prop="owner" label="所属国"></el-table-column>
+                        <el-table-column sortable prop="apogee" label="远地点"></el-table-column>
+                        <el-table-column sortable prop="perigee" label="近地点"></el-table-column>
+                        <el-table-column sortable prop="type" label="类型"></el-table-column>
+                    </el-table>
+
+                    <div class="pagination">
+                        <div style="display: flex; padding: 2px; width: 140px">
+                            <el-button size="medium" round type="primary" @click="handleSelectAll">全部选中</el-button>
+                        </div>
+                        <div class="search">
+                            <el-select v-model="select" slot="prepend" placeholder="请选择">
+                                <el-option label="ID" value="ID"></el-option>
+                                <el-option label="名称" value="名称"></el-option>
+                                <el-option label="国际代码" value="国际代码"></el-option>
+                                <el-option label="所属国" value="所属国"></el-option>
+                                <el-option label="类型" value="类型"></el-option>
+                            </el-select>
+                            <el-input clearable size="mini" placeholder="" v-model="keyword" class="input-with-select"
+                                @clear="handleSearchClear"></el-input>
+                            <el-button type="primary" icon="el-icon-search" @click="handerSearchButtonClick">
+                            </el-button>
+                        </div>
+                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                            :current-page="currentPage" :page-sizes="[10, 20, 50, 100]" :page-size="pagesize"
+                            layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="选中页" name="second" :disabled="disabled">
+                    <el-table :header-cell-style="{ borderColor: '#222', background: '#1e5cad', color: '#dddddd' }"
+                        :data="tableData2" border stripe style="width: 1440px" :height="206">
+                        <el-table-column prop="orbit" label="轨道" width="80">
+                            <template slot-scope="scope">
+                                <el-checkbox @change="(value) => handleCheckChange(value, scope.row)"
+                                    v-model="scope.row.showOrbit">
+                                </el-checkbox>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="satnum" label="ID" width="80"></el-table-column>
+                        <el-table-column prop="name" label="名称"></el-table-column>
+                        <el-table-column prop="intldes" label="国际代码"></el-table-column>
+                        <el-table-column prop="owner" label="所属国"></el-table-column>
+                        <el-table-column prop="apogee" label="远地点"></el-table-column>
+                        <el-table-column prop="perigee" label="近地点"></el-table-column>
+                        <el-table-column prop="type" label="类型"></el-table-column>
+                        <el-table-column prop="" label="关闭" width="80">
+                            <template slot-scope="scope">
+                                <div @click="handleDelete(scope.$index, scope.row)">x</div>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <div class="pagination">
+                        <div style="display: flex; padding: 2px; width: 140px">
+                            <el-button size="medium" round type="primary" @click="handleUnSelectAll">全部清除</el-button>
+                        </div>
+                    </div>
+                </el-tab-pane>
+            </el-tabs>
+        </div>
+    </div>
+</div>
+
+<script>
+    // vueThis = new Vue({
+    //     el: '#app',
+    //     data: function() {
+    //         return {
+    //             visible: false,
+    //             msg: '123213123',
+    //             activeName: 'first',
+    //             tableData: [],
+    //             tableData2: [],
+    //             total: 0,
+    //             select: '名称',
+    //             keyword: '',
+    //             pagesize: 10,
+    //             currentPage: 1,
+    //             disabled: false
+    //         }
+    //     },
+
+    //     methods: {
+    //         handleSwitchTab(tab, event) {
+    //             console.log(tab)
+    //             switch (tab.index) {
+    //                 case '0':
+    //                     for (var [key, value] of Debris.getInstance()._debrisMap) {
+    //                         value.visible = true
+    //                     }
+    //                     break
+    //                 case '1':
+    //                     // 只显示轨道的碎片
+    //                     for (var [key, value] of Debris.getInstance()._debrisMap) {
+    //                         value.visible = Debris.getInstance()._orbits.has(key) ? true : false
+    //                     }
+    //                     break
+    //             }
+    //         },
+    //         handleSizeChange(val) {
+    //             console.log(val);
+    //             this.pagesize = val
+
+    //             if (this.keyword.trim() === '') {
+    //                 let values = Debris.getInstance()._debrisMap.values()
+    //                 let data = Array.from(values, (n) => n._satrec)
+    //                 this.fillSearchTable(data, false)
+    //             } else {
+    //                 this.fillSearchTable(this.tableData, true)
+    //             }
+    //         },
+    //         handleCurrentChange(val) {
+    //             console.log(val);
+    //             let values = Debris.getInstance()._debrisMap.values()
+    //             let data = Array.from(values, (n) => n._satrec).slice((val - 1) * this.pagesize, val * this.pagesize)
+    //             this.fillSearchTable(data, false)
+    //         },
+    //         fillSearchTable(data, updateTotal) {
+    //             this.tableData = data.length < this.pagesize ? data : data.slice(0, this.pagesize)
+    //                 // console.log(this.tableData);
+    //             if (updateTotal) this.total = data.length
+    //         },
+    //         handleSearchCheckChange(value, row) {
+    //             row.showOrbit = value
+    //             if (value) {
+    //                 this.tableData2.push(row)
+    //                 Debris.getInstance().addOrbit(row.satnum)
+    //             } else {
+    //                 let index = this.tableData2.findIndex((v) => v.satnum === row.satnum)
+    //                 this.tableData2.splice(index, 1)
+    //                 Debris.getInstance().removeOrbit(row.satnum)
+    //             }
+    //         },
+    //         handleDelete(index, row) {
+    //             // 删除绑定的数据
+    //             this.tableData2.splice(index, 1)
+
+    //             // 更新 "+", "-"
+    //             let obj = this.tableData.find((n) => n.satnum === row.satnum)
+    //             if (obj) obj.showOrbit = false
+
+    //             Debris.getInstance().removeOrbit(row.satnum)
+    //             Debris.getInstance().getDebris(row.satnum).visible = false
+    //         },
+    //         handleCheckChange(value, row) {
+    //             // console.log(value, row)
+    //             Debris.getInstance().getDebris(row.satnum)._orbit.visible = value
+    //         },
+    //         handleUnSelectAll() {
+    //             for (const data of this.tableData2) {
+    //                 // 更新tableData的状态值
+    //                 let obj = this.tableData.find((v) => v.satnum === data.satnum)
+    //                 if (obj) obj.showOrbit = false
+    //                 Debris.getInstance().removeOrbit(data.satnum)
+    //                 Debris.getInstance().getDebris(data.satnum).visible = false
+    //             }
+    //             this.tableData2 = []
+    //         },
+    //         handleSelectAll() {
+    //             for (const data of this.tableData) {
+    //                 if (!data.showOrbit) {
+    //                     data.showOrbit = true
+    //                     this.tableData2.push(data)
+    //                 }
+    //                 Debris.getInstance().addOrbit(data.satnum)
+    //             }
+    //         },
+    //         handerSearchButtonClick() {
+    //             if (this.keyword.trim() === '') return
+    //             this.disabled = true
+
+    //             let values = Debris.getInstance()._debrisMap.values()
+    //             let data = []
+    //             switch (this.select) {
+    //                 case 'ID':
+    //                     data = Array.from(values, (n) => n._satrec).filter((x) => x.satnum.includes(this.keyword.toUpperCase()))
+    //                     break
+    //                 case '名称':
+    //                     data = Array.from(values, (n) => n._satrec).filter((x) => x.name.includes(this.keyword.toUpperCase()))
+    //                     break
+    //                 case '国际代码':
+    //                     data = Array.from(values, (n) => n._satrec).filter((x) => x.intldes.includes(this.keyword.toUpperCase()))
+    //                     break
+    //                 case '所属国':
+    //                     data = Array.from(values, (n) => n._satrec).filter((x) => x.owner.includes(this.keyword.toUpperCase()))
+    //                     break
+    //                 case '类型':
+    //                     data = Array.from(values, (n) => n._satrec).filter((x) => x.type.includes(this.keyword.toUpperCase()))
+    //                     break
+    //             }
+    //             this.fillSearchTable(data, true)
+
+    //             // 更新球
+    //             let satnums = data.map((x) => {
+    //                 return x.satnum
+    //             })
+
+    //             for (var [key, value] of Debris.getInstance()._debrisMap) {
+    //                 value.visible = satnums.includes(key)
+    //             }
+    //         },
+    //         handleSearchClear() {
+    //             this.disabled = false
+    //             let values = Debris.getInstance()._debrisMap.values()
+    //             let data = Array.from(values, (n) => n._satrec)
+    //             this.fillSearchTable(data, true)
+
+    //             // 更新球
+    //             for (var [key, value] of Debris.getInstance()._debrisMap) {
+    //                 value.visible = true
+    //             }
+    //         },
+    //     }
+
+    // })
+</script>
+<style>
+    .table-box {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        width: 1440px;
+        height: 275px;
+        background-color: #03030390;
+        z-index: 999;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        align-items: center;
+        background-color: #333333;
+    }
+
+    .search {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .el-select-dropdown__item.selected {
+        background-color: #e9ebee !important;
+    }
+
+    .el-select {
+        width: 160px;
+    }
+
+    .el-input__inner {
+        font-size: 9px;
+        height: 28px;
+        -webkit-appearance: none;
+        background-color: #fff;
+        background-image: none;
+        border-radius: 0px;
+        border: none;
+    }
+
+    /* 下面设置右侧按钮居中 */
+
+    .el-input__suffix {
+        top: 5px;
+    }
+
+    .el-input__icon {
+        line-height: inherit;
+    }
+
+    .el-input__suffix-inner {
+        display: inline-block;
+    }
+
+    .el-input {}
+
+    .el-input__inner {
+        height: 28px;
+        -webkit-appearance: none;
+        background-color: #fff;
+        background-image: none;
+        border-radius: 0px;
+        border-right: 1px solid #333333;
+    }
+
+    .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .el-button {
+        margin: 0;
+        width: 100%;
+    }
+
+    .el-table {
+        font-size: 12px;
+        color: #ffffff;
+        background-color: #000 !important;
+    }
+
+    .el-tabs__header {
+        margin: 0;
+    }
+
+    .el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
+        background-color: #1e5cad !important;
+        height: 26px;
+    }
+
+    .el-tabs__item {
+        height: 26px;
+        line-height: 26px;
+        color: #ffffff;
+    }
+
+    .el-tabs--top.el-tabs--card>.el-tabs__header .el-tabs__item:last-child {
+        padding: 0 118px;
+    }
+
+    .el-table .el-table__cell {
+        padding: 0 !important;
+    }
+
+    .el-table__header tr,
+    .el-table__header th {
+        padding: 0;
+        height: 18px;
+        font-size: 12px;
+    }
+
+    .el-table tbody tr:hover>td {
+        background-color: #04a60a !important;
+    }
+
+    .el-table__row--striped td {
+        background-color: #000 !important;
+    }
+
+    .el-table th,
+    .el-table td {
+        text-align: center !important;
+    }
+
+    .el-table .caret-wrapper {
+        display: none;
+    }
+
+    .el-table--border:after,
+    .el-table--group:after,
+    .el-table:before {
+        background-color: #222;
+    }
+
+    .el-table--border,
+    .el-table--group {
+        border-color: #222;
+    }
+
+    .el-table td,
+    .el-table th.is-leaf {
+        border-bottom: 1px solid #222;
+    }
+
+    .el-table--border th,
+    .el-table--border th.gutter:last-of-type {
+        border-bottom: 1px solid #222;
+    }
+
+    .el-table {
+        background-color: #000 !important;
+    }
+
+    .el-table--border td,
+    .el-table--border th {
+        border-right: 1px solid #222;
+    }
+
+    .el-tabs--card>.el-tabs__header .el-tabs__nav {
+        border: 1px solid #1e5cad;
+    }
+
+    .el-tabs__active-bar {
+        width: 150px !important;
+    }
+
+    .el-tabs__item.is-active {
+        background-color: #1e5cad !important;
+        height: 26px;
+        color: white;
+    }
+
+    .el-tabs--top.el-tabs--card>.el-tabs__header .el-tabs__item:last-child {
+        border: none;
+    }
+
+    .el-tabs--card>.el-tabs__header {
+        border-bottom: none;
+    }
+
+    /* 设置滚动条的样式 */
+    /* ::-webkit-scrollbar {
+        width: 17px;
+    } */
+    /* 滚动槽 */
+
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset006pxrgba(13, 69, 70, 0.3);
+    }
+
+    /* 滚动条滑块 */
+
+    ::-webkit-scrollbar-thumb {
+        background: #1e5cad;
+        -webkit-box-shadow: inset006pxrgba(43, 186, 201, 0.5);
+    }
+
+    ::-webkit-scrollbar-thumb:window-inactive {
+        background: #1e5cad;
+    }
+
+    .el-select-dropdown {
+        z-index: 99999999 !important;
+    }
+
+    .btn_box {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .btn_box .btn {
+        width: 20px;
+        height: 28px;
+    }
+
+    .el-tabs__item {
+        width: 150px;
+        text-align: center;
+        padding: 0 !important;
+    }
+
+    .el-table__row {
+        background-color: #111111aa !important;
+    }
+</style>

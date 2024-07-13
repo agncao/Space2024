@@ -1,0 +1,43 @@
+<!-- 引入相关js文件 -->
+<link rel="stylesheet" href="/plugins/aerospace/css/layuibtn.css">
+<link rel="stylesheet" href="/plugins/aerospace/css/layuitable.css">
+<!-- 引入 layui.css -->
+<link href="//unpkg.com/layui@2.9.13/dist/css/layui.css" rel="stylesheet">
+<!-- <link href="/plugins/aerospace/css/layui.css" rel="stylesheet"> -->
+<!-- 引入 layui.js -->
+<script src="//unpkg.com/layui@2.9.13/dist/layui.js"></script>
+<!-- <script src="/plugins/aerospace/js/layui.js"></script> -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.2/dist/echarts.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="/plugins/aerospace/js/thermometer.js"></script>
+<script src="/plugins/aerospace/js/aerospace.js"></script>
+
+
+<link rel="stylesheet" href="/plugins/aerospace/css/aerospace.css">
+<link rel="stylesheet" href="/plugins/aerospace/css/thermometer.css">
+
+<!-- 定义界面内容 -->
+<!-- <button onclick="Plugins.values['Plugins_aerospace'].showSubWindows();">选择数据</button> -->
+<div id="plugins_aerospace_container" style="display:none;">
+    <!-- 输入框和查询按钮 -->
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <input type="text" id="queryInput" placeholder="请输入方案名称查询" class="layui-input">
+            </div>
+            <button id="queryBtn" class="layui-btn layui-btn-sm layui-btn-primary">查询</button>
+        </div>
+    </div>
+    <table id="data_table"></table> <!-- 表格容器 -->
+    <div class="confirm_btn_container">
+        <button id="confirmBtn" type="button" class="layui-btn layui-bg-blue layui-btn-sm">打开场景</button>
+        <button id="saveBtn" type="button" class="layui-btn layui-btn-sm layui-btn-primary">保存场景</button>
+    </div>
+</div>
+
+
+<!-- 定义界面内容 -->
+<div id="plugins_aerospace_content" style="display:none;">
+</div>

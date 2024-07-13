@@ -1,0 +1,8 @@
+.DS_Store
+xjar_*
+xjar.*
+xjar
+logs/
+Space_min.jar
+Space.jar
+xjar-agent-hibernate-v1.0.0.jar

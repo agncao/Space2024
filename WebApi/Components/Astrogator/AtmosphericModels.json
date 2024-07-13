@@ -1,0 +1,38 @@
+[
+	{
+		"$type":"JacchiaRoberts",
+		"description":"Jacchia 1970大气密度模型",
+		"Name":"Jacchia 1970",
+		"Description":"Jacchia 1970 大气密度模型",
+		"UserComment":"Jacchia 1970 大气密度模型",
+		"DragModelType":"Spherical",
+		"AtmosDataSource":"Constant Values",
+		"F10p7":150,
+		"F10p7Avg":150,
+		"Kp":3
+	},
+	{
+		"$type":"JacchiaRoberts",
+		"description":"Jacchia 1971大气密度模型",
+		"Name":"Jacchia 1971",
+		"Description":"Jacchia 1971大气密度模型",
+		"UserComment":"Jacchia 1971大气密度模型",
+		"DragModelType":"Spherical",
+		"AtmosDataSource":"Constant Values",
+		"F10p7":150,
+		"F10p7Avg":150,
+		"Kp":3
+	},
+	{
+		"$type":"JacchiaRoberts",
+		"description":"Jacchia-Roberts大气密度模型",
+		"Name":"JacchiaRoberts",
+		"Description":"Jacchia-Roberts大气密度模型",
+		"UserComment":"Jacchia-Roberts大气密度模型",
+		"DragModelType":"Spherical",
+		"AtmosDataSource":"Constant Values",
+		"F10p7":150,
+		"F10p7Avg":150,
+		"Kp":3
+	}
+]

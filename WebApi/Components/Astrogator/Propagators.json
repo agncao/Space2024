@@ -1,0 +1,205 @@
+[
+    {
+        "Name": "Earth Point Mass",
+        "UserComment": "Simple numerical twobody",
+        "Description": "使用 HPOP的数值递推器",
+        "CentralBodyName": "Earth",
+        "NumericalIntegrator": {
+            "$type":"RKF7th8th",
+            "description": "龙哥-库塔 7(8)阶数值积分器参数",
+            "Name": "RKF7th8th",
+            "Description": "龙哥-库塔 7(8)阶数值积分器",
+            "UserComment": "龙哥-库塔 7(8)阶数值积分器",
+            "UseFixedStep": false,
+            "InitialStep": 60,
+            "MaxStep":86400,
+            "MinStep": 1,
+            "MaxAbsErr": 1e-13,
+            "MaxRelErr": 1e-13,
+            "MaxIterations":100
+        },
+        "GravityModel": {
+		    "$type": "TwoBody",
+		    "Name": "TwoBody Force",
+		    "Description": "中心天体引力场引力",
+		    "UserComment": "中心天体引力场引力",
+		    "Mu": 3.986004415E14
+        }
+    },
+    {
+        "Name": "Earth HPOP",
+        "UserComment": "Default Earth HPOP settings",
+        "Description": "使用 HPOP的数值递推器",
+        "CentralBodyName": "Earth",
+        "NumericalIntegrator": {
+            "$type":"RKF7th8th",
+            "description": "龙哥-库塔 7(8)阶数值积分器参数",
+            "Name": "RKF7th8th",
+            "Description": "龙哥-库塔 7(8)阶数值积分器",
+            "UserComment": "龙哥-库塔 7(8)阶数值积分器",
+            "UseFixedStep": false,
+            "InitialStep": 60,
+            "MaxStep":86400,
+            "MinStep": 1,
+            "MaxAbsErr": 1e-10,
+            "MaxRelErr": 1e-13,
+            "MaxIterations":100
+        },
+        "GravityModel": {
+            "$type": "GravityField",
+            "Name": "Gravitational Force",
+            "Description": "中心天体引力场引力",
+            "UserComment": "中心天体引力场引力",
+            "GravityFileName": "EGM2008.grv",
+            "CentralBody": "Earth",
+            "Degree": 21,
+            "Order": 21,
+            "SolidTideType": "Permanent tide only",
+            "EOPfilePath": "EOP-v1.1.txt"
+        },
+        "AtmosphericModel": {
+            "$type":"JacchiaRoberts",
+            "description":"Jacchia-Roberts大气密度模型",
+            "Name":"JacchiaRoberts",
+            "Description":"Jacchia-Roberts大气密度模型",
+            "UserComment":"Jacchia-Roberts大气密度模型",
+            "DragModelType":"Spherical",
+            "AtmosDataSource":"Constant Values",
+            "F10p7":150,
+            "F10p7Avg":150,
+            "Kp":3
+        },
+        "SRPModel": {
+            "$type":"SRPSpherical",
+            "description": "太阳辐射压（SRP）摄动模型参数，SRPSpherical类型",
+            "Name": "Spherical SRP",
+            "Description": "球形光压模型",
+            "UserComment": "球形光压模型",
+            "ShadowModel": "DualCone",
+            "SunPosition": "Apparent",
+            "EclipsingBodies":["Moon"]
+        },
+        "ThirdBodyForce": [
+            {
+                "Name": "太阳",
+                "Description": "第三体影响",
+                "UserComment": "太阳第三体影响",
+                "ReadOnly": true,
+                "ModeType": "PointMass",
+                "ThirdBodyName": "Sun",
+                "EphemSource": "DeFile",
+                "GravSource": "CbFile",
+                "Mu": 1.327122000000e+20
+            },
+            {
+                "Name": "月球",
+                "Description": "第三体影响",
+                "UserComment": "月球第三体影响",
+                "ReadOnly":true,
+                "ModeType": "PointMass",
+                "ThirdBodyName":  "Moon",
+                "EphemSource": "DeFile",
+                "GravSource": "CbFile",
+                "Mu": 4.90280030555540e+012
+            }
+        ]
+    },
+    {
+        "Name": "Earth J2",
+        "UserComment": "Numerical including J2 effect",
+        "Description": "使用 HPOP的数值递推器",
+        "CentralBodyName": "Earth",
+        "NumericalIntegrator": {
+            "$type":"RKF7th8th",
+            "description": "龙哥-库塔 7(8)阶数值积分器参数",
+            "Name": "RKF7th8th",
+            "Description": "龙哥-库塔 7(8)阶数值积分器",
+            "UserComment": "龙哥-库塔 7(8)阶数值积分器",
+            "UseFixedStep": false,
+            "InitialStep": 60,
+            "MaxStep":86400,
+            "MinStep": 1,
+            "MaxAbsErr": 1e-13,
+            "MaxRelErr": 1e-13,
+            "MaxIterations":100
+        },
+        "GravityModel": {
+            "$type": "GravityField",
+            "Name": "Gravitational Force",
+            "Description": "中心天体引力场引力",
+            "UserComment": "中心天体引力场引力",
+            "GravityFileName": "WGS84.grv",
+            "CentralBody": "Earth",
+            "Degree": 2,
+            "Order": 0,
+            "SolidTideType": "None",
+            "EOPfilePath": "EOP-v1.1.txt"
+        }
+    },
+    {
+        "Name": "Moon HPOP",
+        "UserComment": "Default Moon HPOP settings",
+        "Description": "使用 HPOP的数值递推器",
+        "CentralBodyName": "Moon",
+        "NumericalIntegrator": {
+            "$type":"RKF7th8th",
+            "description": "龙哥-库塔 7(8)阶数值积分器参数",
+            "Name": "RKF7th8th",
+            "Description": "龙哥-库塔 7(8)阶数值积分器",
+            "UserComment": "龙哥-库塔 7(8)阶数值积分器",
+            "UseFixedStep": false,
+            "InitialStep": 60,
+            "MaxStep":86400,
+            "MinStep": 1,
+            "MaxAbsErr": 1e-10,
+            "MaxRelErr": 1e-13,
+            "MaxIterations":100
+        },
+        "GravityModel": {
+            "$type": "GravityField",
+            "Name": "Gravitational Force",
+            "Description": "中心天体引力场引力",
+            "UserComment": "中心天体引力场引力",
+            "GravityFileName": "LP150Q.grv",
+            "CentralBody": "Moon",
+            "Degree": 48,
+            "Order": 48,
+            "SolidTideType": "Permanent tide only",
+            "EOPfilePath": "EOP-v1.1.txt"
+        },
+        "SRPModel": {
+            "$type":"SRPSpherical",
+            "description": "太阳辐射压（SRP）摄动模型参数，SRPSpherical类型",
+            "Name": "Spherical SRP",
+            "Description": "球形光压模型",
+            "UserComment": "球形光压模型",
+            "ShadowModel": "DualCone",
+            "SunPosition": "Apparent",
+            "EclipsingBodies":["Earth"]
+        },
+        "ThirdBodyForce": [
+            {
+                "Name": "太阳",
+                "Description": "第三体影响",
+                "UserComment": "太阳第三体影响",
+                "ReadOnly": true,
+                "ModeType": "PointMass",
+                "ThirdBodyName": "Sun",
+                "EphemSource": "DeFile",
+                "GravSource": "CbFile",
+                "Mu": 1.327122000000e+20
+            },
+            {
+                "Name": "地球",
+                "Description": "第三体影响",
+                "UserComment": "地球第三体影响",
+                "ReadOnly":true,
+                "ModeType": "PointMass",
+                "ThirdBodyName":  "Moon",
+                "EphemSource": "DeFile",
+                "GravSource": "CbFile",
+                "Mu": 3.986004415E14
+            }
+        ]
+    }
+]

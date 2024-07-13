@@ -1,0 +1,336 @@
+/* 移除右边指南针部分 */
+.compass {
+    display: none;
+}
+
+
+.navigation-controls {
+    display: none;
+}
+
+
+.page-title-text-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.title-img {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* 使用 transform 来精确居中 */
+    background: url(../../../images/bg-title2.svg) no-repeat center center;
+    /* 居中显示背景图像 */
+    background-size: contain;
+    /* 确保背景图像等比缩放 */
+    width: 100%;
+    /* 或者可以设置为实际需要的宽度 */
+    height: 100%;
+    /* 或者可以设置为实际需要的高度 */
+}
+
+.title-text {
+    z-index: 10;
+}
+
+.left-line {
+    width: 30px;
+    height: 100%;
+    position: absolute;
+    background: url(../../../images/left-line.svg) no-repeat center center;
+    background-size: cover;
+    top: 0px;
+    left: 0px;
+}
+
+.right-line {
+    width: 30px;
+    height: 100%;
+    position: absolute;
+    background: url(../../../images/right-line.svg) no-repeat center center;
+    background-size: cover;
+    top: 0px;
+    right: 0px;
+}
+
+.bottom-line {
+    width: 100%;
+    height: 30px;
+    position: absolute;
+    background: url(../../../images/bottom-line2.svg) no-repeat center center;
+    background-size: cover;
+    bottom: 0px;
+    left: 0px;
+}
+
+.bgbox {
+    background: url(../../../images/bg2.jpg) no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.page-title-layout {
+    color: white;
+    font-size: 32px;
+    text-align: center;
+    width: 100%;
+}
+
+#divMessage0_chart.message table {
+    width: 100%;
+    border-collapse: separate;
+    /* 必须设置为 separate 才能使用 border-spacing */
+    border-spacing: 0 5px;
+    /* 水平间距和垂直间距 */
+
+    tbody {
+        margin: 0;
+    }
+}
+
+#divMessage0_chart.message table caption {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 1em 0;
+}
+
+#divMessage0_chart.message th {
+    border-bottom: 1px solid white;
+    font-size: 14px;
+    text-align: center;
+    color: white;
+    border-left: none !important;
+    /* 去掉左边框 */
+    border-right: none !important;
+    /* 去掉右边框 */
+}
+
+#divMessage0_chart.message th:not(:last-child) {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+#divMessage0_chart.message td {
+    font-size: 12px;
+    text-align: center;
+    color: white;
+    background-color: rgba(27, 55, 80, .5);
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+}
+
+
+#divMessage0_chart.message td:not(:last-child) {
+    border-right: 2px solid #868787;
+}
+
+#divMessage0_chart.message table thead tr {
+    /* background-color: #f024c4; */
+    color: #fff;
+}
+
+#divMessage0_chart.message table tfoot tr td {
+    text-align: right;
+    padding-right: 20px;
+}
+
+.time-layout {
+    font-size: 2em;
+    /* font-size: 14px; */
+    /* font-weight: bold; */
+    color: #0EFCFF;
+}
+
+.time-layout table {
+    width: 100%;
+    /* border-collapse: collapse; */
+    /* margin: 4px; */
+    /* 设置上下左右边距都为4px */
+
+    tbody {
+        margin: 0;
+    }
+}
+
+
+.data-layout {
+    border: 2px solid #29AFFA;
+    border-radius: 10px;
+    padding: 5px 10px;
+    max-height: 400px;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.data-title {
+    display: flex;
+    flex-direction: column;
+    /* color: white; */
+    color: #d3eaf3;
+    /* color: #82c55e; */
+    margin-left: 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    margin-top: -18px;
+    background-color: black;
+    margin-right: 10px;
+}
+
+.data-title-left,
+.data-title span {
+    margin: 0 15px;
+    font-size: 18px;
+}
+
+.data-title-left,
+.data-title-right {
+    color: rgb(16, 94, 218);
+    font-family: 微软雅黑;
+    font-size: 16px;
+}
+
+/* .data-title-text {
+    font-size: 16px;
+} */
+
+.data-title-line-box {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.data-title-line-point {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background-color: #29AFFA;
+    box-shadow: 0 0 4px 2px rgb(251, 252, 253);
+}
+
+.data-title-line {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, #29AFFA, black);
+}
+
+.circle1 {
+    width: 20px;
+    /* 设置圆的直径 */
+    height: 20px;
+    border-radius: 50%;
+    /* 使其成为完整的圆形 */
+    clip-path: polygon(50% 50%, 100% 50%, 100% 100%, 50% 100%);
+    position: absolute;
+    top: -7px;
+    left: -7px;
+    border: 4px solid #29AFFA;
+    transform: rotate(185deg);
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+}
+
+.circle2 {
+    width: 20px;
+    /* 设置圆的直径 */
+    height: 20px;
+    border-radius: 50%;
+    /* 使其成为完整的圆形 */
+    clip-path: polygon(50% 50%, 100% 50%, 100% 100%, 50% 100%);
+    position: absolute;
+    bottom: -7px;
+    left: -7px;
+    border: 4px solid #29AFFA;
+    transform: rotate(85deg);
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+}
+
+.circle3 {
+    width: 20px;
+    /* 设置圆的直径 */
+    height: 20px;
+    border-radius: 50%;
+    /* 使其成为完整的圆形 */
+    clip-path: polygon(50% 50%, 100% 50%, 100% 100%, 50% 100%);
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    border: 4px solid #29AFFA;
+    transform: rotate(265deg);
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+}
+
+.circle4 {
+    width: 20px;
+    /* 设置圆的直径 */
+    height: 20px;
+    border-radius: 50%;
+    /* 使其成为完整的圆形 */
+    clip-path: polygon(50% 50%, 100% 50%, 100% 100%, 50% 100%);
+    position: absolute;
+    bottom: -7px;
+    right: -7px;
+    border: 4px solid #29AFFA;
+    transform: rotate(365deg);
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+}
+
+.message {
+    width: 100%;
+    padding: 5px 10px;
+    overflow: auto;
+}
+
+/* 自定义滚动条的宽度和高度 */
+.message::-webkit-scrollbar {
+    width: 10px;
+    /* 垂直滚动条的宽度 */
+    height: 5px;
+    /* 水平滚动条的高度 */
+}
+
+/* 滚动条轨道 */
+.message::-webkit-scrollbar-track {
+    background: transparent;
+    /* 轨道的背景色 */
+    border-radius: 10px;
+    /* 轨道的圆角 */
+}
+
+/* 滚动条滑块 */
+.message::-webkit-scrollbar-thumb {
+    background: #417BD6;
+    /* 滑块的背景色 */
+    border-radius: 10px;
+    /* 滑块的圆角 */
+}
+
+/* 滑块在悬停时的样式 */
+.message::-webkit-scrollbar-thumb:hover {
+    background: #417BD6;
+    /* 滑块在悬停时的背景色 */
+}
+
+/* 滚动条按钮（可选） */
+.message::-webkit-scrollbar-button {
+    background: #417BD6;
+    /* 按钮的背景色 */
+    border-radius: 10px;
+    /* 按钮的圆角 */
+}
+
+.posture-data-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.posture-data-content table td,
+.posture-data-content table th {
+    border: none;
+    padding: 10px;
+}
+
+posture-data-content table colgroup col:first-child {
+    width: 35%;
+}

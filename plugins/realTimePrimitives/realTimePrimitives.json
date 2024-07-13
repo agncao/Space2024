@@ -1,0 +1,12 @@
+{
+	"id": "Plugins_realTimePrimitives",
+	"main":"index.html",
+	"menu":
+	{
+		"parent": "Menu_FENXI",
+		"icon": "plugins/realTimePrimitives/realTimePrimitives.png",
+		"name": "大量对象",
+		"width": 120,
+		"click": "click"
+	}
+}

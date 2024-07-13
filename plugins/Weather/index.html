@@ -1,0 +1,116 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: alan.lau
+ * @Date: 2022-11-07 11:36:27
+ * @LastEditors: alan.lau
+ * @LastEditTime: 2022-11-08 13:39:47
+-->
+<script src="/plugins/Weather/js/third/vue.js"></script>
+<script src="/plugins/Weather/js/third/element.js"></script>
+<!-- <script src="/plugins/Weather/js/config.js"></script> -->
+<!-- <script src="/plugins/Weather/js/debris/Debris.js"></script> -->
+<!-- <script src="/plugins/Weather/js/day.js"></script> -->
+<!-- <script src="/plugins/Weather/js/third/satellite.js"></script> -->
+<!-- <script src="/plugins/Weather/js/debris/eMyOrbit.js"></script> -->
+<!-- <script src="/plugins/Weather/js/debris/eMySatellite.js"></script> -->
+<!-- <script src="/plugins/Weather/js/postProcessStages/rain.js"></script>
+<script src="/plugins/Weather/js/postProcessStages/snow.js"></script>
+<script src="/plugins/Weather/js/postProcessStages/fog.js"></script> -->
+<script src="/plugins/Weather/js/postProcessStages/weather.js"></script>
+<script src="/plugins/Weather/js/main.js"></script>
+<link rel="stylesheet" href="/plugins/Weather/css/element.css">
+
+<div id="weather">
+    <div id="plugins_Weather" style="display:none;height:50px;" class="demo">
+        <div class="btn_box" style="height:35px;">
+            <!-- <el-button class="btn" type="primary" onclick="Plugins.values['Plugins_Weather'].addEntity();">addEntity
+            </el-button>
+            <el-button class="btn" type="primary" onclick="Plugins.values['Plugins_Weather'].addCzml();">addCzml
+            </el-button>
+            <el-button class="btn" type="primary" onclick="Plugins.values['Plugins_Weather'].addPrimitives();">
+                addPrimitives</el-button>
+            <el-button class="btn" type="primary" onclick="Plugins.values['Plugins_Weather'].clear();">clear</el-button> -->
+
+            <el-radio-group v-model="radio1" @change="handleRadioChange">
+                <el-radio-button label="无"></el-radio-button>
+                <el-radio-button label="晴"></el-radio-button>
+                <el-radio-button label="阴"></el-radio-button>
+                <el-radio-button label="雨"></el-radio-button>
+                <el-radio-button label="雪"></el-radio-button>
+                <el-radio-button label="雾"></el-radio-button>
+            </el-radio-group>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    var weather = new Weather()
+
+    vueThis = new Vue({
+        el: '#weather',
+        data: function () {
+            return {
+                radio1: '无',
+            }
+        },
+
+        methods: {
+
+            handleRadioChange(value) {
+                switch (value) {
+                    case '无':
+                        weather.switchWeather(-1);
+                        break
+                    case '晴':
+                        weather.switchWeather(0);
+                        break
+                    case '阴':
+                        weather.switchWeather(1);
+                        break
+                    case '雨':
+                        weather.switchWeather(3);
+                        break
+                    case '雪':
+                        weather.switchWeather(4);
+                        break
+                    case '雾':
+                        weather.switchWeather(2);
+                        break
+                }
+            }
+
+        }
+
+    })
+</script>
+<style>
+    .demo {
+        padding: 10px;
+    }
+
+    .demo .el-button {
+        padding: 5px;
+        margin: 5px;
+    }
+
+    .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .el-button {
+        margin: 0;
+        width: 100%;
+    }
+
+    .btn_box {
+        display: flex;
+        width: 100%;
+
+        justify-content: space-around;
+        align-items: center;
+    }
+</style>

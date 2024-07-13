@@ -1,0 +1,21 @@
+[
+	{
+	    "$type": "GravityField",
+	    "Name": "Gravitational Force",
+	    "Description": "中心天体引力场引力",
+	    "UserComment": "中心天体引力场引力",
+	    "GravityFileName": "EGM2008.grv",
+	    "CentralBody":"Earth",
+	    "Degree": 21,
+	    "Order": 21,
+	    "SolidTideType": "Permanent tide only",
+	    "EOPfilePath": "EOP-v1.1.txt"
+	},
+	{
+	    "$type": "TwoBody",
+	    "Name": "TwoBody Force",
+	    "Description": "中心天体引力场引力",
+	    "UserComment": "中心天体引力场引力",
+	    "Mu": 0
+	}
+]

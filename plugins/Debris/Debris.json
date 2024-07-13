@@ -1,0 +1,22 @@
+{
+	"description":"以下带有_description的内容都可以删掉",
+	"id_description": "插件唯一编号",
+	"id": "Plugins_Debris",
+	"centralBody_description": "支持的中心天体",
+	"centralBody": "Earth",
+	"main_description":"加载插件内容入口文件",
+	"main":"index.html",
+	"menu":
+	{
+		"parent_description": "菜单的父类类别:将菜单放到【分析】菜单下",
+		"parent": "Menu_FENXI",
+		"icon_description": "菜单图标",
+		"icon": "plugins/Debris/Debris.png",
+		"name_description": "菜单名称",
+		"name": "碎片分析",
+		"width_description": "菜单宽度",
+		"width": 120,
+		"click_description": "点击菜单后触发的事件",
+		"click": "click"
+	}
+}

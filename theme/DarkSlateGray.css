@@ -1,0 +1,17 @@
+/*     // 公用样式都放在:root下面 */
+:root {
+    --main-color: rgb(23 52 56);
+    --main-normal-color: rgb(0 52 68);
+    --main-highlight-color: rgb(0 92 104);
+    --main-bg: rgba(0, 0, 0,0.8);
+    --main-text-color:#ccfffa;
+    --main-normal-text-color: #ffffff;
+    --header-bg: none;
+    --tool-icon-bg: #000;
+    --tool-icon-color: #fff;
+    --header-title-color: #17f7ff;
+    --layer-bgcolor:transparent;
+    --layer-main-color: rgb(0,88,114);
+    --layer-content-bgcolor: rgb(20 20 20);
+    --scene-layer-content-opacity:0.95;
+}

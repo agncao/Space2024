@@ -1,0 +1,11 @@
+{
+	"id": "Plugins_CACompute",
+	"main":"index.ftl",
+	"menu":
+	{
+		"parent": "Menu_FENXI",
+		"icon": "plugins/CACompute/CACompute.png",
+		"name": "碰撞分析",
+		"click": "click"
+	}
+}

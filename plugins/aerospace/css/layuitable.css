@@ -1,0 +1,71 @@
+.confirm_btn_container {
+    display: flex !important;
+    justify-content: right !important;
+    padding: 10px !important;
+}
+
+.layui-form-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0 !important;
+    padding: 10px;
+}
+
+.layui-form-item .layui-input-inline {
+    width: 100% !important;
+}
+
+.layui-btn-primary {
+    background: white !important;
+}
+
+.layui-layer-page .layui-layer-content {
+    overflow: hidden !important;
+}
+
+.layui-table-body {
+    max-height: 180px;
+}
+
+/* 自定义斑马纹颜色 */
+.layui-table-click,
+.layui-table-hover,
+.layui-table[lay-even] tbody tr:nth-child(even) {
+    background-color: none;
+}
+
+/* 设置奇数行的背景颜色 */
+.layui-table[lay-even] tbody tr:nth-child(odd) {
+    background-color: #daffef;
+}
+
+/* 设置偶数行的背景颜色 */
+/* .layui-table[lay-even] tbody tr:nth-child(even) {
+    background-color: white;
+} */
+
+/* 设置行的 hover 颜色 */
+/* .layui-table[lay-even] tbody tr:hover {
+    background-color: #faffda;
+} */
+
+/* 点击行的颜色 #84c8ff*/
+/* tr.layui-table-checked {
+    background-color: #84c8ff !important;
+} */
+
+/* 设置偶数行的背景颜色 */
+.layui-table[lay-even] tbody tr:nth-child(even) {
+    background-color: white !important;
+}
+
+/* 设置行的 hover 颜色 */
+.layui-table[lay-even] tbody tr:hover {
+    background-color: #faffda !important;
+}
+
+/* 点击行的颜色 #84c8ff*/
+.layui-table[lay-even] tbody tr.layui-table-checked {
+    background-color: #84c8ff !important;
+}

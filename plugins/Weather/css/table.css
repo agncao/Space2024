@@ -1,0 +1,231 @@
+ .table-box {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        width: 1440px;
+        height: 275px;
+        background-color: #03030390;
+        z-index: 999;
+    }
+    
+    .pagination {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        align-items: center;
+        background-color: #333333;
+    }
+    
+    .search {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    .el-select-dropdown__item.selected {
+        background-color: #e9ebee !important;
+    }
+    
+    .el-select {
+        width: 160px;
+    }
+    
+    input[type="text"] {
+        width: 100%;
+        height: 28px !important;
+        padding: 2px;
+    }
+    
+    .el-input__inner {
+        font-size: 9px;
+        height: 28px;
+        -webkit-appearance: none;
+        background-color: #fff;
+        background-image: none;
+        border-radius: 0px;
+        border: none;
+    }
+    /* 下面设置右侧按钮居中 */
+    
+    .el-input__suffix {
+        top: 5px;
+    }
+    
+    .el-input__icon {
+        line-height: inherit;
+    }
+    
+    .el-input__suffix-inner {
+        display: inline-block;
+    }
+    
+    .el-input {}
+    
+    .el-input__inner {
+        height: 28px;
+        -webkit-appearance: none;
+        background-color: #fff;
+        background-image: none;
+        border-radius: 0px;
+        border-right: 1px solid #333333;
+    }
+    
+    .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .el-button {
+        margin: 0;
+        width: 100%;
+    }
+    
+    .el-table {
+        font-size: 12px;
+        color: #ffffff;
+        background-color: #000 !important;
+    }
+    
+    .el-tabs__header {
+        margin: 0;
+    }
+    
+    .el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
+        background-color: #1e5cad !important;
+        height: 26px;
+    }
+    
+    .el-tabs__item {
+        height: 26px;
+        line-height: 26px;
+        color: #ffffff;
+    }
+    
+    .el-tabs--top.el-tabs--card>.el-tabs__header .el-tabs__item:last-child {
+        padding: 0 118px;
+    }
+    
+    .el-table .el-table__cell {
+        padding: 0 !important;
+    }
+    
+    .el-table__header tr,
+    .el-table__header th {
+        padding: 0;
+        height: 18px;
+        font-size: 12px;
+    }
+    
+    .el-table tbody tr:hover>td {
+        background-color: #04a60a !important;
+    }
+    
+    .el-table__row--striped td {
+        background-color: #000 !important;
+    }
+    
+    .el-table th,
+    .el-table td {
+        text-align: center !important;
+    }
+    
+    .el-table .caret-wrapper {
+        display: none;
+    }
+    
+    .el-table--border:after,
+    .el-table--group:after,
+    .el-table:before {
+        background-color: #222;
+    }
+    
+    .el-table--border,
+    .el-table--group {
+        border-color: #222;
+    }
+    
+    .el-table td,
+    .el-table th.is-leaf {
+        border-bottom: 1px solid #222;
+    }
+    
+    .el-table--border th,
+    .el-table--border th.gutter:last-of-type {
+        border-bottom: 1px solid #222;
+    }
+    
+    .el-table {
+        background-color: #000 !important;
+    }
+    
+    .el-table--border td,
+    .el-table--border th {
+        border-right: 1px solid #222;
+    }
+    
+    .el-tabs--card>.el-tabs__header .el-tabs__nav {
+        border: 1px solid #1e5cad;
+    }
+    
+    .el-tabs__active-bar {
+        width: 150px !important;
+    }
+    
+    .el-tabs__item.is-active {
+        background-color: #1e5cad !important;
+        height: 26px;
+        color: white;
+    }
+    
+    .el-tabs--top.el-tabs--card>.el-tabs__header .el-tabs__item:last-child {
+        border: none;
+    }
+    
+    .el-tabs--card>.el-tabs__header {
+        border-bottom: none;
+    }
+    /* 设置滚动条的样式 */
+    /* ::-webkit-scrollbar {
+        width: 17px;
+    } */
+    /* 滚动槽 */
+    
+     ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset006pxrgba(13, 69, 70, 0.3);
+    }
+    /* 滚动条滑块 */
+    
+     ::-webkit-scrollbar-thumb {
+        background: #1e5cad;
+        -webkit-box-shadow: inset006pxrgba(43, 186, 201, 0.5);
+    }
+    
+     ::-webkit-scrollbar-thumb:window-inactive {
+        background: #1e5cad;
+    }
+    
+    .el-select-dropdown {
+        z-index: 99999999 !important;
+    }
+    
+    .btn_box {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    
+    .btn_box .btn {
+        width: 20px;
+        height: 28px;
+    }
+    
+    .el-tabs__item {
+        width: 150px;
+        text-align: center;
+        padding: 0 !important;
+    }
+    
+    .el-table__row {
+        background-color: #111111aa !important;
+    }
