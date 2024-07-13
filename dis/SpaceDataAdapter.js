@@ -18,8 +18,6 @@
             var connection = new signalR.HubConnectionBuilder().withUrl(url).build();
             connection.on("receiveSpaceData", spaceDataAdapter.message);
             connection.start().then(function () {
-
-                console.log("SignalR is Connect! URL: " + url);
                 spaceDataAdapter.isSynTime = true;
             }).catch(function (err) {
                 return console.error(err.toString());
@@ -63,16 +61,10 @@
                         //设置两次位置接收的系统时间间隔
                         spaceDataAdapter.systemTimeStep = sysTime - spaceDataAdapter.sysTime;
                         spaceDataAdapter.sysTime = sysTime;
-                        console.log("接收消息的时间：",
-                            sysTime, "仿真时间：", time,
-                            "接收时间间隔：", spaceDataAdapter.systemTimeStep,
-                            "仿真时间间隔：", spaceDataAdapter.timeStep
-                        );
                     }
                 } else {
                     spaceDataAdapter.dataJd = jd;
                     spaceDataAdapter.sysTime = sysTime;
-                    console.log("第一次接收消息的时间：", sysTime, "仿真时间：", time);
                 }
 
 
@@ -89,7 +81,6 @@
                             }
                             //获取Entity对应的数据
                             var value = entities[key];
-                            console.log("Entity: ", entity, "Key: ", key, "Value: ", value);
 
                             if (!Cesium.defined(entity)) {
 
@@ -144,7 +135,6 @@
                 //如果数据时间小于或大于场景时间阈值，则更新场景时间
                 var dt = Cesium.JulianDate.secondsDifference(jd, solarSystem.clock.currentTime);
                 if (dt < 0 || dt > (spaceDataAdapter.timeStep + 0.03 * spaceDataAdapter.timeStep)) {
-                    //                    console.log("dt: " + dt);
                     Cesium.JulianDate.clone(jd, solarSystem.clock.currentTime);
                 }
             } catch (e) {

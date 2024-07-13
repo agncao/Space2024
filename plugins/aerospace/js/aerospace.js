@@ -3,8 +3,6 @@
     const yyastk = window.getYYASTK();
     //获取当前场景管理对象
     const currentScenario = yyastk.CurrentScenario;
-
-    // const container = document.getElementById('plugins_aerospace_container');
     const _parentContainer = document.getElementById('cesiumContainer');
     const _boxType = {
         Time: "Time",
@@ -20,7 +18,7 @@
     let _echartsColors = ['#ff6600', '#da70d6', '#82c55e', '#c7353a', '#f5b91f', '#d3eaf3', '#b91c1c', '#e26021', '#743ad5'];
     let _echartsxAxisNum = 5;
     let _postureEChartOptions = [];
-    let _echartsSerieDataLength = 1000;
+    let _echartsSerieDataLength = 500;
 
     const fn = {
         initFormulaConfig: function (config) {
@@ -210,7 +208,7 @@
             });
             dataParser.parseBizzData(bizzList);
             dataParser.parseMessageData(messageList);
-            dataParser.parsePostureData(spaceData.Posture);
+            dataParser.parsePostureData(spaceData);
         },
         parseMessageData: function (messageList) {
             let messageConfigArray = _formula.messageSettings;
@@ -271,7 +269,7 @@
                 && (!chartSettings || chartSettings.length == 0))
                 return;
 
-            if (!postureData || !postureData.entities) return;
+            if (!postureData.entities) return;
 
 
             let signalRDataAdapter = Cesium.DataAdapter.get(_formula.Parser);
@@ -355,7 +353,7 @@
                 divContent = document.getElementById(fn.generateChartContainerId(box, 0));
             }
             _messageList.push(...messageList);
-            while (_messageList.length > 7) {
+            while (_messageList.length > 6) {
                 _messageList.shift(); // 如果数组长度超过5，移除最旧的元素
             }
 
@@ -456,8 +454,6 @@
             //
         },
         generateHeader: function (divContent, setting) {
-            console.log('generateHeader setting====', setting);
-            console.log('generateHeader divContent====', divContent);
             const title = setting.Name || setting.Display.Box.Name
             if (divContent) {
                 // 增加一个 img 背景图片
@@ -471,10 +467,6 @@
                 textDiv.textContent = title;
                 divContent.appendChild(textDiv);
 
-                // 创建背景边框
-                // const borderBg = document.createElement("div");
-                // borderBg.className = "border-bg";
-                // _parentContainer.appendChild(borderBg);
                 const leftLine = document.createElement("div");
                 leftLine.className = "left-line";
                 _parentContainer.appendChild(leftLine);
@@ -692,19 +684,6 @@
             let xdata = xRes.values ? xRes.values : null;
             let xVal = xdata && xdata.values && xdata.values.length > 0 ? xdata.values[0] : null;
             chartOption.xAxis.data.push(xVal);
-            // chartOption.xAxis.axisLabel = {
-            //     interval: function (index, value) {
-            //         // 计算每个刻度的间隔
-            //         const interval = Math.ceil(_echartsSerieDataLength / _echartsxAxisNum);
-
-            //         // 只显示间隔为 interval 的刻度
-            //         return index % interval === 0;
-            //     },
-            //     formatter: function (value, index) {
-            //         // 自定义格式化函数，可以根据需要调整显示的刻度标签内容
-            //         return value;
-            //     }
-            // };
             _postureEChartOptions[graphResult.dataIndex] = chartOption;
         },
         /**
@@ -996,10 +975,8 @@
                         // 初始化表格
                         table.render({
                             elem: '#data_table',
-                            // 单选 radio，多选 checkbox
                             even: true, // 启用斑马纹效果
                             cols: [[
-                                // { type: 'radio', width: 50 }, // 添加选择框作为第一列
                                 { field: 'Id', title: 'ID', hide: true },
                                 { field: 'Name', title: '方案名称', width: 140 },
                                 { field: 'Host', title: '服务地址', width: 220 },
@@ -1020,18 +997,10 @@
                         // 查询按钮点击事件
                         document.getElementById('queryBtn').onclick = function () {
                             var queryValue = document.getElementById('queryInput').value;
-                            console.log('查询值:', queryValue);
-                            // 在这里添加你的查询逻辑
                             HttpClient.build().post(WebApi.spaceData.queryFormulaUrl, {
                                 name: queryValue
                             }, (res) => {
-                                console.log("🚀 ~ 方案名称查询结果 ~ res:", res)
-                                // 替换表格数据
-                                table.reload('data_table', {
-                                    data: res
-                                });
-                            }, (err) => {
-                                console.log("🚀 ~ 方案名称查询错误 ~ err:", err)
+                                table.reload('data_table', { data: res });
                             });
                         };
 
