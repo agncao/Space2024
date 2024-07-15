@@ -298,12 +298,13 @@ class FormulaTree {
         });
 
         this.getTemplate = () => {
-            return this.initialData;
+            let data = JSON.parse(JSON.stringify(this.initialData));
+            data.Id = (new Date()).getTime();
+            return data;
         }
 
         let self = this;
         this.init = (jsonData) => {
-            jsonData.Id = (new Date()).getTime();
             return jsonData.map(item => ({
                 title: item.Name || 设置方案名称,
                 id: item.Id,
