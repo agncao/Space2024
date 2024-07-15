@@ -69,3 +69,7 @@
 .layui-table[lay-even] tbody tr.layui-table-checked {
     background-color: #84c8ff !important;
 }
+
+#json-editor {
+    background: white;
+}

@@ -981,28 +981,119 @@
                 title: ['新建方案', 'color:#fff;'],
                 shadeClose: true,
                 shade: false,
-                area: ['600px', '900px'], // 宽高
+                area: ['900px', '600px'], // 宽高
                 success: function (layero, index) {
-                    let formulaTree = new FormulaTree();
+                    layui.use(['tree', 'layer'], function () {
+                        const tree = layui.tree;
+                        const layer = layui.layer;
 
-                    formulaTree.render(formulaTree.getTemplate());
-                    // layui.use(['tree', 'layer'], function () {
-                    //     const tree = layui.tree;
-                    //     const layer = layui.layer;
+                        const initialData = {
+                            "Name": "态势展示方案",
+                            "ScenarioName": "航空态势展示",
+                            "Host": "https://localhost:7234/receiver",
+                            "EpochStartTime": null,
+                            "CentralBody": "Earth",
+                            "Parser": "spaceDataParser",
+                            "Description": "航空态势展示",
+                            "Settings": []
+                        };
 
-                    //     tree.render({
-                    //         elem: '#settings-container',
-                    //         data: formulaTree.init(),
-                    //         showLine: true,
-                    //         isJump: true, // 是否允许点击节点时弹出新窗口跳转
-                    //         click: function(obj){
-                    //             var data = obj.data;  //获取当前点击的节点数据
-                    //             layer.prompt({title: '正在修改'+data.title.split(':')[0]+'的值', formType: 2}, function(text, index){
-                    //                 layer.close(index);
-                    //               });
-                    //           }
-                    //     });
-                    // });
+                        let formData = initialData;
+
+                        function renderTree() {
+                            tree.render({
+                                elem: '#settings-tree',
+                                data: formData.Settings.map((setting, index) => ({
+                                    title: setting.Name || 'Unnamed Setting',
+                                    id: index,
+                                    children: [
+                                        { title: `WindowType: ${setting.WindowType}`, id: `${index}-windowtype` },
+                                        { title: `EntityId: ${setting.EntityId}`, id: `${index}-entityid` },
+                                        { title: `ReportName: ${setting.ReportName}`, id: `${index}-reportname` }
+                                    ]
+                                })),
+                                edit: ['add', 'update', 'del'],
+                                click: function (obj) {
+                                    const data = obj.data;
+                                    const id = data.id;
+                                    if (typeof id === 'number') {
+                                        editSetting(id);
+                                    }
+                                },
+                                operate: function (obj) {
+                                    const type = obj.type;
+                                    const data = obj.data;
+                                    const id = data.id;
+
+                                    if (type === 'add') {
+                                        addSetting();
+                                    } else if (type === 'update') {
+                                        const newName = prompt('Enter new name:', data.title);
+                                        if (newName) {
+                                            updateSetting(id, 'Name', newName);
+                                        }
+                                    } else if (type === 'del') {
+                                        removeSetting(id);
+                                    }
+                                }
+                            });
+                        }
+
+                        function addSetting() {
+                            formData.Settings.push({
+                                Name: '',
+                                WindowType: 'Report',
+                                EntityId: '',
+                                ReportName: '',
+                                Display: {
+                                    Box: {
+                                        Name: '',
+                                        Offset: [],
+                                        Area: [],
+                                        Class: ''
+                                    },
+                                    Content: {
+                                        Offset: [],
+                                        Area: [],
+                                        Class: ''
+                                    }
+                                }
+                            });
+                            renderTree();
+                        }
+
+                        function removeSetting(index) {
+                            formData.Settings.splice(index, 1);
+                            renderTree();
+                        }
+
+                        function updateSetting(index, key, value) {
+                            formData.Settings[index][key] = value;
+                            renderTree();
+                        }
+
+                        function editSetting(index) {
+                            const setting = formData.Settings[index];
+                            const newWindowType = prompt('Enter WindowType:', setting.WindowType);
+                            const newEntityId = prompt('Enter EntityId:', setting.EntityId);
+                            const newReportName = prompt('Enter ReportName:', setting.ReportName);
+
+                            if (newWindowType) updateSetting(index, 'WindowType', newWindowType);
+                            if (newEntityId) updateSetting(index, 'EntityId', newEntityId);
+                            if (newReportName) updateSetting(index, 'ReportName', newReportName);
+                        }
+
+                        $('#add-setting').click(function () {
+                            addSetting();
+                        });
+
+                        $('#save-json').click(function () {
+                            console.log(JSON.stringify(formData, null, 2));
+                            alert('JSON data saved. Check the console for output.');
+                        });
+
+                        renderTree();
+                    });
                 },
                 content: $('#json-editor'),
             });
