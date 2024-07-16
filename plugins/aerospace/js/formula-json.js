@@ -1,5 +1,10 @@
+
+
 class FormulaTree {
     constructor() {
+
+        this.jsonDataCopy = [];
+
         this.initialData = [
             {
                 "Id": "1",
@@ -291,7 +296,6 @@ class FormulaTree {
                 ]
             }
         ]
-            ;
 
         this.layerui = layui.use(['tree', 'layer'], function () {
             return { tree: layui.tree, layer: layui.layer };
@@ -345,6 +349,7 @@ class FormulaTree {
             });
         };
         this.render = (jsonData) => {
+            this.jsonDataCopy = JSON.parse(JSON.stringify(jsonData));
             this.layerui.tree.render({
                 elem: '#settings-container',
                 data: self.init(jsonData),
@@ -505,7 +510,145 @@ class FormulaTree {
             };
         };
 
+        this.addSettingTemplate = (selectedSettingType) => {
+            console.log('addSetting selectedSettingType: ', selectedSettingType);
+            console.log('addSetting this.jsonDataCopy: ', this.jsonDataCopy);
+            // 根据不同的类型创建 setting 对象
+            if (selectedSettingType == 'Time') {
+                const timeObj = {
+                    "Name": "时间模板",
+                    "WindowType": "Time",
+                    "Precision": 3,
+                    "EntityId": "",
+                    "Display": {
+                        "Box": {
+                            "Name": "仿真时间",
+                            "Offset": [33, 680],
+                            "Area": [430, 40],
+                            "Class": "time-layout"
+                        },
+                        "Content": {
+                            "Offset": [0, 0],
+                            "Area": [],
+                            "Class": ""
+                        },
+                        "Items": "UTCG"
+                    }
+                }
+                this.jsonDataCopy[0].Settings.push(timeObj)
+            } else if (selectedSettingType == 'Message') {
+                const messageObj = {
+                    "Name": "消息模板",
+                    "WindowType": "Message",
+                    "EntityId": "",
+                    "Display": {
+                        "Box": {
+                            "Name": "消息",
+                            "Offset": [1062, 50],
+                            "Area": [500, 254],
+                            "Class": "data-layout"
+                        },
+                        "Content": {
+                            "Offset": [15, 0],
+                            "Area": [],
+                            "Class": "message"
+                        },
+                        "Items": [
+                            {
+                                "Id": "Level",
+                                "Label": "级别"
+                            },
+                            {
+                                "Id": "EntityId",
+                                "Label": "实体Id"
+                            },
+                            {
+                                "Id": "Content",
+                                "Label": "内容"
+                            },
+                            {
+                                "Id": "Time",
+                                "Label": "消息时间"
+                            }
+                        ]
+                    }
+                }
+                this.jsonDataCopy[0].Settings.push(messageObj)
+            } else if (selectedSettingType == 'Business') {
+                const bussinessObj = {
+                    "Name": "温度计模板",
+                    "WindowType": "Business",
+                    "EntityId": "",
+                    "Display": {
+                        "ChartType": "Thermometer",
+                        "Box": {
+                            "Name": "平均温度",
+                            "Offset": [120, 312],
+                            "Area": [238, 216],
+                            "Class": "data-layout"
+                        },
+                        "Content": {
+                            "Offset": [32, 0],
+                            "Area": [],
+                            "Class": "data-content"
+                        },
+                        "Items": [
+                            {
+                                "Id": "averageTemperature",
+                                "Label": "平均温度"
+                            }
+                        ]
+                    }
+                }
+                this.jsonDataCopy[0].Settings.push(bussinessObj)
+            } else if (selectedSettingType == 'Report') {
+                const reportObj = {
+                    "Name": "数据报表模板",
+                    "WindowType": "Report",
+                    "EntityId": "Satellite/ICO_G1_32763",
+                    "ReportName": "大地纬度-经度",
+                    "Display": {
+                        "Box": {
+                            "Name": "大地纬度-经度",
+                            "Offset": [106, -50],
+                            "Area": [],
+                            "Class": "data-layout"
+                        },
+                        "Content": {
+                            "Offset": [],
+                            "Area": [0, 0],
+                            "Class": "data-content"
+                        }
+                    }
+                }
+                this.jsonDataCopy[0].Settings.push(reportObj)
+            } else if (selectedSettingType == 'Chart') {
+                const chartObj = {
+                    "Name": "统计图模板",
+                    "WindowType": "Chart",
+                    "EntityId": "Satellite/CARTOSAT-2A_32783",
+                    "ReportName": "固定系位置-速度",
+                    "Display": {
+                        "Box": {
+                            "Name": "固定系位置-速度",
+                            "Offset": [364, 50],
+                            "Area": [500, 320],
+                            "Class": "data-layout"
+                        },
+                        "Content": {
+                            "Offset": [40, 0],
+                            "Area": [],
+                            "Class": "data-content"
+                        }
+                    }
+                }
+                this.jsonDataCopy[0].Settings.push(chartObj)
+            }
+            this.render(this.jsonDataCopy)
+        }
+
         this.addEvent = () => {
+            const _this = this;
             // 增加 setting
             document.getElementById('add-setting').onclick = function () {
                 // 弹窗显示 select 组件
@@ -518,7 +661,6 @@ class FormulaTree {
                     }
                     layer.closeLast()
                 }
-                const _this = this;
                 addSettingLayerIndex = layer.open({
                     type: 1,
                     title: ['选择 setting 类型', 'color:#fff;'],
@@ -529,7 +671,7 @@ class FormulaTree {
                         layui.use('form', function () {
                             const form = layui.form;
                             form.render('select'); // 渲染 select 组件
-                        });
+                        })
 
                         // 绑定确定按钮
                         document.getElementById('add-setting-confirm').onclick = function () {                            // 获取选择的 setting 类型
@@ -537,8 +679,9 @@ class FormulaTree {
                             const selectedSettingType = selectElem.value;
                             console.log('selectedSettingType:', selectedSettingType);
                             if (selectedSettingType) {
-                                // 在 jsonData 中增加一个新的 setting
                                 closeAddSettingLayer()
+                                // 在 jsonData 中增加一个新的 setting
+                                _this.addSettingTemplate(selectedSettingType)
                             } else {
                                 layer.msg('请选择 setting 的类型')
                             }
