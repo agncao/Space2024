@@ -305,40 +305,44 @@ class FormulaTree {
 
         let self = this;
         this.init = (jsonData) => {
-            return jsonData.map(item => ({
-                title: item.Name || 设置方案名称,
-                id: item.Id,
-                spread: true,
-                children: [
-                    { title: `ScenarioName: ${item.ScenarioName}`, id: `${item.Id}-scenarioname` },
-                    { title: `Host: ${item.Host}`, id: `${item.Id}-host` },
-                    { title: `CentralBody: ${item.CentralBody}`, id: `${item.Id}-centralbody` },
-                    { title: `Parser: ${item.Parser}`, id: `${item.Id}-parser` },
-                    { title: `Description: ${item.Description}`, id: `${item.Id}-description` },
-                    {
-                        title: 'Settings',
-                        id: `${item.Id}-settings`,
-                        children: item.Settings.map((setting, index) => ({
-                            title: setting.Name || 'Unnamed Setting',
-                            id: `${item.Id}-setting-${index}`,
-                            children: [
-                                { title: `WindowType: ${setting.WindowType}`, id: `${item.Id}-setting-${index}-windowtype` },
-                                { title: `EntityId: ${setting.EntityId}`, id: `${item.Id}-setting-${index}-entityid` },
-                                { title: `ReportName: ${setting.ReportName}`, id: `${item.Id}-setting-${index}-reportname` },
-                                {
-                                    title: 'Display',
-                                    id: `${item.Id}-setting-${index}-display`,
-                                    children: [
-                                        { title: `Box Name: ${setting.Display.Box.Name}`, id: `${item.Id}-setting-${index}-display-box-name` },
-                                        { title: `Box Offset: ${setting.Display.Box.Offset.join(', ')}`, id: `${item.Id}-setting-${index}-display-box-offset` },
-                                        { title: `Content Offset: ${setting.Display.Content.Offset.join(', ')}`, id: `${item.Id}-setting-${index}-display-content-offset` }
-                                    ]
-                                }
-                            ]
-                        }))
-                    }
-                ]
-            }));
+            console.log("🚀 ~ FormulaTree ~ constructor ~ jsonData:", jsonData)
+            return jsonData.map(item => {
+                console.log("🚀 ~ FormulaTree ~ constructor ~ item:", item)
+                return {
+                    title: item.Name || 设置方案名称,
+                    id: item.Id,
+                    spread: true,
+                    children: [
+                        { title: `ScenarioName: ${item.ScenarioName}`, id: `${item.Id}-scenarioname` },
+                        { title: `Host: ${item.Host}`, id: `${item.Id}-host` },
+                        { title: `CentralBody: ${item.CentralBody}`, id: `${item.Id}-centralbody` },
+                        { title: `Parser: ${item.Parser}`, id: `${item.Id}-parser` },
+                        { title: `Description: ${item.Description}`, id: `${item.Id}-description` },
+                        {
+                            title: 'Settings',
+                            id: `${item.Id}-settings`,
+                            children: item.Settings.map((setting, index) => ({
+                                title: setting.Name || 'Unnamed Setting',
+                                id: `${item.Id}-setting-${index}`,
+                                children: [
+                                    { title: `WindowType: ${setting.WindowType}`, id: `${item.Id}-setting-${index}-windowtype` },
+                                    { title: `EntityId: ${setting.EntityId}`, id: `${item.Id}-setting-${index}-entityid` },
+                                    { title: `ReportName: ${setting.ReportName}`, id: `${item.Id}-setting-${index}-reportname` },
+                                    {
+                                        title: 'Display',
+                                        id: `${item.Id}-setting-${index}-display`,
+                                        children: [
+                                            { title: `Box Name: ${setting.Display.Box.Name}`, id: `${item.Id}-setting-${index}-display-box-name` },
+                                            { title: `Box Offset: ${setting.Display.Box.Offset.join(', ')}`, id: `${item.Id}-setting-${index}-display-box-offset` },
+                                            { title: `Content Offset: ${setting.Display.Content.Offset.join(', ')}`, id: `${item.Id}-setting-${index}-display-content-offset` }
+                                        ]
+                                    }
+                                ]
+                            }))
+                        }
+                    ]
+                }
+            });
         };
         this.render = (jsonData) => {
             this.layerui.tree.render({
@@ -347,21 +351,31 @@ class FormulaTree {
                 showLine: true,
                 isJump: true, // 是否允许点击节点时弹出新窗口跳转
                 click: function (obj) {
+                    console.log("🚀 ~ FormulaTree ~ constructor ~ obj:", obj)
                     var data = obj.data;  //获取当前点击的节点数据
-                    self.layerui.layer.prompt({ title: '正在修改' + data.title.split(':')[0] + '的值' },
-                        function (text, index) {
-                            if (!obj.children) {
-                                self.updateSetting(null, data.title.split(':')[0], text, jsonData);
-                            } else {
-                                if (data.title.split(':')[0] !== 'Setting') {
-                                    self.updateSetting(index, data.title.split(':')[0], text, jsonData);
-                                }
-                            }
+                    if (data.title == '态势展示方案' || data.title == 'Settings' || data.title == 'Display') {
+                        return;
+                    }
+                    // 计算 index: 1-setting-1-windowtype
+                    let index = -1;
+                    const id = data.id
+                    // id 中包含 setting，并且 id 中包含 3 个 -
+                    if (id.includes('setting') && id.split('-').length == 4) {
+                        index = id.split('-')[2] || -1
+                    }
+                    console.log("🚀 ~ FormulaTree ~ click ~ index:", index)
+                    self.layerui.layer.prompt(
+                        { title: '正在修改' + data.title.split(':')[0] + '的值' },
+                        function (text, renderIndex) {
+                            const key = data.title.split(':')[0]
+                            self.updateSetting(key, text, jsonData, index);
 
-                            self.layerui.layer.close(index);
-                        });
+                            self.layerui.layer.close(renderIndex);
+                        }
+                    );
                 }
             });
+
             this.toFormula = (treeData) => {
                 return treeData.map(node => {
                     const item = {
@@ -423,12 +437,59 @@ class FormulaTree {
                 render(jsonData);
             };
 
-            this.updateSetting = (index, key, value, jsonData) => {
-                if (!index) {
-                    jsonData[key] = value;
-                } else {
-                    jsonData.Settings[index][key] = value;
-                }
+            // this.updateSetting = (index, key, value, jsonData) => {
+            //     if (!index) {
+            //         jsonData[0][key] = value;
+            //     } else {
+            //         // jsonData[0].Settings[index][key] = value;
+            //     }
+            //     this.render(jsonData);
+            // };
+
+            this.updateSetting = (key, value, jsonData, index) => {
+                console.log("🚀 ~ FormulaTree ~ constructor ~ jsonData:", jsonData)
+                // 找到 jsonData 中对应的 key，然后修改为 value\
+                const data = jsonData[0]
+                Object.keys(data).forEach(objKey => {
+                    if (objKey == key) {
+                        data[key] = value
+                    } else {
+                        const settings = data.Settings
+                        if (index == -1) {
+                            settings.forEach((settingItem) => {
+                                Object.keys(settingItem).forEach(settingKey => {
+                                    if (settingItem[settingKey] == key || settingKey == key) {
+                                        settingItem[settingKey] = value
+                                    }
+                                    if (settingItem.Display) {
+                                        const display = settingItem.Display
+                                        Object.keys(display).forEach(displayKey => {
+                                            if (displayKey == key) {
+                                                display[key] = value
+                                            }
+                                        })
+                                    }
+                                })
+                            })
+                        } else {
+                            const targetSetting = settings[index]
+                            Object.keys(targetSetting).forEach(targetSettingKey => {
+                                if (targetSetting[targetSettingKey] == key || targetSettingKey == key) {
+                                    targetSetting[targetSettingKey] = value
+                                }
+                                if (targetSetting.Display) {
+                                    const display = targetSetting.Display
+                                    Object.keys(display).forEach(displayKey => {
+                                        if (displayKey == key) {
+                                            display[key] = value
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    }
+                })
+
                 this.render(jsonData);
             };
 
@@ -443,5 +504,76 @@ class FormulaTree {
                 if (newReportName) self.updateSetting(index, 'ReportName', newReportName);
             };
         };
+
+        this.addEvent = () => {
+            // 增加 setting
+            document.getElementById('add-setting').onclick = function () {
+                // 弹窗显示 select 组件
+                let addSettingLayerIndex = 0
+                const closeAddSettingLayer = () => {
+                    console.log('closeAddSettingLayer');
+                    const selectElem = document.getElementById('add-setting-select-container');
+                    if (selectElem) {
+                        selectElem.remove();
+                    }
+                    layer.closeLast()
+                }
+                const _this = this;
+                addSettingLayerIndex = layer.open({
+                    type: 1,
+                    title: ['选择 setting 类型', 'color:#fff;'],
+                    shadeClose: true,
+                    shade: false,
+                    area: ['500px', '400px'], // 宽高
+                    success: function (layero, index) {
+                        layui.use('form', function () {
+                            const form = layui.form;
+                            form.render('select'); // 渲染 select 组件
+                        });
+
+                        // 绑定确定按钮
+                        document.getElementById('add-setting-confirm').onclick = function () {                            // 获取选择的 setting 类型
+                            const selectElem = document.getElementById('add-setting-select');
+                            const selectedSettingType = selectElem.value;
+                            console.log('selectedSettingType:', selectedSettingType);
+                            if (selectedSettingType) {
+                                // 在 jsonData 中增加一个新的 setting
+                                closeAddSettingLayer()
+                            } else {
+                                layer.msg('请选择 setting 的类型')
+                            }
+
+                        }
+
+                        // 绑定取消按钮
+                        document.getElementById('add-setting-cancel').onclick = function () {
+                            closeAddSettingLayer()
+                        }
+                    },
+                    content: `
+                    <div id="add-setting-select-container" class="layui-form">
+    <select id="add-setting-select" name="select">
+        <option value="">请选择 setting 的类型</option>
+        <option value="Time">Time</option>
+        <option value="Message">Message</option>
+        <option value="Business">Business</option>
+        <option value="Report">Report</option>
+        <option value="Chart">Chart</option>
+    </select>
+
+    <div class="add-setting-btn-container">
+        <button id="add-setting-cancel" type="button" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
+        <button id="add-setting-confirm" type="button" class="layui-btn layui-bg-blue layui-btn-sm">确定</button>
+    </div>
+</div>
+                    `,
+                });
+            }
+
+            // 保存 json
+            document.getElementById('save-json').onclick = function () {
+                console.log('click save json');
+            }
+        }
     }
 }

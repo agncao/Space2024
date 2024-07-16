@@ -986,6 +986,9 @@
                     let formulaTree = new FormulaTree();
 
                     formulaTree.render(formulaTree.getTemplate());
+                    // 添加事件
+                    formulaTree.addEvent();
+
                     // layui.use(['tree', 'layer'], function () {
                     //     const tree = layui.tree;
                     //     const layer = layui.layer;
@@ -1003,6 +1006,8 @@
                     //           }
                     //     });
                     // });
+
+
                 },
                 content: $('#json-editor'),
             });
