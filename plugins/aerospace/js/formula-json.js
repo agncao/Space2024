@@ -363,17 +363,24 @@ class FormulaTree {
                     }
                     // 计算 index: 1-setting-1-windowtype
                     let index = -1;
+                    // 1-setting-13 通过点击的节点获取 settingChildIndex，用来判断真正修改的节点
+                    let settingChildIndex = -1;
                     const id = data.id
                     // id 中包含 setting，并且 id 中包含 3 个 -
                     if (id.includes('setting') && id.split('-').length == 4) {
                         index = id.split('-')[2] || -1
                     }
                     console.log("🚀 ~ FormulaTree ~ click ~ index:", index)
+                    // id 中包含 setting，并且 id 中包含 2 个 -
+                    if (id.includes('setting') && id.split('-').length == 3) {
+                        settingChildIndex = id.split('-')[2] || -1
+                    }
+                    console.log("🚀 ~ FormulaTree ~ click ~ settingChildIndex:", settingChildIndex)
                     self.layerui.layer.prompt(
                         { title: '正在修改' + data.title.split(':')[0] + '的值' },
                         function (text, renderIndex) {
                             const key = data.title.split(':')[0]
-                            self.updateSetting(key, text, jsonData, index);
+                            self.updateSetting(key, text, jsonData, index, settingChildIndex);
 
                             self.layerui.layer.close(renderIndex);
                         }
@@ -442,25 +449,15 @@ class FormulaTree {
                 render(jsonData);
             };
 
-            // this.updateSetting = (index, key, value, jsonData) => {
-            //     if (!index) {
-            //         jsonData[0][key] = value;
-            //     } else {
-            //         // jsonData[0].Settings[index][key] = value;
-            //     }
-            //     this.render(jsonData);
-            // };
-
-            this.updateSetting = (key, value, jsonData, index) => {
-                console.log("🚀 ~ FormulaTree ~ constructor ~ jsonData:", jsonData)
-                // 找到 jsonData 中对应的 key，然后修改为 value\
+            this.updateSetting = (key, value, jsonData, index, settingChildIndex) => {
+                // 找到 jsonData 中对应的 key，然后修改为 value
                 const data = jsonData[0]
                 Object.keys(data).forEach(objKey => {
                     if (objKey == key) {
                         data[key] = value
                     } else {
                         const settings = data.Settings
-                        if (index == -1) {
+                        if (index == -1 && settingChildIndex == -1) {
                             settings.forEach((settingItem) => {
                                 Object.keys(settingItem).forEach(settingKey => {
                                     if (settingItem[settingKey] == key || settingKey == key) {
@@ -477,20 +474,25 @@ class FormulaTree {
                                 })
                             })
                         } else {
-                            const targetSetting = settings[index]
-                            Object.keys(targetSetting).forEach(targetSettingKey => {
-                                if (targetSetting[targetSettingKey] == key || targetSettingKey == key) {
-                                    targetSetting[targetSettingKey] = value
-                                }
-                                if (targetSetting.Display) {
-                                    const display = targetSetting.Display
-                                    Object.keys(display).forEach(displayKey => {
-                                        if (displayKey == key) {
-                                            display[key] = value
-                                        }
-                                    })
-                                }
-                            })
+                            if (index != -1) {
+                                const targetSetting = settings[index]
+                                Object.keys(targetSetting).forEach(targetSettingKey => {
+                                    if (targetSetting[targetSettingKey] == key || targetSettingKey == key) {
+                                        targetSetting[targetSettingKey] = value
+                                    }
+                                    if (targetSetting.Display) {
+                                        const display = targetSetting.Display
+                                        Object.keys(display).forEach(displayKey => {
+                                            if (displayKey == key) {
+                                                display[key] = value
+                                            }
+                                        })
+                                    }
+                                })
+                            } else if (settingChildIndex != -1) {
+                                const targetSetting = settings[settingChildIndex]
+                                targetSetting.Name = value
+                            }
                         }
                     }
                 })
