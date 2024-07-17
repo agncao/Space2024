@@ -102,3 +102,31 @@
     height: 60px;
     border-top: 1px solid #eee;
 }
+
+.delete-setting-btn-container {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding-right: 20px;
+    height: 60px;
+    border-top: 1px solid #eee;
+}
+
+#delete-setting-layer {
+    height: 100%;
+}
+
+#delete-checkbox-container {
+    overflow: auto;
+    height: calc(100% - 60px);
+}
+
+.layui-form-item {
+    justify-content: unset !important;
+    align-items: unset !important;
+    padding: 0 10px !important;
+}
+
+.layui-form-label {
+    width: auto !important;
+}

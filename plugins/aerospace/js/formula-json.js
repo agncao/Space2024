@@ -649,6 +649,13 @@ class FormulaTree {
             this.render(this.jsonDataCopy)
         }
 
+        this.removeDeleteSetting = (selectedIndices, jsonData) => {
+            selectedIndices.forEach(index => {
+                jsonData[0].Settings.splice(index, 1);
+            })
+            this.render(jsonData);
+        }
+
         this.addEvent = () => {
             const _this = this;
             // 增加 setting
@@ -712,6 +719,105 @@ class FormulaTree {
     </div>
 </div>
                     `,
+                });
+            }
+
+            // 删除 setting
+            document.getElementById('delete-setting').onclick = function () {
+                console.log('click delete setting');
+                // 弹窗显示 checkbox 组件
+                let deleteSettingLayerIndex = 0
+                const closeDeleteSettingLayer = () => {
+                    console.log('closeDeleteSettingLayer');
+                    const selectElem = document.getElementById('delete-setting-select-container');
+                    if (selectElem) {
+                        selectElem.remove();
+                    }
+                    layer.closeLast()
+                }
+                deleteSettingLayerIndex = layer.open({
+                    type: 1,
+                    title: ['选择要删除的 setting', 'color:#fff;'],
+                    shadeClose: true,
+                    shade: false,
+                    area: ['500px', '400px'],
+                    content: `
+                    <div id="delete-setting-layer">
+                        <div id="delete-checkbox-container"></div>
+                        <div class="delete-setting-btn-container">
+                            <button id="delete-setting-cancel" type="button" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
+                            <button id="delete-setting-confirm" type="button" class="layui-btn layui-bg-blue layui-btn-sm">确定</button>
+                        </div>
+                    </div>
+                    `,
+                    success: function (layero, index) {
+
+                        // 动态生成 checkbox 数据
+                        const settings = _this.jsonDataCopy[0].Settings
+                        console.log("🚀 ~ FormulaTree ~ settings:", settings)
+                        const checkboxData = settings.map((setting, index) => ({
+                            value: setting.Name,
+                            title: setting.Name,
+                            index: index
+                        }));
+
+                        // 插入 checkbox 元素
+                        const checkboxContainer = document.getElementById('delete-checkbox-container');
+                        checkboxData.forEach(item => {
+                            const checkboxWrapper = document.createElement('div');
+                            checkboxWrapper.className = 'layui-form-item';
+
+                            const checkboxElem = document.createElement('input');
+                            checkboxElem.type = 'checkbox';
+                            checkboxElem.name = 'checkbox';
+                            checkboxElem.value = item.value;
+                            checkboxElem.title = item.title;
+                            checkboxElem.className = 'layui-checkbox';
+                            checkboxElem.setAttribute('lay-skin', 'primary');
+                            checkboxElem.setAttribute('lay-filter', 'checkbox');
+                            checkboxElem.setAttribute('data-index', item.index);
+                            checkboxWrapper.appendChild(checkboxElem);
+
+                            const labelElem = document.createElement('label');
+                            labelElem.className = 'layui-form-label';
+                            labelElem.innerText = item.title;
+                            checkboxWrapper.appendChild(labelElem);
+
+                            checkboxContainer.appendChild(checkboxWrapper);
+                        });
+
+                        layui.use('form', function () {
+                            const form = layui.form;
+                            form.render('checkbox'); // 渲染 checkbox 组件
+                        })
+
+                        // 绑定确定按钮
+                        document.getElementById('delete-setting-confirm').onclick = function () {
+                            // 获取 checkbox 的选中项
+                            const checkboxElems = document.querySelectorAll('#delete-checkbox-container input[type="checkbox"]:checked');
+                            console.log("🚀 ~ FormulaTree ~ checkboxElems:", checkboxElems)
+                            const selectedIndices = Array.from(checkboxElems).map(elem => elem.getAttribute('data-index'));
+                            console.log('Selected Indices:', selectedIndices);
+                            if (selectedIndices.length > 0) {
+                                _this.removeDeleteSetting(selectedIndices, _this.jsonDataCopy)
+                                closeDeleteSettingLayer()
+                            } else {
+                                layer.msg('请选择要删除的 setting')
+                            }
+                        }
+
+                        // 绑定取消按钮
+                        document.getElementById('delete-setting-cancel').onclick = function () {
+                            closeDeleteSettingLayer()
+                        }
+                    },
+                    end: function () {
+                        // 在弹出层关闭时移除 checkbox 组件
+                        const checkboxContainer = document.getElementById('delete-checkbox-container');
+                        if (checkboxContainer) {
+                            checkboxContainer.innerHTML = '';
+                        }
+                    }
                 });
             }
 
