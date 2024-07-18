@@ -692,7 +692,9 @@ class FormulaTree {
                                 // 在 jsonData 中增加一个新的 setting
                                 _this.addSettingTemplate(selectedSettingType)
                             } else {
-                                layer.msg('请选择 setting 的类型')
+                                layer.msg('请选择 setting 的类型', {
+                                    time: 2000
+                                })
                             }
 
                         }
@@ -823,7 +825,38 @@ class FormulaTree {
 
             // 保存 json
             document.getElementById('save-json').onclick = function () {
-                console.log('click save json');
+                console.log('click save json: ', _this.jsonDataCopy);
+                if (!_this.jsonDataCopy || _this.jsonDataCopy.length == 0) {
+                    console.warn('_this.jsonDataCopy is null');
+                    return
+                }
+                const name = "方案" + new Date().getTime() + ".json";
+                const data = {
+                    name: name,
+                    pluginId: 'aerospace',
+                    folder: 'data',
+                    content: JSON.stringify(_this.jsonDataCopy[0]),
+                };
+                $.post(ctx + '/m/pluginFile/uploadFile', data, function (ret) {
+                    if (ret.messageType === 'SUCCESS') {
+                        layer.msg("上传成功！文件路径：" + ret.result);
+                        that.getFiles();
+                    } else {
+                        layer.msg('保存成功');
+                    }
+                });
+
+                // HttpClient.build().post(WebApi.spaceData.uploadFile, {
+                //     pluginId: 'aerospace',
+                //     name: name,
+                //     folder: "data",
+                //     content: JSON.stringify(_this.jsonDataCopy[0])
+                // }, (res) => {
+                //     console.log(' 保存 json res: ', res);
+                //     layer.msg('保存成功');
+                //     closeDeleteSettingLayer();
+                //     _this.jsonDataCopy = [];
+                // });
             }
         }
     }

@@ -879,8 +879,13 @@
         id: "Plugins_aerospace",
         menu: {
             click: function (ele) {
+                // HttpClient.build().get(
+                //     WebApi.spaceData.formulaUrl,
+                //     Aerospace,
+                //     "afterFormulaReceived"
+                // );
                 HttpClient.build().get(
-                    WebApi.spaceData.formulaUrl,
+                    '/m/pluginFile/getFiles?pluginId=aerospace' + '&folder=data' + '&name=',
                     Aerospace,
                     "afterFormulaReceived"
                 );
@@ -891,6 +896,8 @@
          * @param {*} arr json数据 array
          */
         afterFormulaReceived: function (arr) {
+            arr = arr.result;
+            console.log("🚀 ~ Aerospace.afterFormulaReceived ~ arr:", arr)
             let self = this;
             let width = 660;
             openNewLayerIndex = layer.open({
@@ -1209,7 +1216,8 @@
         }
     };
 
-    HttpClient.build().get(WebApi.spaceData.formulaUrl, Aerospace, "afterFormulaReceived");
+    // HttpClient.build().get(WebApi.spaceData.formulaUrl, Aerospace, "afterFormulaReceived");
+    // HttpClient.build().get('/m/pluginFile/getFiles?pluginId=aerospace' + '&folder=data' + '&name=', Aerospace, "afterFormulaReceived");
     //    远程调用方案
     SignalRClient.build(WebApi.spaceData.hub).listen("receiveSpaceData", dataParser);
     Plugins.add(Aerospace);

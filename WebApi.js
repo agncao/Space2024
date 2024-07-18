@@ -170,5 +170,7 @@ const WebApi = {
 		queryFormulaUrl: "{RealTimeUrl}/formula/query",
 		saveUrl: "{RealTimeUrl}/formula/saveScene",
 		czmlUrl: "{RealTimeUrl}/formula/czml",
+		uploadFile: "/m/pluginFile/uploadFile",
+		getFiles: "/m/pluginFile/getFiles",
 	}
 }
