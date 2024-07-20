@@ -5,349 +5,187 @@ class FormulaTree {
 
         this.jsonDataCopy = [];
 
-        this.initialData = [
-            {
-                "Id": "1",
-                "Name": "态势展示方案",
-                "ScenarioName": "航空态势展示",
-                "Host": "https://localhost:7234/receiver",
-                "EpochStartTime": null,
-                "CentralBody": "Earth",
-                "Parser": "spaceDataParser",
-                "Description": "航空态势展示",
-                "Settings": [
-                    {
-                        "Name": "数据报表L1",
-                        "WindowType": "Report",
-                        "EntityId": "Satellite/ICO_G1_32763",
-                        "ReportName": "大地纬度-经度",
-                        "Display": {
-                            "Box": {
-                                "Name": "大地纬度-经度",
-                                "Offset": [106, -50],
-                                "Area": [],
-                                "Class": "data-layout"
-                            },
-                            "Content": {
-                                "Offset": [],
-                                "Area": [0, 0],
-                                "Class": "data-content"
-                            }
-                        }
-                    },
-                    {
-                        "Name": "数据报表L2",
-                        "WindowType": "Report",
-                        "EntityId": "Satellite/ICO_G1_32763",
-                        "ReportName": "固定系位置-速度",
-                        "Display": {
-                            "Box": {
-                                "Name": "固定系位置-速度",
-                                "Offset": [302, -50],
-                                "Area": [],
-                                "Class": "data-layout"
-                            },
-                            "Content": {
-                                "Offset": [32, 4],
-                                "Area": [0, 0],
-                                "Class": "data-content"
-                            }
-                        }
-                    },
-                    {
-                        "Name": "数据报表L3",
-                        "WindowType": "Report",
-                        "EntityId": "Satellite/ICO_G1_32763",
-                        "ReportName": "惯性系位置、速度",
-                        "Display": {
-                            "Box": {
-                                "Name": "惯性系位置、速度",
-                                "Offset": [610, -50],
-                                "Area": [],
-                                "Class": "data-layout"
-                            },
-                            "Content": {
-                                "Offset": [32, 4],
-                                "Area": [0, 0],
-                                "Class": "data-content"
-                            }
-                        }
-                    },
-                    {
-                        "Name": "数据报表L4",
-                        "WindowType": "Report",
-                        "EntityId": "Satellite/CARTOSAT-2A_32783",
-                        "ReportName": "大地纬度-经度-高度-速度大小",
-                        "Display": {
-                            "Box": {
-                                "Name": "大地纬度-经度-高度-速度大小",
-                                "Offset": [908, -50],
-                                "Area": [],
-                                "Class": "data-layout"
-                            },
-                            "Content": {
-                                "Offset": [32, 4],
-                                "Area": [0, 0],
-                                "Class": "data-content"
-                            }
-                        }
-                    },
-                    {
-                        "Name": "数据报表L5",
-                        "WindowType": "Report",
-                        "EntityId": "Satellite/CALSPHERE_1_00900",
-                        "ReportName": "大地纬度-经度",
-                        "Display": {
-                            "Box": {
-                                "Name": "大地纬度-经度",
-                                "Offset": [1168, -50],
-                                "Area": [],
-                                "Class": "data-layout"
-                            },
-                            "Content": {
-                                "Offset": [32, 4],
-                                "Area": [0, 0],
-                                "Class": "data-content"
-                            }
-                        }
-                    },
-                    {
-                        "Name": "XXX统计图1",
-                        "WindowType": "Chart",
-                        "EntityId": "Satellite/CARTOSAT-2A_32783",
-                        "ReportName": "固定系位置-速度",
-                        "Display": {
-                            "Box": {
-                                "Name": "固定系位置-速度",
-                                "Offset": [364, 50],
-                                "Area": [500, 320],
-                                "Class": "data-layout"
-                            },
-                            "Content": {
-                                "Offset": [40, 0],
-                                "Area": [],
-                                "Class": "data-content"
-                            }
-                        }
-                    },
-                    {
-                        "Name": "XXX统计图2",
-                        "WindowType": "Chart",
-                        "EntityId": "Satellite/CARTOSAT-2A_32783",
-                        "ReportName": "Beta角度",
-                        "Display": {
-                            "Box": {
-                                "Name": "Beta角度",
-                                "Offset": [714, 50],
-                                "Area": [500, 320],
-                                "Class": "data-layout"
-                            },
-                            "Content": {
-                                "Offset": [40, 0],
-                                "Area": [],
-                                "Class": "data-content"
-                            }
-                        }
-                    },
-                    {
-                        "Name": "时间T1",
-                        "WindowType": "Time",
-                        "Precision": 3,
-                        "EntityId": "",
-                        "Display": {
-                            "Box": {
-                                "Name": "仿真时间",
-                                "Offset": [33, 680],
-                                "Area": [430, 40],
-                                "Class": "time-layout"
-                            },
-                            "Content": {
-                                "Offset": [0, 0],
-                                "Area": [],
-                                "Class": ""
-                            },
-                            "Items": "UTCG"
-                        }
-                    },
-                    {
-                        "Name": "时间T2",
-                        "WindowType": "Time",
-                        "Precision": 3,
-                        "EntityId": "",
-                        "Display": {
-                            "Box": {
-                                "Name": "仿真时间",
-                                "Offset": [33, -700],
-                                "Area": [250, 40],
-                                "Class": "time-layout"
-                            },
-                            "Content": {
-                                "Offset": [0, 0],
-                                "Area": [],
-                                "Class": ""
-                            },
-                            "Items": "EpSec"
-                        }
-                    },
-                    {
-                        "Name": "消息M1",
-                        "WindowType": "Message",
-                        "EntityId": "",
-                        "Display": {
-                            "Box": {
-                                "Name": "消息",
-                                "Offset": [1062, 50],
-                                "Area": [500, 254],
-                                "Class": "data-layout"
-                            },
-                            "Content": {
-                                "Offset": [15, 0],
-                                "Area": [],
-                                "Class": "message"
-                            },
-                            "Items": [
-                                {
-                                    "Id": "Level",
-                                    "Label": "级别"
-                                },
-                                {
-                                    "Id": "EntityId",
-                                    "Label": "实体Id"
-                                },
-                                {
-                                    "Id": "Content",
-                                    "Label": "内容"
-                                },
-                                {
-                                    "Id": "Time",
-                                    "Label": "消息时间"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "Name": "温度计R1",
-                        "WindowType": "Business",
-                        "EntityId": "",
-                        "Display": {
-                            "ChartType": "Thermometer",
-                            "Box": {
-                                "Name": "平均温度",
-                                "Offset": [120, 312],
-                                "Area": [238, 216],
-                                "Class": "data-layout"
-                            },
-                            "Content": {
-                                "Offset": [32, 0],
-                                "Area": [],
-                                "Class": "data-content"
-                            },
-                            "Items": [
-                                {
-                                    "Id": "averageTemperature",
-                                    "Label": "平均温度"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "Name": "温度仪表盘",
-                        "WindowType": "Business",
-                        "EntityId": "",
-                        "Display": {
-                            "ChartType": "Gauge",
-                            "Box": {
-                                "Name": "环境温度",
-                                "Offset": [120, 50],
-                                "Area": [238, 216],
-                                "Class": "data-layout"
-                            },
-                            "Content": {
-                                "Offset": [32, 0],
-                                "Area": [],
-                                "Class": "data-content"
-                            },
-                            "Items": [
-                                {
-                                    "Id": "enveromentTemperature",
-                                    "Label": "环境温度"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "Name": "航天态势数据大屏",
-                        "WindowType": "Header",
-                        "EntityId": "",
-                        "Display": {
-                            "Box": {
-                                "Name": "",
-                                "Offset": [0, 0],
-                                "Area": ["100%", 100],
-                                "Class": "page-title-layout"
-                            },
-                            "Content": {
-                                "Offset": [4, 4],
-                                "Area": [],
-                                "Class": "page-title-text-box"
-                            }
-                        }
-                    }
-                ]
-            }
-        ]
+        this.initialData = [{
+            Id: null,
+            Name: "态势展示方案",
+            ScenarioName: "航空态势展示",
+            Host: "https://localhost:7234/receiver",
+            CentralBody: "Earth",
+            EpochStartTime: null,
+            Parser: "spaceDataParser",
+            Description: "航空态势展示",
+            Settings: []
+        }];
 
         this.layerui = layui.use(['tree', 'layer'], function () {
             return { tree: layui.tree, layer: layui.layer };
         });
-
+        this.getSettingTemplate = (settingName, windowType, reportName, entityId,
+            boxOff, boxArea, contentOff, contentArea,
+            items, bizChartType) => {
+            let obj = {
+                Name: settingName,
+                WindowType: windowType,
+                EntityId: entityId,
+                ReportName: reportName,
+                Display: {
+                    Box: {
+                        Name: reportName,
+                        Offset: boxOff,
+                        Area: boxArea,
+                        Class: "data-layout"
+                    },
+                    Content: {
+                        Offset: contentOff,
+                        Area: contentArea,
+                        Class: "data-content"
+                    }
+                }
+            }
+            if (windowType === "Time") {
+                obj.Precision = 3;
+                obj.Display.Items = items[0];
+                obj.Display.Box.Class = "time-layout";
+                obj.Display.Content.Class = "";
+            }
+            if (windowType === "Message") {
+                obj.Display.Box.Class = "data-layout";
+                obj.Display.Content.Class = "message";
+                obj.Display.Items = items;
+            }
+            if (windowType === "Business") {
+                obj.Display.ChartType = bizChartType;
+                obj.Display.Items = items;
+            }
+            if (windowType === "Header") {
+                obj.Display.Box.Class = "page-title-layout";
+                obj.Display.Content.Class = "page-title-text-box";
+            }
+            return obj;
+        };
         this.getTemplate = () => {
+            let self = this;
+            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-1", "Report", "大地纬度-经度", "Satellite/ICO_G1_32763", [106, -50], [], [], [0, 0]));
+            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-2", "Report", "固定系位置-速度", "Satellite/ICO_G1_32763", [302, -50], [], [32, 4], [0, 0]));
+            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-3", "Report", "惯性系位置、速度", "Satellite/ICO_G1_32763", [610, -50], [], [32, 4], [0, 0]));
+            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-4", "Report", "Beta角度", "Satellite/ICO_G1_32763", [908, -50], [], [32, 4], [0, 0]));
+            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-5", "Report", "Beta角度", "Satellite/ICO_G1_32763", [1168, -50], [], [32, 4], [0, 0]));
+            this.initialData[0].Settings.push(self.getSettingTemplate("统计图-1", "Chart", "固定系位置-速度", "Satellite/CARTOSAT-2A_32783", [364, 50], [500, 320], [40, 0], []));
+            this.initialData[0].Settings.push(self.getSettingTemplate("统计图-2", "Chart", "Beta角度", "Satellite/CARTOSAT-2A_32783", [714, 50], [500, 320], [40, 0], []));
+            this.initialData[0].Settings.push(self.getSettingTemplate("时间-1", "Time", "时间", "", [33, 680], [430, 40], [0, 0], [], ["UTCG"]));
+            this.initialData[0].Settings.push(self.getSettingTemplate("时间-2", "Time", "时间", "", [33, -700], [250, 40], [0, 0], [], ["EpSec"]));
+            this.initialData[0].Settings.push(self.getSettingTemplate("消息-1", "Message", "消息", "", [1062, 50], [500, 254], [15, 0], [], [
+                { Id: "Level", Label: "级别" },
+                { Id: "EntityId", Label: "实体Id" },
+                { Id: "Content", Label: "内容" },
+                { Id: "Time", Label: "消息时间" }
+            ]));
+            this.initialData[0].Settings.push(self.getSettingTemplate("温度计", "Business", "温度计", "", [120, 312], [238, 216], [32, 0], [], [{ id: "averageTemperature", Label: "平均温度" }], "Thermometer"));
+            this.initialData[0].Settings.push(self.getSettingTemplate("温度仪表盘", "Business", "温度计", "", [120, 312], [238, 216], [32, 0], [], [{ id: "enveromentTemperature", Label: "环境温度" }], "Gauge"));
+            this.initialData[0].Settings.push(self.getSettingTemplate("航天态势数据大屏", "Header", "", "", [0, 0], ["100%", 100], [4, 4], []));
+
             let data = JSON.parse(JSON.stringify(this.initialData));
-            data.Id = (new Date()).getTime();
+            data[0].Id = (new Date()).getTime();
             return data;
         }
 
         let self = this;
         this.init = (jsonData) => {
-            console.log("🚀 ~ FormulaTree ~ constructor ~ jsonData:", jsonData)
+            function getSettingTree(item, setting, index) {
+                function arrayToStr(arr) {
+                    if (!arr) arr = [];
+                    return JSON.stringify(arr);
+                }
+                function getLeafNode(property, value, idPath = property, valueType = 'key-value') {
+                    if (property) {
+                        return { title: `${property}: ${value}`, id: `${item.Id}-setting-${index}-${idPath}`, setId: index, nodeType: 'leaf', valueType: valueType };
+                    }
+                    return { title: `${value}`, id: `${item.Id}-setting-${index}-${idPath}`, setId: index, nodeType: 'leaf', valueType: valueType };
+                }
+                function getKeyNode(keyword, idPath = keyword) {
+                    return { title: `${keyword}`, id: `${item.Id}-setting-${index}-${idPath}`, setId: index, nodeType: 'keyword' };
+                }
+                function getDisplayChildren() {
+                    let res = [];
+                    if (setting.WindowType === "Business" || setting.WindowType === "Message") {
+                        let node = getKeyNode('Items', 'display-items');
+                        node.children = [];
+                        for (let i = 0; i < setting.Display.Items.length; i++) {
+                            let str = JSON.stringify(setting.Display.Items[i]);
+                            node.children.push(getLeafNode(null, str, 'display-items-' + i, 'json'));
+                        }
+                        res.push(node);
+                    }
+                    if (setting.WindowType === "Business") {
+                        res.push(getLeafNode('ChartType', setting.Display.ChartType, 'display-chartType'));
+                    }
+                    if (setting.WindowType === "Time") {
+                        res.push(getLeafNode('Items', arrayToStr(setting.Display.Items), 'display-items'));
+                    }
+
+                    let node = getKeyNode('Box', 'display-box');
+                    node.children = [
+                        getLeafNode('Name', arrayToStr(setting.Display.Box.Name), 'display-box-name'),
+                        getLeafNode('Offset', arrayToStr(setting.Display.Box.Offset), 'display-box-offset'),
+                        getLeafNode('Area', arrayToStr(setting.Display.Box.Area), 'display-box-area'),
+                        getLeafNode('Class', setting.Display.Box.Class, 'display-box-class'),
+                    ];
+                    res.push(node);
+
+                    node = getKeyNode('Content', 'display-content');
+                    node.children = [
+                        getLeafNode('Offset', arrayToStr(setting.Display.Content.Offset), 'display-content-offset'),
+                        getLeafNode('Area', arrayToStr(setting.Display.Content.Area), 'display-content-area'),
+                        getLeafNode('Class', setting.Display.Content.Class, 'display-content-class'),
+                    ];
+                    res.push(node);
+                    return res;
+                }
+                let obj = {
+                    title: setting.Name || '输入设置名称',
+                    id: `${item.Id}-setting-${index}`,
+                    setId: index,
+                    nodeType: 'node',
+                    children: []
+                }
+                obj.children.push(getLeafNode('WindowType', setting.WindowType));
+                if (setting.WindowType === "Report" || setting.WindowType === "Chart") {
+                    obj.children.push(getLeafNode('EntityId', setting.EntityId));
+                    obj.children.push(getLeafNode('ReportName', setting.ReportName));
+                } else if (setting.WindowType === "Time") {
+                    obj.children.push(getLeafNode('Precision', setting.Precision));
+                }
+                let displayNode = getKeyNode('Display');
+                displayNode.children = getDisplayChildren();
+                obj.children.push(displayNode);
+
+                return obj;
+            };
+
             return jsonData.map(item => {
-                console.log("🚀 ~ FormulaTree ~ constructor ~ item:", item)
-                return {
+                let treeData = {
                     title: item.Name || 设置方案名称,
                     id: item.Id,
                     spread: true,
+                    nodeType: 'root',
                     children: [
-                        { title: `ScenarioName: ${item.ScenarioName}`, id: `${item.Id}-scenarioname` },
-                        { title: `Host: ${item.Host}`, id: `${item.Id}-host` },
-                        { title: `CentralBody: ${item.CentralBody}`, id: `${item.Id}-centralbody` },
-                        { title: `Parser: ${item.Parser}`, id: `${item.Id}-parser` },
-                        { title: `Description: ${item.Description}`, id: `${item.Id}-description` },
+                        { title: `ScenarioName: ${item.ScenarioName}`, id: `${item.Id}-scenarioname`, nodeType: 'leaf' },
+                        { title: `Host: ${item.Host}`, id: `${item.Id}-host`, nodeType: 'leaf' },
+                        { title: `CentralBody: ${item.CentralBody}`, id: `${item.Id}-centralbody`, nodeType: 'leaf' },
+                        { title: `Parser: ${item.Parser}`, id: `${item.Id}-parser`, nodeType: 'leaf' },
+                        { title: `Description: ${item.Description}`, id: `${item.Id}-description`, nodeType: 'leaf' },
                         {
                             title: 'Settings',
                             id: `${item.Id}-settings`,
-                            children: item.Settings.map((setting, index) => ({
-                                title: setting.Name || 'Unnamed Setting',
-                                id: `${item.Id}-setting-${index}`,
-                                children: [
-                                    { title: `WindowType: ${setting.WindowType}`, id: `${item.Id}-setting-${index}-windowtype` },
-                                    { title: `EntityId: ${setting.EntityId}`, id: `${item.Id}-setting-${index}-entityid` },
-                                    { title: `ReportName: ${setting.ReportName}`, id: `${item.Id}-setting-${index}-reportname` },
-                                    {
-                                        title: 'Display',
-                                        id: `${item.Id}-setting-${index}-display`,
-                                        children: [
-                                            { title: `Box Name: ${setting.Display.Box.Name}`, id: `${item.Id}-setting-${index}-display-box-name` },
-                                            { title: `Box Offset: ${setting.Display.Box.Offset.join(', ')}`, id: `${item.Id}-setting-${index}-display-box-offset` },
-                                            { title: `Content Offset: ${setting.Display.Content.Offset.join(', ')}`, id: `${item.Id}-setting-${index}-display-content-offset` }
-                                        ]
-                                    }
-                                ]
-                            }))
+                            nodeType: 'keyword',
+                            children: item.Settings.map((setting, index) => getSettingTree(item, setting, index))
                         }
                     ]
                 }
+                return treeData;
             });
         };
+
         this.render = (jsonData) => {
             this.jsonDataCopy = JSON.parse(JSON.stringify(jsonData));
             this.layerui.tree.render({
@@ -356,28 +194,12 @@ class FormulaTree {
                 showLine: true,
                 isJump: true, // 是否允许点击节点时弹出新窗口跳转
                 click: function (obj) {
-                    console.log("🚀 ~ FormulaTree ~ constructor ~ obj:", obj)
                     var data = obj.data;  //获取当前点击的节点数据
-                    if (data.title == '态势展示方案' || data.title == 'Settings' || data.title == 'Display') {
+                    if (data.nodeType == 'keyword') {
                         return;
                     }
-                    // 计算 index: 1-setting-1-windowtype
-                    let index = -1;
-                    // 1-setting-13 通过点击的节点获取 settingChildIndex，用来判断真正修改的节点
-                    let settingChildIndex = -1;
-                    const id = data.id
-                    // id 中包含 setting，并且 id 中包含 3 个 -
-                    if (id.includes('setting') && id.split('-').length == 4) {
-                        index = id.split('-')[2] || -1
-                    }
-                    console.log("🚀 ~ FormulaTree ~ click ~ index:", index)
-                    // id 中包含 setting，并且 id 中包含 2 个 -
-                    if (id.includes('setting') && id.split('-').length == 3) {
-                        settingChildIndex = id.split('-')[2] || -1
-                    }
-                    console.log("🚀 ~ FormulaTree ~ click ~ settingChildIndex:", settingChildIndex)
+                    let index = data.setId;
                     self.layerui.layer.prompt(
-                        { title: '正在修改' + data.title.split(':')[0] + '的值' },
                         function (text, renderIndex) {
                             const key = data.title.split(':')[0]
                             self.updateSetting(key, text, jsonData, index, settingChildIndex);
@@ -421,32 +243,6 @@ class FormulaTree {
                     };
                     return item;
                 });
-            };
-            this.addSetting = () => {
-                formData.Settings.push({
-                    Name: '',
-                    WindowType: 'Report',
-                    EntityId: '',
-                    ReportName: '',
-                    Display: {
-                        Box: {
-                            Name: '',
-                            Offset: [],
-                            Area: [],
-                            Class: ''
-                        },
-                        Content: {
-                            Offset: [],
-                            Area: [],
-                            Class: ''
-                        }
-                    }
-                });
-                render(jsonData);
-            };
-            this.removeSetting = (index, jsonData) => {
-                jsonData.Settings.splice(index, 1);
-                render(jsonData);
             };
 
             this.updateSetting = (key, value, jsonData, index, settingChildIndex) => {
@@ -513,138 +309,22 @@ class FormulaTree {
         };
 
         this.addSettingTemplate = (selectedSettingType) => {
-            console.log('addSetting selectedSettingType: ', selectedSettingType);
-            console.log('addSetting this.jsonDataCopy: ', this.jsonDataCopy);
             // 根据不同的类型创建 setting 对象
             if (selectedSettingType == 'Time') {
-                const timeObj = {
-                    "Name": "时间模板",
-                    "WindowType": "Time",
-                    "Precision": 3,
-                    "EntityId": "",
-                    "Display": {
-                        "Box": {
-                            "Name": "仿真时间",
-                            "Offset": [33, 680],
-                            "Area": [430, 40],
-                            "Class": "time-layout"
-                        },
-                        "Content": {
-                            "Offset": [0, 0],
-                            "Area": [],
-                            "Class": ""
-                        },
-                        "Items": "UTCG"
-                    }
-                }
-                this.jsonDataCopy[0].Settings.push(timeObj)
+                this.jsonDataCopy[0].Settings.push(this.getSettingTemplate("时间模板", "Time", "时间", "", [33, 680], [430, 40], [0, 0], [], ["UTCG"]))
             } else if (selectedSettingType == 'Message') {
-                const messageObj = {
-                    "Name": "消息模板",
-                    "WindowType": "Message",
-                    "EntityId": "",
-                    "Display": {
-                        "Box": {
-                            "Name": "消息",
-                            "Offset": [1062, 50],
-                            "Area": [500, 254],
-                            "Class": "data-layout"
-                        },
-                        "Content": {
-                            "Offset": [15, 0],
-                            "Area": [],
-                            "Class": "message"
-                        },
-                        "Items": [
-                            {
-                                "Id": "Level",
-                                "Label": "级别"
-                            },
-                            {
-                                "Id": "EntityId",
-                                "Label": "实体Id"
-                            },
-                            {
-                                "Id": "Content",
-                                "Label": "内容"
-                            },
-                            {
-                                "Id": "Time",
-                                "Label": "消息时间"
-                            }
-                        ]
-                    }
-                }
-                this.jsonDataCopy[0].Settings.push(messageObj)
+                this.jsonDataCopy[0].Settings.push(this.getSettingTemplate("消息模板1", "Message", "消息", "", [1062, 50], [500, 254], [15, 0], [], [
+                    { Id: "Level", Label: "级别" },
+                    { Id: "EntityId", Label: "实体Id" },
+                    { Id: "Content", Label: "内容" },
+                    { Id: "Time", Label: "消息时间" }
+                ]))
             } else if (selectedSettingType == 'Business') {
-                const bussinessObj = {
-                    "Name": "温度计模板",
-                    "WindowType": "Business",
-                    "EntityId": "",
-                    "Display": {
-                        "ChartType": "Thermometer",
-                        "Box": {
-                            "Name": "平均温度",
-                            "Offset": [120, 312],
-                            "Area": [238, 216],
-                            "Class": "data-layout"
-                        },
-                        "Content": {
-                            "Offset": [32, 0],
-                            "Area": [],
-                            "Class": "data-content"
-                        },
-                        "Items": [
-                            {
-                                "Id": "averageTemperature",
-                                "Label": "平均温度"
-                            }
-                        ]
-                    }
-                }
-                this.jsonDataCopy[0].Settings.push(bussinessObj)
+                this.jsonDataCopy[0].Settings.push(this.getSettingTemplate("温度计模板", "Business", "温度计", "", [120, 312], [238, 216], [32, 0], [{ id: "averageTemperature", Label: "平均温度" }], "Thermometer"))
             } else if (selectedSettingType == 'Report') {
-                const reportObj = {
-                    "Name": "数据报表模板",
-                    "WindowType": "Report",
-                    "EntityId": "Satellite/ICO_G1_32763",
-                    "ReportName": "大地纬度-经度",
-                    "Display": {
-                        "Box": {
-                            "Name": "大地纬度-经度",
-                            "Offset": [106, -50],
-                            "Area": [],
-                            "Class": "data-layout"
-                        },
-                        "Content": {
-                            "Offset": [],
-                            "Area": [0, 0],
-                            "Class": "data-content"
-                        }
-                    }
-                }
-                this.jsonDataCopy[0].Settings.push(reportObj)
+                this.jsonDataCopy[0].Settings.push(this.getSettingTemplate("数据报表模板", "Report", "大地纬度-经度", "Satellite/ICO_G1_32763", [106, -50], [], [], [0, 0]))
             } else if (selectedSettingType == 'Chart') {
-                const chartObj = {
-                    "Name": "统计图模板",
-                    "WindowType": "Chart",
-                    "EntityId": "Satellite/CARTOSAT-2A_32783",
-                    "ReportName": "固定系位置-速度",
-                    "Display": {
-                        "Box": {
-                            "Name": "固定系位置-速度",
-                            "Offset": [364, 50],
-                            "Area": [500, 320],
-                            "Class": "data-layout"
-                        },
-                        "Content": {
-                            "Offset": [40, 0],
-                            "Area": [],
-                            "Class": "data-content"
-                        }
-                    }
-                }
-                this.jsonDataCopy[0].Settings.push(chartObj)
+                this.jsonDataCopy[0].Settings.push(this.getSettingTemplate("统计图模板", "Chart", "固定系位置-速度", "Satellite/CARTOSAT-2A_32783", [364, 50], [500, 320], [40, 0], []))
             }
             this.render(this.jsonDataCopy)
         }
@@ -686,7 +366,6 @@ class FormulaTree {
                         document.getElementById('add-setting-confirm').onclick = function () {                            // 获取选择的 setting 类型
                             const selectElem = document.getElementById('add-setting-select');
                             const selectedSettingType = selectElem.value;
-                            console.log('selectedSettingType:', selectedSettingType);
                             if (selectedSettingType) {
                                 closeAddSettingLayer()
                                 // 在 jsonData 中增加一个新的 setting
@@ -699,27 +378,26 @@ class FormulaTree {
 
                         }
 
-                        // 绑定取消按钮
                         document.getElementById('add-setting-cancel').onclick = function () {
                             closeAddSettingLayer()
                         }
                     },
                     content: `
-                    <div id="add-setting-select-container" class="layui-form">
-    <select id="add-setting-select" name="select">
-        <option value="">请选择 setting 的类型</option>
-        <option value="Time">Time</option>
-        <option value="Message">Message</option>
-        <option value="Business">Business</option>
-        <option value="Report">Report</option>
-        <option value="Chart">Chart</option>
-    </select>
+                        <div id="add-setting-select-container" class="layui-form">
+                            <select id="add-setting-select" name="select">
+                                <option value="">请选择 setting 的类型</option>
+                                <option value="Time">Time</option>
+                                <option value="Message">Message</option>
+                                <option value="Business">Business</option>
+                                <option value="Report">Report</option>
+                                <option value="Chart">Chart</option>
+                            </select>
 
-    <div class="add-setting-btn-container">
-        <button id="add-setting-cancel" type="button" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
-        <button id="add-setting-confirm" type="button" class="layui-btn layui-bg-blue layui-btn-sm">确定</button>
-    </div>
-</div>
+                            <div class="add-setting-btn-container">
+                                <button id="add-setting-cancel" type="button" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
+                                <button id="add-setting-confirm" type="button" class="layui-btn layui-bg-blue layui-btn-sm">确定</button>
+                            </div>
+                        </div>
                     `,
                 });
             }
