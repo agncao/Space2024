@@ -130,3 +130,7 @@
 .layui-form-label {
     width: auto !important;
 }
+
+.layui-layer-title {
+    color: white !important;
+}

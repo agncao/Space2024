@@ -198,11 +198,38 @@ class FormulaTree {
                     if (data.nodeType == 'keyword') {
                         return;
                     }
-                    let index = data.setId;
+                    const isKeyValue = data.valueType == 'key-value'
+                    console.log("🚀 ~ FormulaTree ~ constructor ~ isKeyValue:", isKeyValue)
+                    let index = -1;
+                    let itemIndex = -1;
+                    const id = data.id + '';
+                    const len = id.split('-').length
+                    let boxOrContent = ''; // box or content or items
+                    console.log("🚀 ~ FormulaTree ~ constructor ~ len:", len)
+                    if (len == 6) {
+                        // 1721583270712-setting-1-display-content-class
+                        boxOrContent = id.split('-')[4]
+                        console.log("🚀 ~ FormulaTree ~ constructor ~ boxOrContent:", boxOrContent)
+                        if (boxOrContent == 'items') {
+                            itemIndex = id.split('-')[5]
+                            console.log("🚀 ~ FormulaTree ~ constructor ~ itemIndex:", itemIndex)
+                        }
+                    }
+                    if (id.includes('setting') && len > 2) {
+                        index = id.split('-')[2]
+                    }
+                    console.log("🚀 ~ FormulaTree ~ click ~ index:", index)
                     self.layerui.layer.prompt(
                         function (text, renderIndex) {
-                            const key = data.title.split(':')[0]
-                            self.updateSetting(key, text, jsonData, index, settingChildIndex);
+                            const dataArr = data.title.split(':')
+                            console.log("🚀 ~ FormulaTree ~ constructor ~ dataArr:", dataArr)
+                            const changeId = data.id;
+                            if (dataArr.length > 1) {
+                                const key = dataArr[0]
+                                self.updateSetting(key, text, jsonData, index, changeId, len, boxOrContent, isKeyValue, itemIndex);
+                            } else {
+                                self.updateSetting(null, text, jsonData, index, changeId, len, boxOrContent, isKeyValue, itemIndex);
+                            }
 
                             self.layerui.layer.close(renderIndex);
                         }
@@ -245,53 +272,85 @@ class FormulaTree {
                 });
             };
 
-            this.updateSetting = (key, value, jsonData, index, settingChildIndex) => {
+            this.updateSetting = (key, value, jsonData, index, changeId, len, boxOrContent, isKeyValue, itemIndex) => {
                 // 找到 jsonData 中对应的 key，然后修改为 value
                 const data = jsonData[0]
-                Object.keys(data).forEach(objKey => {
-                    if (objKey == key) {
-                        data[key] = value
-                    } else {
-                        const settings = data.Settings
-                        if (index == -1 && settingChildIndex == -1) {
-                            settings.forEach((settingItem) => {
-                                Object.keys(settingItem).forEach(settingKey => {
-                                    if (settingItem[settingKey] == key || settingKey == key) {
-                                        settingItem[settingKey] = value
-                                    }
-                                    if (settingItem.Display) {
-                                        const display = settingItem.Display
-                                        Object.keys(display).forEach(displayKey => {
-                                            if (displayKey == key) {
-                                                display[key] = value
-                                            }
-                                        })
-                                    }
-                                })
+                let isFind = false;
+                if (key) {
+                    if (index == -1) {
+                        Object.keys(data).forEach(objKey => {
+                            if (objKey == key) {
+                                isFind = true;
+                                data[key] = value
+                            }
+                        })
+                    }
+
+                    if (!isFind) {
+                        const settings = data.Settings;
+                        console.log("🚀 ~ FormulaTree ~ constructor ~ settings:", settings)
+                        console.log("🚀 ~ FormulaTree ~ constructor ~ len:", len)
+                        const targetSettingsItem = settings[index]
+                        console.log("🚀 ~ FormulaTree ~ constructor ~ targetSettingsItem:", targetSettingsItem)
+                        if (len == 4) {
+                            Object.keys(targetSettingsItem).forEach(targetSettingKey => {
+                                if (targetSettingKey == key) {
+                                    isFind = true;
+                                    targetSettingsItem[targetSettingKey] = value
+                                }
                             })
-                        } else {
-                            if (index != -1) {
-                                const targetSetting = settings[index]
-                                Object.keys(targetSetting).forEach(targetSettingKey => {
-                                    if (targetSetting[targetSettingKey] == key || targetSettingKey == key) {
-                                        targetSetting[targetSettingKey] = value
+                        } else if (len == 5) {
+                            const display = targetSettingsItem.Display
+                            if (display) {
+                                const item = display.Items;
+                                if (item) {
+                                    if (isKeyValue) {
+                                        display.Items = value;
                                     }
-                                    if (targetSetting.Display) {
-                                        const display = targetSetting.Display
-                                        Object.keys(display).forEach(displayKey => {
-                                            if (displayKey == key) {
-                                                display[key] = value
+                                }
+                            }
+                        } else if (len == 6) {
+                            if (!isFind) {
+                                const display = targetSettingsItem.Display
+                                if (display) {
+                                    if (boxOrContent == 'box') {
+                                        const box = display.Box;
+                                        Object.keys(box).forEach(boxKey => {
+                                            if (boxKey == key) {
+                                                isFind = true;
+                                                box[boxKey] = value;
                                             }
                                         })
+                                    } else if (boxOrContent == 'content') {
+                                        const content = display.Content;
+                                        Object.keys(content).forEach(contentKey => {
+                                            if (contentKey == key) {
+                                                isFind = true;
+                                                content[contentKey] = value;
+                                            }
+                                        })
+                                    } else if (boxOrContent == 'items') {
+                                        const items = display.Items;
+                                        // TODO: value 是否是 json 校验
+                                        items[itemIndex] = value;
                                     }
-                                })
-                            } else if (settingChildIndex != -1) {
-                                const targetSetting = settings[settingChildIndex]
-                                targetSetting.Name = value
+                                }
                             }
                         }
+
                     }
-                })
+                } else {
+                    const id = data.Id;
+                    if (id == changeId) {
+                        // 修改的root节点：态势展示方案
+                        data.Name = value;
+                    } else {
+                        const settings = data.Settings;
+                        if (index != -1) {
+                            settings[index].Name = value;
+                        }
+                    }
+                }
 
                 this.render(jsonData);
             };
