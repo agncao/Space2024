@@ -192,6 +192,7 @@ class FormulaTree {
                 elem: '#settings-container',
                 data: self.init(jsonData),
                 showLine: true,
+                spread: true, // 默认展开所有节点
                 isJump: true, // 是否允许点击节点时弹出新窗口跳转
                 click: function (obj) {
                     var data = obj.data;  //获取当前点击的节点数据
@@ -577,7 +578,6 @@ class FormulaTree {
                 $.post(ctx + '/m/pluginFile/uploadFile', data, function (ret) {
                     if (ret.messageType === 'SUCCESS') {
                         layer.msg("上传成功！文件路径：" + ret.result);
-                        that.getFiles();
                     } else {
                         layer.msg('保存成功');
                     }

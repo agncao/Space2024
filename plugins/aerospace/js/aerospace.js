@@ -895,9 +895,28 @@
          * 接收数据，显示表格
          * @param {*} arr json数据 array
          */
-        afterFormulaReceived: function (arr) {
+        afterFormulaReceived: async function (arr) {
             arr = arr.result;
             console.log("🚀 ~ Aerospace.afterFormulaReceived ~ arr:", arr)
+            const newArr = await Promise.all(arr.map(async (item) => {
+                const path = item.path;
+                try {
+                    const response = await fetch(path);
+                    const data = await response.json();
+                    console.log("🚀 ~ newArr ~ data:", data)
+                    return {
+                        Id: item.name,
+                        Name: data.Name || item.name,
+                        content: data
+                    };
+                } catch (error) {
+                    console.error(`Error fetching data from ${path}:`, error);
+                    return {
+                        Id: item.name,
+                        Name: item.name
+                    };
+                }
+            }));
             let self = this;
             let width = 660;
             openNewLayerIndex = layer.open({
@@ -908,7 +927,7 @@
                 area: [width + 'px', '400px'], // 宽高
                 offset: ['140px', ($(window).width() - width) / 2 + 'px'],
                 success: function (layero, index) {
-                    self.loadFormulaWindow(arr);
+                    self.loadFormulaWindow(newArr);
                 },
                 content: $('#plugins_aerospace_container'),
                 anim: -1, // 0-6 的动画形式，-1 不开启
@@ -991,7 +1010,6 @@
                 area: ['600px', '900px'], // 宽高
                 success: function (layero, index) {
                     let formulaTree = new FormulaTree();
-
                     formulaTree.render(formulaTree.getTemplate());
                     // 添加事件
                     formulaTree.addEvent();
@@ -1047,11 +1065,7 @@
                             even: true, // 启用斑马纹效果
                             cols: [[
                                 { field: 'Id', title: 'ID', hide: true },
-                                { field: 'Name', title: '方案名称', width: 140 },
-                                { field: 'Host', title: '服务地址', width: 220 },
-                                { field: 'Parser', title: '解析器', width: 120 },
-                                { field: 'EpochStartTime', title: '轨道历元时刻', width: 180 },
-                                { field: 'ScenarioName', title: '场景名称', width: 140 }
+                                { field: 'Name', title: '方案名称' },
                             ]],
                             data: arr
                         });
@@ -1071,14 +1085,14 @@
                         }
 
                         // 查询按钮点击事件
-                        document.getElementById('queryBtn').onclick = function () {
-                            var queryValue = document.getElementById('queryInput').value;
-                            HttpClient.build().post(WebApi.spaceData.queryFormulaUrl, {
-                                name: queryValue
-                            }, (res) => {
-                                table.reload('data_table', { data: res });
-                            });
-                        };
+                        // document.getElementById('queryBtn').onclick = function () {
+                        //     var queryValue = document.getElementById('queryInput').value;
+                        //     HttpClient.build().post(WebApi.spaceData.queryFormulaUrl, {
+                        //         name: queryValue
+                        //     }, (res) => {
+                        //         table.reload('data_table', { data: res });
+                        //     });
+                        // };
 
                     });
 
@@ -1088,8 +1102,9 @@
                         var checkedLine = layui.table.checkStatus('data_table');
                         if (checkedLine.data.length > 0) {
                             const lineData = checkedLine.data[0]
-                            _this.loadScenario(lineData);
-                            _this.showSubWindows(lineData);
+                            console.log("🚀 ~ lineData:", lineData)
+                            _this.loadScenario(lineData.content);
+                            _this.showSubWindows(lineData.content);
                             closeLayer()
                         } else {
                             layui.use('layer', function () {
@@ -1138,6 +1153,7 @@
         },
 
         showMultiWindow: function (boxSettings) {
+            console.log('boxSetting: ', boxSettings);
             if (!boxSettings || boxSettings.length == 0) return;
 
             if (document.getElementById(fn.generateWindowId(boxSettings[0].WindowType, 0))) {

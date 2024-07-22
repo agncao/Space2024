@@ -25,7 +25,11 @@
 }
 
 .layui-table-body {
-    max-height: 180px;
+    height: calc(100% - 40px);
+}
+
+.layui-table-box {
+    height: 295px !important;
 }
 
 /* 自定义斑马纹颜色 */
@@ -133,4 +137,8 @@
 
 .layui-layer-title {
     color: white !important;
+}
+
+.layui-layer-btn {
+    padding: 0 !important;
 }
