@@ -893,7 +893,7 @@
         afterFormulaReceived: async function (arr) {
             arr = arr.result;
             const newArr = await Promise.all(arr.map(async (item) => {
-                const path = item.path;
+                const path = item.path + '?t=' + new Date().getTime();
                 const time = new Date(item.time).toLocaleString(); // 将时间戳转换为日期格式
                 try {
                     const response = await fetch(path);
@@ -902,9 +902,11 @@
                         Id: item.name,
                         Name: data.Name || item.name,
                         Time: time,
-                        content: data
+                        content: data,
+                        updateName: `${item.name}.json`
                     };
                 } catch (error) {
+                    console.warn('🚀 ~ afterFormulaReceived ~ error:', error)
                     return {
                         Id: item.name,
                         Name: item.name
@@ -990,7 +992,7 @@
                 btn: [],
             });
         },
-        loadOpenPlanWindow: function (planData) {
+        loadOpenPlanWindow: function (planData, updateName) {
             let newPlanLayerIndex = 0
             const closeNewPlanLayer = () => {
                 layer.closeLast()
@@ -998,7 +1000,7 @@
             const _this = this;
             newPlanLayerIndex = layer.open({
                 type: 1,
-                title: ['新建方案', 'color:#fff;'],
+                title: ['更新方案', 'color:#fff;'],
                 shadeClose: true,
                 shade: false,
                 area: ['600px', '900px'], // 宽高
@@ -1006,7 +1008,7 @@
                     let formulaTree = new FormulaTree();
                     formulaTree.render(planData);
                     // 添加事件
-                    formulaTree.addEvent();
+                    formulaTree.addEvent(updateName);
                 },
                 content: $('#json-editor'),
             });
@@ -1027,7 +1029,7 @@
                     let formulaTree = new FormulaTree();
                     formulaTree.render(formulaTree.getTemplate());
                     // 添加事件
-                    formulaTree.addEvent();
+                    formulaTree.addEvent(null);
                 },
                 content: $('#json-editor'),
             });
@@ -1089,7 +1091,7 @@
                                 const lineData = checkedLine.data[0]
                                 console.log("🚀 ~ lineData:", lineData)
                                 const planData = [lineData.content]
-                                _this.loadOpenPlanWindow(planData);
+                                _this.loadOpenPlanWindow(planData, lineData.updateName);
                             } else {
                                 layui.use('layer', function () {
                                     var layer = layui.layer;

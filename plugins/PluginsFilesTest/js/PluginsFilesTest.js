@@ -4,6 +4,7 @@
 			<input type="text" data-bind="value:queryName" placeholder='方案名称……'>
 		    <button  data-bind="click:getFiles">查询</button>
 		    <button  data-bind="click:uploadFile" >上传</button>
+		    <button  data-bind="click:editFile" >编辑</button>
 		    <button  data-bind="click:delFile" >删除</button>
 		    <table style="table-layout: fixed;">
 				<thead>
@@ -62,6 +63,26 @@
             		if (ret.messageType === 'SUCCESS') {
 						layer.msg("上传成功！文件路径："+ret.result);
 						that.getFiles();
+					} else {
+						layer.msg(ret.content);
+					}
+            	});
+			},
+			editFile:function(){
+				if(this.selectedFileName==""){
+					layer.msg("请选择一个方案！");
+					return;
+				}
+				var data = {
+					name:this.selectedFileName+".json",
+					pluginId:this.pluginId,
+					folder:this.fileFolderName,
+					content:JSON.stringify({name:"编辑后的方案"+new Date().getTime()}),
+				};
+				const that = this;
+				$.post(ctx + '/m/pluginFile/uploadFile',data, function(ret) {
+            		if (ret.messageType === 'SUCCESS') {
+						layer.msg("更新成功！");
 					} else {
 						layer.msg(ret.content);
 					}

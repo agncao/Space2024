@@ -371,7 +371,8 @@ class FormulaTree {
             this.render(jsonData);
         }
 
-        this.addEvent = () => {
+        this.addEvent = (updateName) => {
+            console.log("🚀 ~ FormulaTree ~ addEvent ~ updateName:", updateName)
             const _this = this;
             // 增加 setting
             document.getElementById('add-setting').onclick = function () {
@@ -540,17 +541,18 @@ class FormulaTree {
                     return
                 }
                 const name = "方案" + new Date().getTime() + ".json";
+                console.log("🚀 ~ FormulaTree ~ 保存 json ~ updateName:", updateName)
                 const data = {
-                    name: name,
+                    name: updateName ? updateName : name,
                     pluginId: 'aerospace',
                     folder: 'data',
                     content: JSON.stringify(_this.jsonDataCopy[0]),
                 };
                 $.post(ctx + '/m/pluginFile/uploadFile', data, function (ret) {
                     if (ret.messageType === 'SUCCESS') {
-                        layer.msg("上传成功！文件路径：" + ret.result);
+                        layer.msg("保存成功");
                     } else {
-                        layer.msg('保存成功');
+                        layer.msg('保存失败:' + ret.content);
                     }
                 });
             };
