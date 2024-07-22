@@ -879,11 +879,6 @@
         id: "Plugins_aerospace",
         menu: {
             click: function (ele) {
-                // HttpClient.build().get(
-                //     WebApi.spaceData.formulaUrl,
-                //     Aerospace,
-                //     "afterFormulaReceived"
-                // );
                 HttpClient.build().get(
                     '/m/pluginFile/getFiles?pluginId=aerospace' + '&folder=data' + '&name=',
                     Aerospace,
@@ -897,20 +892,19 @@
          */
         afterFormulaReceived: async function (arr) {
             arr = arr.result;
-            console.log("🚀 ~ Aerospace.afterFormulaReceived ~ arr:", arr)
             const newArr = await Promise.all(arr.map(async (item) => {
                 const path = item.path;
+                const time = new Date(item.time).toLocaleString(); // 将时间戳转换为日期格式
                 try {
                     const response = await fetch(path);
                     const data = await response.json();
-                    console.log("🚀 ~ newArr ~ data:", data)
                     return {
                         Id: item.name,
                         Name: data.Name || item.name,
+                        Time: time,
                         content: data
                     };
                 } catch (error) {
-                    console.error(`Error fetching data from ${path}:`, error);
                     return {
                         Id: item.name,
                         Name: item.name
@@ -996,6 +990,27 @@
                 btn: [],
             });
         },
+        loadOpenPlanWindow: function (planData) {
+            let newPlanLayerIndex = 0
+            const closeNewPlanLayer = () => {
+                layer.closeLast()
+            }
+            const _this = this;
+            newPlanLayerIndex = layer.open({
+                type: 1,
+                title: ['新建方案', 'color:#fff;'],
+                shadeClose: true,
+                shade: false,
+                area: ['600px', '900px'], // 宽高
+                success: function (layero, index) {
+                    let formulaTree = new FormulaTree();
+                    formulaTree.render(planData);
+                    // 添加事件
+                    formulaTree.addEvent();
+                },
+                content: $('#json-editor'),
+            });
+        },
         loadNewPlanWindow: function () {
             let newPlanLayerIndex = 0
             const closeNewPlanLayer = () => {
@@ -1013,26 +1028,6 @@
                     formulaTree.render(formulaTree.getTemplate());
                     // 添加事件
                     formulaTree.addEvent();
-
-                    // layui.use(['tree', 'layer'], function () {
-                    //     const tree = layui.tree;
-                    //     const layer = layui.layer;
-
-                    //     tree.render({
-                    //         elem: '#settings-container',
-                    //         data: formulaTree.init(),
-                    //         showLine: true,
-                    //         isJump: true, // 是否允许点击节点时弹出新窗口跳转
-                    //         click: function(obj){
-                    //             var data = obj.data;  //获取当前点击的节点数据
-                    //             layer.prompt({title: '正在修改'+data.title.split(':')[0]+'的值', formType: 2}, function(text, index){
-                    //                 layer.close(index);
-                    //               });
-                    //           }
-                    //     });
-                    // });
-
-
                 },
                 content: $('#json-editor'),
             });
@@ -1066,6 +1061,7 @@
                             cols: [[
                                 { field: 'Id', title: 'ID', hide: true },
                                 { field: 'Name', title: '方案名称' },
+                                { field: 'Time', title: '最后修改时间' },
                             ]],
                             data: arr
                         });
@@ -1084,15 +1080,28 @@
                             _this.loadNewPlanWindow();
                         }
 
-                        // 查询按钮点击事件
-                        // document.getElementById('queryBtn').onclick = function () {
-                        //     var queryValue = document.getElementById('queryInput').value;
-                        //     HttpClient.build().post(WebApi.spaceData.queryFormulaUrl, {
-                        //         name: queryValue
-                        //     }, (res) => {
-                        //         table.reload('data_table', { data: res });
-                        //     });
-                        // };
+                        // 打开方案
+                        document.getElementById('openBtn').onclick = function () {
+                            // 获取表格的选中行数据
+                            var checkedLine = layui.table.checkStatus('data_table');
+                            if (checkedLine.data.length > 0) {
+                                closeLayer();
+                                const lineData = checkedLine.data[0]
+                                console.log("🚀 ~ lineData:", lineData)
+                                const planData = [lineData.content]
+                                _this.loadOpenPlanWindow(planData);
+                            } else {
+                                layui.use('layer', function () {
+                                    var layer = layui.layer;
+                                    // 显示一个提示框
+                                    layer.msg('请选择要打开的方案', {
+                                        icon: 0, // 图标类型，0表示警告图标
+                                        offset: 't', // 显示在屏幕顶部
+                                        time: 3000 // 显示时间（毫秒）
+                                    });
+                                });
+                            }
+                        }
 
                     });
 
@@ -1118,25 +1127,6 @@
                             });
                         }
                     };
-
-                    // // 绑定按钮事件
-                    // document.getElementById('saveBtn').onclick = function () {
-                    //     Cesium.WStatusUtils.start("正在保存场景【" + currentScenario.sceneName() + "】", 5);
-                    //     let czmlWriter = new Cesium.CZMLWriter;
-                    //     let content = czmlWriter.toCZML(currentScenario.dataSource, currentScenario.sceneName());
-                    //     HttpClient.build()
-                    //         .post(WebApi.spaceData.saveUrl, {
-                    //             sceneName: currentScenario.sceneName(),
-                    //             content: content,
-                    //             formularId: _formula.Id,
-                    //             userId: userViewerModel.userId
-                    //         }, function (res) {
-                    //             Cesium.WStatusUtils.stop();
-                    //         }, function (err) {
-                    //             Cesium.WStatusUtils.stop();
-                    //         })
-                    //     closeLayer()
-                    // };
                 },
                 content: $('#plugins_aerospace_container'),
             });
