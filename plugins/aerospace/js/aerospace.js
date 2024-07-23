@@ -1065,23 +1065,33 @@
                         }
 
                         // TODO 校验 json 格式 fileContent
+                        try {
+                            const json = JSON.parse(fileContent);
+                            console.log('上传文件 json: ', json);
+                            // 上传文件
+                            // 校验成功后，将 fileName 文件名和 fileContent 传给后端
+                            const name = `${fileName}.json`;
+                            const data = {
+                                name: name,
+                                pluginId: 'aerospace',
+                                folder: 'data',
+                                content: JSON.stringify(fileContent),
+                            };
+                            $.post(ctx + '/m/pluginFile/uploadFile', data, function (ret) {
+                                if (ret.messageType === 'SUCCESS') {
+                                    layer.msg("上传成功");
+                                } else {
+                                    layer.msg('上传失败:' + ret.content);
+                                }
+                            });
+                        } catch (e) {
+                            layer.msg('文件内容格式不正确', {
+                                icon: 0, // 图标类型，0表示警告图标
+                                offset: 't', // 显示在屏幕顶部
+                                time: 2000 // 显示时间（毫秒）
+                            });
+                        }
 
-                        // 上传文件
-                        // 校验成功后，将 fileName 文件名和 fileContent 传给后端
-                        const name = `${fileName}.json`;
-                        const data = {
-                            name: name,
-                            pluginId: 'aerospace',
-                            folder: 'data',
-                            content: JSON.stringify(fileContent),
-                        };
-                        $.post(ctx + '/m/pluginFile/uploadFile', data, function (ret) {
-                            if (ret.messageType === 'SUCCESS') {
-                                layer.msg("上传成功");
-                            } else {
-                                layer.msg('上传失败:' + ret.content);
-                            }
-                        });
                     });
 
 
