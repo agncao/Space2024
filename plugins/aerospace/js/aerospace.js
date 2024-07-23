@@ -1075,7 +1075,7 @@
                                 name: name,
                                 pluginId: 'aerospace',
                                 folder: 'data',
-                                content: JSON.stringify(fileContent),
+                                content: fileContent,
                             };
                             $.post(ctx + '/m/pluginFile/uploadFile', data, function (ret) {
                                 if (ret.messageType === 'SUCCESS') {
@@ -1180,12 +1180,10 @@
                             if (checkedLine.data.length > 0) {
                                 closeLayer();
                                 const lineData = checkedLine.data[0]
-                                console.log("🚀 ~ lineData:", lineData)
                                 // 请求方案数据
                                 const path = lineData.path + '?t=' + new Date().getTime();
                                 const response = await fetch(path);
                                 const content = await response.json();
-                                console.log("🚀 ~ content:", content)
                                 const planData = [content]
                                 const updateName = `${lineData.name}.json`
                                 _this.loadOpenPlanWindow(planData, updateName);
