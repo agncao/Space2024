@@ -1064,7 +1064,7 @@
                             return
                         }
 
-                        // TODO 校验 json 格式 fileContent
+                        // 校验 json 格式 fileContent
                         try {
                             const json = JSON.parse(fileContent);
                             console.log('上传文件 json: ', json);
