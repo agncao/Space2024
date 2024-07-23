@@ -1001,6 +1001,94 @@
                 content: $('#json-editor'),
             });
         },
+        loadUploadPlanWindow: function () {
+            let uploadPlanLayerIndex = 0
+            const closeUploadPlanLayer = () => {
+                layer.closeLast()
+            }
+            const _this = this;
+            uploadPlanLayerIndex = layer.open({
+                type: 1,
+                title: ['上传方案', 'color:#fff;'],
+                shadeClose: true,
+                shade: false,
+                area: ['600px', '400px'], // 宽高
+                success: function (layero, index) {
+                    // 点击选择文件，弹出文件选择框
+                    const uploadPlanSelectBtn = document.getElementById('upload-select-btn');
+                    const uploadInput = document.getElementById('upload-plan-select-input');
+                    const uploadFileName = document.getElementById('upload-plan-select-label');
+
+                    const fileNameInput = document.getElementById('upload-plan-input');
+
+                    const uploadBtn = document.getElementById('upload-plan-btn');
+                    let fileContent = '';
+
+                    uploadPlanSelectBtn.addEventListener('click', function () {
+                        uploadInput.click();
+                    });
+
+                    // 为 input 添加 change 事件监听器
+                    uploadInput.addEventListener('change', function (event) {
+                        const file = event.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                fileContent = e.target.result;
+                                uploadFileName.innerText = `选择的文件名: ${file.name}`;
+                            };
+                            reader.readAsText(file);
+                        }
+                    });
+
+                    uploadBtn.addEventListener('click', function () {
+                        console.log('上传按钮被点击');
+                        // 获取 fileNameInput 的值
+                        const fileName = fileNameInput.value;
+                        console.log('文件名: ', fileName);
+                        console.log('文件内容: ', fileContent);
+                        if (!fileName) {
+                            layer.msg('请输入文件名', {
+                                icon: 0, // 图标类型，0表示警告图标
+                                offset: 't', // 显示在屏幕顶部
+                                time: 2000 // 显示时间（毫秒）
+                            });
+                            return
+                        }
+                        if (!fileContent) {
+                            layer.msg('请选择文件', {
+                                icon: 0, // 图标类型，0表示警告图标
+                                offset: 't', // 显示在屏幕顶部
+                                time: 2000 // 显示时间（毫秒）
+                            });
+                            return
+                        }
+
+                        // TODO 校验 json 格式 fileContent
+
+                        // 上传文件
+                        // 校验成功后，将 fileName 文件名和 fileContent 传给后端
+                        const name = `${fileName}.json`;
+                        const data = {
+                            name: name,
+                            pluginId: 'aerospace',
+                            folder: 'data',
+                            content: JSON.stringify(fileContent),
+                        };
+                        $.post(ctx + '/m/pluginFile/uploadFile', data, function (ret) {
+                            if (ret.messageType === 'SUCCESS') {
+                                layer.msg("上传成功");
+                            } else {
+                                layer.msg('上传失败:' + ret.content);
+                            }
+                        });
+                    });
+
+
+                },
+                content: $('#upload-plan-container'),
+            });
+        },
         loadNewPlanWindow: function () {
             let newPlanLayerIndex = 0
             const closeNewPlanLayer = () => {
@@ -1063,9 +1151,14 @@
                             });
                         });
 
+                        // 上传方案
+                        document.getElementById('uploadBtn').onclick = function () {
+                            closeLayer();
+                            _this.loadUploadPlanWindow();
+                        }
+
                         // 新建方案
                         document.getElementById('formulaBtn').onclick = function () {
-                            // _this.formulaSettingWindow(index);
                             closeLayer();
                             _this.loadNewPlanWindow();
                         }

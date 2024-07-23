@@ -142,3 +142,37 @@
 .layui-layer-btn {
     padding: 0 !important;
 }
+
+.upload-plan-input-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+#upload-select-btn {
+    margin-left: 20px;
+}
+
+.upload-plan-btn-container {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding-right: 20px;
+    height: 60px;
+    border-top: 1px solid #eee;
+}
+
+#upload-plan-select-input {
+    display: none;
+}
+
+.upload-plan-input-label {
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.upload-select-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
