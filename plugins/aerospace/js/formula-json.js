@@ -176,7 +176,7 @@ class FormulaTree {
 
             return jsonData.map(item => {
                 let treeData = {
-                    title: item.Name || 设置方案名称,
+                    title: item.Name || '设置方案名称',
                     id: item.Id,
                     spread: true,
                     nodeType: self.nodeType.root,
@@ -540,8 +540,8 @@ class FormulaTree {
                 if (!_this.jsonDataCopy || _this.jsonDataCopy.length == 0) {
                     return
                 }
-                const name = "方案" + new Date().getTime() + ".json";
-                console.log("🚀 ~ FormulaTree ~ 保存 json ~ updateName:", updateName)
+                const name = `${_this.jsonDataCopy[0].Name}.json`;
+                console.log("🚀 ~ FormulaTree ~ 保存 json ~ _this.jsonDataCopy[0]:", _this.jsonDataCopy[0])
                 const data = {
                     name: updateName ? updateName : name,
                     pluginId: 'aerospace',

@@ -890,29 +890,17 @@
          * 接收数据，显示表格
          * @param {*} arr json数据 array
          */
-        afterFormulaReceived: async function (arr) {
+        afterFormulaReceived: function (arr) {
             arr = arr.result;
-            const newArr = await Promise.all(arr.map(async (item) => {
-                const path = item.path + '?t=' + new Date().getTime();
-                const time = new Date(item.time).toLocaleString(); // 将时间戳转换为日期格式
-                try {
-                    const response = await fetch(path);
-                    const data = await response.json();
-                    return {
-                        Id: item.name,
-                        Name: data.Name || item.name,
-                        Time: time,
-                        content: data,
-                        updateName: `${item.name}.json`
-                    };
-                } catch (error) {
-                    console.warn('🚀 ~ afterFormulaReceived ~ error:', error)
-                    return {
-                        Id: item.name,
-                        Name: item.name
-                    };
+            const newArr = arr.map(item => {
+                return {
+                    id: item.name,
+                    name: item.name,
+                    localTime: new Date(item.time).toLocaleString(),
+                    ...item
                 }
-            }));
+            })
+
             let self = this;
             let width = 660;
             openNewLayerIndex = layer.open({
@@ -1061,9 +1049,9 @@
                             elem: '#data_table',
                             even: true, // 启用斑马纹效果
                             cols: [[
-                                { field: 'Id', title: 'ID', hide: true },
-                                { field: 'Name', title: '方案名称' },
-                                { field: 'Time', title: '最后修改时间' },
+                                { field: 'name', title: 'ID', hide: true },
+                                { field: 'name', title: '方案名称' },
+                                { field: 'localTime', title: '最后修改时间' },
                             ]],
                             data: arr
                         });
@@ -1083,15 +1071,21 @@
                         }
 
                         // 打开方案
-                        document.getElementById('openBtn').onclick = function () {
+                        document.getElementById('openBtn').onclick = async function () {
                             // 获取表格的选中行数据
                             var checkedLine = layui.table.checkStatus('data_table');
                             if (checkedLine.data.length > 0) {
                                 closeLayer();
                                 const lineData = checkedLine.data[0]
                                 console.log("🚀 ~ lineData:", lineData)
-                                const planData = [lineData.content]
-                                _this.loadOpenPlanWindow(planData, lineData.updateName);
+                                // 请求方案数据
+                                const path = lineData.path + '?t=' + new Date().getTime();
+                                const response = await fetch(path);
+                                const content = await response.json();
+                                console.log("🚀 ~ content:", content)
+                                const planData = [content]
+                                const updateName = `${lineData.name}.json`
+                                _this.loadOpenPlanWindow(planData, updateName);
                             } else {
                                 layui.use('layer', function () {
                                     var layer = layui.layer;
@@ -1108,14 +1102,17 @@
                     });
 
                     // 绑定按钮事件
-                    document.getElementById('confirmBtn').onclick = function () {
+                    document.getElementById('confirmBtn').onclick = async function () {
                         // 获取表格的选中行数据
                         var checkedLine = layui.table.checkStatus('data_table');
                         if (checkedLine.data.length > 0) {
                             const lineData = checkedLine.data[0]
                             console.log("🚀 ~ lineData:", lineData)
-                            _this.loadScenario(lineData.content);
-                            _this.showSubWindows(lineData.content);
+                            const path = lineData.path + '?t=' + new Date().getTime();
+                            const response = await fetch(path);
+                            const content = await response.json();
+                            _this.loadScenario(content);
+                            _this.showSubWindows(content);
                             closeLayer()
                         } else {
                             layui.use('layer', function () {
