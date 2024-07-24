@@ -74,11 +74,11 @@ class FormulaTree {
         };
         this.getTemplate = () => {
             let self = this;
-            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-1", "Report", "大地纬度-经度", "Satellite/ICO_G1_32763", [106, -50], [], [], [0, 0]));
-            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-2", "Report", "固定系位置-速度", "Satellite/ICO_G1_32763", [302, -50], [], [32, 4], [0, 0]));
-            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-3", "Report", "惯性系位置、速度", "Satellite/ICO_G1_32763", [610, -50], [], [32, 4], [0, 0]));
-            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-4", "Report", "Beta角度", "Satellite/ICO_G1_32763", [908, -50], [], [32, 4], [0, 0]));
-            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-5", "Report", "Beta角度", "Satellite/ICO_G1_32763", [1168, -50], [], [32, 4], [0, 0]));
+            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-1", "Report", "大地纬度-经度-高度-速度大小", "Satellite/ICO_G1_32763", [106, -50], [], [], [0, 0]));
+            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-2", "Report", "固定系位置-速度", "Satellite/ICO_G1_32763", [332, -50], [], [32, 4], [0, 0]));
+            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-3", "Report", "惯性系位置、速度", "Satellite/ICO_G1_32763", [630, -50], [], [32, 4], [0, 0]));
+            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-4", "Report", "大地纬度-经度-高度-速度大小", "Satellite/CARTOSAT-2A_32783", [928, -50], [], [32, 4], [0, 0]));
+            this.initialData[0].Settings.push(self.getSettingTemplate("数据报表-5", "Report", "大地纬度-经度-高度-速度大小", "Satellite/CALSPHERE_1_00900", [1168, -50], [], [32, 4], [0, 0]));
             this.initialData[0].Settings.push(self.getSettingTemplate("统计图-1", "Chart", "固定系位置-速度", "Satellite/CARTOSAT-2A_32783", [364, 50], [500, 320], [40, 0], []));
             this.initialData[0].Settings.push(self.getSettingTemplate("统计图-2", "Chart", "Beta角度", "Satellite/CARTOSAT-2A_32783", [714, 50], [500, 320], [40, 0], []));
             this.initialData[0].Settings.push(self.getSettingTemplate("时间-1", "Time", "时间", "", [33, 680], [430, 40], [0, 0], [], ["UTCG"]));
@@ -89,8 +89,8 @@ class FormulaTree {
                 { Id: "Content", Label: "内容" },
                 { Id: "Time", Label: "消息时间" }
             ]));
-            this.initialData[0].Settings.push(self.getSettingTemplate("温度计", "Business", "温度计", "", [120, 312], [238, 216], [32, 0], [], [{ id: "averageTemperature", Label: "平均温度" }], "Thermometer"));
-            this.initialData[0].Settings.push(self.getSettingTemplate("温度仪表盘", "Business", "温度计", "", [120, 312], [238, 216], [32, 0], [], [{ id: "enveromentTemperature", Label: "环境温度" }], "Gauge"));
+            this.initialData[0].Settings.push(self.getSettingTemplate("温度计", "Business", "平均温度", "", [120, 312], [238, 216], [32, 0], [], [{ Id: "averageTemperature", Label: "平均温度" }], "Thermometer"));
+            this.initialData[0].Settings.push(self.getSettingTemplate("温度仪表盘", "Business", "环境温度", "", [120, 50], [238, 216], [32, 0], [], [{ Id: "enveromentTemperature", Label: "环境温度" }], "Gauge"));
             this.initialData[0].Settings.push(self.getSettingTemplate("航天态势数据大屏", "Header", "", "", [0, 0], ["100%", 100], [4, 4], []));
 
             let data = JSON.parse(JSON.stringify(this.initialData));
