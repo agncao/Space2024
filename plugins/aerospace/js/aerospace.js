@@ -1007,6 +1007,81 @@
                 layer.closeLast()
             }
             const _this = this;
+            const uploadFileName = document.getElementById('upload-plan-select-label');
+            const fileNameInput = document.getElementById('upload-plan-input');
+            let fileContent = '';
+            const uploadPlanSelectBtn = document.getElementById('upload-select-btn');
+            const uploadInput = document.getElementById('upload-plan-select-input');
+            const uploadBtn = document.getElementById('upload-plan-btn');
+
+            function handleUploadPlanSelectBtnClick() {
+                console.log('uploadPlanSelectBtn 上传按钮被点击');
+                uploadInput.click();
+            }
+
+            function handleUploadInputChange(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        fileContent = e.target.result;
+                        uploadFileName.innerText = `选择的文件名: ${file.name}`;
+                    };
+                    reader.readAsText(file);
+                }
+            }
+
+            function handleUploadBtnClick() {
+                // 获取 fileNameInput 的值
+                const fileName = fileNameInput.value;
+                console.log('文件名: ', fileName);
+                console.log('文件内容: ', fileContent);
+                if (!fileName) {
+                    layer.msg('请输入文件名', {
+                        icon: 0, // 图标类型，0表示警告图标
+                        offset: 't', // 显示在屏幕顶部
+                        time: 2000 // 显示时间（毫秒）
+                    });
+                    return
+                }
+                if (!fileContent) {
+                    layer.msg('请选择文件', {
+                        icon: 0, // 图标类型，0表示警告图标
+                        offset: 't', // 显示在屏幕顶部
+                        time: 2000 // 显示时间（毫秒）
+                    });
+                    return
+                }
+
+                // 校验 json 格式 fileContent
+                try {
+                    const json = JSON.parse(fileContent);
+                    console.log('上传文件 json: ', json);
+                    // 上传文件
+                    // 校验成功后，将 fileName 文件名和 fileContent 传给后端
+                    const name = `${fileName}.json`;
+                    const data = {
+                        name: name,
+                        pluginId: 'aerospace',
+                        folder: 'data',
+                        content: fileContent,
+                    };
+                    $.post(ctx + '/m/pluginFile/uploadFile', data, function (ret) {
+                        if (ret.messageType === 'SUCCESS') {
+                            layer.msg("上传成功");
+                        } else {
+                            layer.msg('上传失败:' + ret.content);
+                        }
+                    });
+                } catch (e) {
+                    layer.msg('文件内容格式不正确', {
+                        icon: 0, // 图标类型，0表示警告图标
+                        offset: 't', // 显示在屏幕顶部
+                        time: 2000 // 显示时间（毫秒）
+                    });
+                }
+            }
+
             uploadPlanLayerIndex = layer.open({
                 type: 1,
                 title: ['上传方案', 'color:#fff;'],
@@ -1015,86 +1090,21 @@
                 area: ['600px', '400px'], // 宽高
                 success: function (layero, index) {
                     // 点击选择文件，弹出文件选择框
-                    const uploadPlanSelectBtn = document.getElementById('upload-select-btn');
-                    const uploadInput = document.getElementById('upload-plan-select-input');
-                    const uploadFileName = document.getElementById('upload-plan-select-label');
-
-                    const fileNameInput = document.getElementById('upload-plan-input');
-
-                    const uploadBtn = document.getElementById('upload-plan-btn');
-                    let fileContent = '';
-
-                    uploadPlanSelectBtn.addEventListener('click', function () {
-                        uploadInput.click();
-                    });
-
+                    uploadPlanSelectBtn.addEventListener('click', handleUploadPlanSelectBtnClick);
                     // 为 input 添加 change 事件监听器
-                    uploadInput.addEventListener('change', function (event) {
-                        const file = event.target.files[0];
-                        if (file) {
-                            const reader = new FileReader();
-                            reader.onload = function (e) {
-                                fileContent = e.target.result;
-                                uploadFileName.innerText = `选择的文件名: ${file.name}`;
-                            };
-                            reader.readAsText(file);
-                        }
-                    });
+                    uploadInput.addEventListener('change', handleUploadInputChange);
+                    uploadBtn.addEventListener('click', handleUploadBtnClick);
 
-                    uploadBtn.addEventListener('click', function () {
-                        console.log('上传按钮被点击');
-                        // 获取 fileNameInput 的值
-                        const fileName = fileNameInput.value;
-                        console.log('文件名: ', fileName);
-                        console.log('文件内容: ', fileContent);
-                        if (!fileName) {
-                            layer.msg('请输入文件名', {
-                                icon: 0, // 图标类型，0表示警告图标
-                                offset: 't', // 显示在屏幕顶部
-                                time: 2000 // 显示时间（毫秒）
-                            });
-                            return
-                        }
-                        if (!fileContent) {
-                            layer.msg('请选择文件', {
-                                icon: 0, // 图标类型，0表示警告图标
-                                offset: 't', // 显示在屏幕顶部
-                                time: 2000 // 显示时间（毫秒）
-                            });
-                            return
-                        }
-
-                        // 校验 json 格式 fileContent
-                        try {
-                            const json = JSON.parse(fileContent);
-                            console.log('上传文件 json: ', json);
-                            // 上传文件
-                            // 校验成功后，将 fileName 文件名和 fileContent 传给后端
-                            const name = `${fileName}.json`;
-                            const data = {
-                                name: name,
-                                pluginId: 'aerospace',
-                                folder: 'data',
-                                content: fileContent,
-                            };
-                            $.post(ctx + '/m/pluginFile/uploadFile', data, function (ret) {
-                                if (ret.messageType === 'SUCCESS') {
-                                    layer.msg("上传成功");
-                                } else {
-                                    layer.msg('上传失败:' + ret.content);
-                                }
-                            });
-                        } catch (e) {
-                            layer.msg('文件内容格式不正确', {
-                                icon: 0, // 图标类型，0表示警告图标
-                                offset: 't', // 显示在屏幕顶部
-                                time: 2000 // 显示时间（毫秒）
-                            });
-                        }
-
-                    });
-
-
+                },
+                end: function () {
+                    // 清除数据
+                    fileNameInput.value = '';
+                    uploadFileName.innerText = '选择的文件名: ';
+                    fileContent = '';
+                    // 移除现有的事件监听器
+                    uploadPlanSelectBtn.removeEventListener('click', handleUploadPlanSelectBtnClick);
+                    uploadInput.removeEventListener('change', handleUploadInputChange);
+                    uploadBtn.removeEventListener('click', handleUploadBtnClick);
                 },
                 content: $('#upload-plan-container'),
             });
