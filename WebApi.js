@@ -97,18 +97,18 @@ const WebApi = {
 	"AzElMask": {
 		url: "{AeroSpaceUrl}/Terrain/AzElMaskSimple"
 	},
-	// "DIS":{
-	// 	realTime:{
-	// 		url:"{RealTimeUrl}/receivemessagehub",
-	// 		defaultDataAdapter:"signalR"
-	// 	}
-	// },
 	"DIS": {
 		realTime: {
-			url: "{RealTimeUrl}/receiver",
-			defaultDataAdapter: "spaceData"
+			url: "{RealTimeUrl}/receivemessagehub",
+			defaultDataAdapter: "signalR"
 		}
 	},
+	// "DIS": {
+	// 	realTime: {
+	// 		url: "{RealTimeUrl}/receiver",
+	// 		defaultDataAdapter: "spaceData"
+	// 	}
+	// },
 	"RGServer": {
 		"LightingTimes": [
 			{

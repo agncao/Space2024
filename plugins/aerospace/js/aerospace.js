@@ -19,6 +19,7 @@
     let _echartsxAxisNum = 5;
     let _postureEChartOptions = [];
     let _echartsSerieDataLength = 500;
+    const basePath = '/plugins/aerospace';
 
     const fn = {
         initFormulaConfig: function (config) {
@@ -196,10 +197,10 @@
     };
 
     const dataParser = {
-        onReceiveSpaceData: function (msg) {
+        onReceiveSpaceData: function (spaceData) {
             if (!_formula || !currentScenario.dataSource) return;
 
-            let spaceData = JSON.parse(msg);
+            // let spaceData = JSON.parse(msg);
             let bizzList = spaceData && spaceData.Bizz ? spaceData.Bizz : [];
             let messageList = spaceData && spaceData.Logs ? spaceData.Logs : [];
             messageList.forEach(item => {
@@ -273,10 +274,10 @@
 
 
             let signalRDataAdapter = Cesium.DataAdapter.get(_formula.Parser);
-            signalRDataAdapter.rtNetWork = Cesium.RTNetWork;
-            signalRDataAdapter.rtNetWork.noFindCreate = true;
-            signalRDataAdapter.rtNetWork.dataSource = currentScenario.dataSource;
-            signalRDataAdapter.parse(postureData);
+            // signalRDataAdapter.rtNetWork = Cesium.RTNetWork;
+            // signalRDataAdapter.rtNetWork.noFindCreate = true;
+            // signalRDataAdapter.rtNetWork.dataSource = currentScenario.dataSource;
+            // signalRDataAdapter.parse(postureData);
 
             dataChart.generateTimeGrid(signalRDataAdapter.startJd, signalRDataAdapter.dataJd);
             if (reportSettings && reportSettings.length > 0) {
@@ -381,11 +382,11 @@
                     if (content.includes("info") || content.includes("warn") || content.includes("error")) {
                         const img = document.createElement("img");
                         if (content.includes("info")) {
-                            img.src = "./images/info.svg";
+                            img.src = basePath + "/images/info.svg";
                         } else if (content.includes("warn")) {
-                            img.src = "./images/warning.svg";
+                            img.src = basePath + "/images/warning.svg";
                         } else {
-                            img.src = "./images/error.svg";
+                            img.src = basePath + "/images/error.svg";
                         }
                         img.style.width = "16px";
                         img.style.height = "16px";
@@ -932,34 +933,38 @@
                 id: data.Id,
                 uploader: { id: userViewerModel.userId },
                 description: data.Description,
+                globalAttribute: {
+                    DIS: {
+                        Entity: {
+                            noFindCreate: true,
+                            Connection: {
+                                url: data.Host,
+                                dataAdapter: data.Parser
+                            }
+                        }
+                    }
+                }
             };
-            HttpClient.build().post(WebApi.spaceData.czmlUrl, {
-                sceneName: data.ScenarioName,
-                formularId: data.Id,
-                userId: userViewerModel.userId
-            }, function (res) {
-                let sceneBean = { ...option, fileUrl: res.url, name: option.ScenarioName }
-                currentScenario.initTree(sceneBean)
-
-                var dataSource = new Cesium.CzmlDataSource(sceneBean.name);
-                dataSource.addVGTChange();
-                var promise = dataSource.load(sceneBean.fileUrl);
-                return solarSystem.addDataSource(promise, true).then(function (ds) {
-                    solarSystem.topViewer.clockViewModel.shouldAnimate = false;
-                    if (!ds.globalAttribute) ds.globalAttribute = currentScenario.getGlobalAttribute();
-                    currentScenario.setCZMLDataSource(ds);
-                    var entities = ds.entities.values;
-                    currentScenario.addTreeNode(sceneBean.id, entities);
-                    return Promise.resolve(ds);
-                }).catch(function (e) {
-                    currentScenario.createScene(option);
+            if (!currentScenario.dataSource) {
+                currentScenario.createScene(option).then(ret => {
+                    //     const globalAttribute = currentScenario.dataSource.globalAttribute;
+                    //     globalAttribute.DIS.Entity.Connection.url = data.Host;
+                    //     globalAttribute.DIS.Entity.Connection.dataAdapter = data.Parser;
+                    //     globalAttribute.DIS.Entity.noFindCreate = true;
+                    //     currentScenario.dataSource.globalAttribute = globalAttribute;
+                    this.setDataAdapterHandler(data.Parser);
                 });
-
-            }, function (err) {
-                currentScenario.createScene(option);
-            })
-
+            } else {
+                this.setDataAdapterHandler(data.Parser);
+            }
         },
+        setDataAdapterHandler: function (dataAdapter) {
+            const signalRDataAdapter = Cesium.DataAdapter.get(dataAdapter);
+            signalRDataAdapter.messageHandler = (data) => {
+                dataParser.onReceiveSpaceData(data);
+            }
+        },
+
         formulaSettingWindow: function (parentLayerIndex) {
             let self = this;
             let width = 700;
@@ -1335,6 +1340,6 @@
     // HttpClient.build().get(WebApi.spaceData.formulaUrl, Aerospace, "afterFormulaReceived");
     // HttpClient.build().get('/m/pluginFile/getFiles?pluginId=aerospace' + '&folder=data' + '&name=', Aerospace, "afterFormulaReceived");
     //    远程调用方案
-    SignalRClient.build(WebApi.spaceData.hub).listen("receiveSpaceData", dataParser);
+    // SignalRClient.build(WebApi.spaceData.hub).listen("receiveSpaceData", dataParser);
     Plugins.add(Aerospace);
 })();

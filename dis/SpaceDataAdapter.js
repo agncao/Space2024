@@ -26,13 +26,8 @@
         },        //消息接收方法
         message: function (msg) {
             try {
-                var spaceDataJson = $.parseJSON(msg);
-                var data = Object.keys(spaceDataJson).forEach(key => {
-                    if (key === "posture") {
-                        return spaceDataJson[key];
-                    }
-                });
-                this.parse(data);
+                var data = $.parseJSON(msg);
+                spaceDataAdapter.parse(data);
 
             } catch (e) {
                 console.log(e);
@@ -136,6 +131,9 @@
                 var dt = Cesium.JulianDate.secondsDifference(jd, solarSystem.clock.currentTime);
                 if (dt < 0 || dt > (spaceDataAdapter.timeStep + 0.03 * spaceDataAdapter.timeStep)) {
                     Cesium.JulianDate.clone(jd, solarSystem.clock.currentTime);
+                }
+                if (spaceDataAdapter.messageHandler) {
+                    spaceDataAdapter.messageHandler(data);
                 }
             } catch (e) {
                 console.log(e);

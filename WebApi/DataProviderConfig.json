@@ -46,7 +46,8 @@
 		"2024-06-25: zpc 新增数据提供者（Axes Choose Axes）",
 		"2024-06-26: lyf 新增数据提供者（Euler Angles），重新梳理数据提供者",
 		"2024-06-29: zpc 简化了groupDataType字段配置，只保留了Vector、Point、Angle、Axes、System",
-		"2024-07-09: lyf 新增报告(欧拉角，姿态四元数等)"
+		"2024-07-09: lyf 新增报告(欧拉角，姿态四元数等)",
+		"2024-07-19: zpc 移除报告配置属性serverKey，将serverKey改为到DataProviders中配置,在自定义报告内使用"
 	],
 	"DataProviders": [
 		{
@@ -242,6 +243,7 @@
 			"group": {
 				"class": "LightingTimes",
 				"params": {
+					"serverKey": "LightingTimes",
 					"preData": "SunLight,Penumbra,Umbra"
 				}
 			}
@@ -486,6 +488,7 @@
 			"availableForObjects": "Facility,Place,Target",
 			"availability": "Reports|Graphs|Dynamic Displays|Strip Charts",
 			"params": {
+				"serverKey": "SolarIntensity",
 				"preData": "Datas"
 			}
 		},
@@ -495,6 +498,7 @@
 			"availableForObjects": "Aircraft,LaunchVehicle,Missile,Satellite",
 			"availability": "Reports|Graphs|Dynamic Displays|Strip Charts",
 			"params": {
+				"serverKey": "SolarIntensity",
 				"preData": "Datas"
 			}
 		},
@@ -2304,9 +2308,6 @@
 						"class": "RLine"
 					},
 					{
-						"class": "RElementTime"
-					},
-					{
 						"class": "RElement",
 						"params": {
 							"title": "方位角",
@@ -2400,7 +2401,6 @@
 			"params": {
 				"name": "光照时间(全光照、半影、全影)",
 				"isDefault": true,
-				"serverKey": "LightingTimes",
 				"header": {
 					"title": "光照时间段"
 				},
@@ -2529,7 +2529,6 @@
 			"params": {
 				"name": "光照时间(全光照、半影、全影)",
 				"isDefault": true,
-				"serverKey": "LightingTimes",
 				"layout": {
 					"title": "光照时间段"
 				},
@@ -2591,7 +2590,6 @@
 			"params": {
 				"name": "全光照时间段",
 				"isDefault": true,
-				"serverKey": "LightingTimes",
 				"header": {
 					"title": "全光照时间段"
 				},
@@ -2644,7 +2642,6 @@
 			"params": {
 				"name": "半影时间段",
 				"isDefault": true,
-				"serverKey": "LightingTimes",
 				"header": {
 					"title": "半影时间段"
 				},
@@ -2697,7 +2694,6 @@
 			"params": {
 				"name": "阴影时间段",
 				"isDefault": true,
-				"serverKey": "LightingTimes",
 				"header": {
 					"title": "全影时间段"
 				},
@@ -2975,7 +2971,6 @@
 			"availableForObjects": "Facility,Place,Target",
 			"params": {
 				"name": "光照强度等参数",
-				"serverKey": "SolarIntensity",
 				"isDefault": true,
 				"header": {
 					"title": "光照强度、视太阳高度角等参数"
@@ -3079,7 +3074,6 @@
 			"availableForObjects": "Facility,Place,Target",
 			"params": {
 				"name": "光照强度等参数",
-				"serverKey": "SolarIntensity",
 				"isDefault": true,
 				"layout": {
 					"title": "光照强度、视太阳高度角等参数"
@@ -3144,7 +3138,6 @@
 			"availableForObjects": "Facility,Place,Target",
 			"params": {
 				"name": "光照强度",
-				"serverKey": "SolarIntensity",
 				"isDefault": true,
 				"header": {
 					"title": "光照强度参数(全可见为1，不可见为0)"
@@ -3178,7 +3171,6 @@
 			"availableForObjects": "Facility,Place,Target",
 			"params": {
 				"name": "光照强度",
-				"serverKey": "SolarIntensity",
 				"isDefault": true,
 				"layout": {
 					"title": "光照强度参数(全可见为1，不可见为0)"
@@ -3217,7 +3209,6 @@
 			"availableForObjects": "LaunchVehicle,Missile,Satellite",
 			"params": {
 				"name": "光照强度",
-				"serverKey": "SolarIntensity",
 				"isDefault": true,
 				"header": {
 					"title": "光照强度参数(全可见为1，不可见为0)"
@@ -3251,7 +3242,6 @@
 			"availableForObjects": "LaunchVehicle,Missile,Satellite",
 			"params": {
 				"name": "光照强度",
-				"serverKey": "SolarIntensity",
 				"isDefault": true,
 				"layout": {
 					"title": "光照强度"

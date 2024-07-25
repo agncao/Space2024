@@ -129,6 +129,9 @@
                     //                    console.log("dt: " + dt);
                     Cesium.JulianDate.clone(jd, solarSystem.clock.currentTime);
                 }
+                if (signalRDataAdapter.messageHandler) {
+                    signalRDataAdapter.messageHandler(data);
+                }
             } catch (e) {
                 console.log(e);
             }
