@@ -556,6 +556,11 @@ class FormulaTree {
                     }
                 });
             };
+            // 应用
+            document.getElementById('apply-json').onclick = function () {
+                // TODO 应用
+                console.log("🚀 ~ FormulaTree ~ 应用 ~ apply-json:", _this.jsonDataCopy[0])
+            };
             this.validatePosition = (position) => {
                 if (!position) {
                     return true;
