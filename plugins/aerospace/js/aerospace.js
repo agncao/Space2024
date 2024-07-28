@@ -1165,6 +1165,7 @@
                                 { field: 'name', title: 'ID', hide: true },
                                 { field: 'name', title: '方案名称' },
                                 { field: 'localTime', title: '最后修改时间' },
+                                { title: '操作', toolbar: '#deleteBtnTpl', width: 100 } // 添加操作列
                             ]],
                             data: arr
                         });
@@ -1174,6 +1175,28 @@
                             obj.setRowChecked({
                                 type: 'radio' // radio 单选模式；checkbox 复选模式
                             });
+                        });
+
+                        // 处理删除按钮点击事件
+                        table.on('tool(data_table)', function (obj) {
+                            const currentData = obj.data; // 获取当前行数据
+                            console.log("🚀 ~ currentData:", currentData)
+                            const fileName = currentData.name;
+                            const layEvent = obj.event; // 获取 lay-event 对应的值
+                            if (layEvent === 'delete') {
+                                layer.confirm('确定删除这行吗？', function (index) {
+                                    // 发送请求到服务器删除数据
+                                    $.get('/m/pluginFile/delFile?pluginId=aerospace' + '&folder=data' + '&name=' + fileName + ".json", function (ret) {
+                                        if (ret.messageType == "SUCCESS") {
+                                            layer.msg("删除成功！");
+                                            obj.del(); // 删除对应行（tr）的DOM结构，并更新缓存
+                                            layer.close(index);
+                                        } else {
+                                            layer.msg(ret.content);
+                                        }
+                                    });
+                                });
+                            }
                         });
 
                         // 上传方案

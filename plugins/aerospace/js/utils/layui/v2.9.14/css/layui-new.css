@@ -1,5 +1,4 @@
 blockquote,
-body,
 button,
 dd,
 div,
@@ -85,13 +84,6 @@ pre {
     white-space: -pre-wrap;
     white-space: -o-pre-wrap;
     word-wrap: break-word
-}
-
-body {
-    line-height: 1.6;
-    /* color: #333;
-    color: rgba(0, 0, 0, .85); */
-    font: 14px Helvetica Neue, Helvetica, PingFang SC, Tahoma, Arial, sans-serif
 }
 
 hr {
@@ -9182,3 +9174,5 @@ html #layuicss-layer {
     -webkit-animation-duration: .2s;
     animation-duration: .2s
 }
+
+/*# sourceMappingURL=layui.css.map */
