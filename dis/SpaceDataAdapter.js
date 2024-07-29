@@ -44,10 +44,6 @@
                 time = time.replace("UTCG", "");
                 var jd = Cesium.JulianDate.fromIso8601(time);
 
-                if (!spaceDataAdapter.startJd) {
-                    spaceDataAdapter.startJd = jd;
-                }
-
                 if (spaceDataAdapter.sysTime > 0) {
                     if (Cesium.JulianDate.lessThan(spaceDataAdapter.dataJd, jd)) {
                         //设置两次位置对应的仿真时间间隔

@@ -193,6 +193,9 @@
         getEntityType: function (entityId) {
             if (!entityId || entityId.indexOf("/") <= 0) return null;
             return entityId.split("/")[0];
+        },
+        getFormulaFileName: function (fileName) {
+            return fileName.concat(".json");
         }
     };
 
@@ -876,10 +879,21 @@
         }
     }
 
+
     const Aerospace = {
         id: "Plugins_aerospace",
         menu: {
             click: function (ele) {
+                //如果没登录则提示登录
+                if (!userViewerModel.isLogin) {
+                    layer.msg('请先登录', {
+                        icon: 0, // 图标类型，0表示警告图标
+                        offset: 't', // 显示在屏幕顶部
+                        time: 2000 // 显示时间（毫秒）
+                    });
+                    return;
+                }
+                // 获取方案
                 HttpClient.build().get(
                     '/m/pluginFile/getFiles?pluginId=aerospace' + '&folder=data' + '&name=',
                     Aerospace,
@@ -919,39 +933,37 @@
                 btn: [],
             });
         },
+        /**
+         * 加载方案
+         * @param {*} data 
+         */
         loadScenario: function (data) {
-            let self = this;
-            let today = data.EpochStartTime ? moment.utc(data.EpochStartTime).toDate() : new Date();
-            let nextDay = moment(today).add(1, 'days');
-            let utcStart = moment(today).utc().format();
-            let utcEnd = moment(nextDay).utc().format();
-            let option = {
-                name: data.ScenarioName,
-                centralBody: data.CentralBody,
-                startTime: utcStart,
-                endTime: utcEnd,
-                id: data.Id,
-                uploader: { id: userViewerModel.userId },
-                description: data.Description,
-                globalAttribute: {
-                    DIS: {
-                        Entity: {
-                            noFindCreate: true,
-                            Connection: {
-                                url: data.Host,
-                                dataAdapter: data.Parser
+            if (!currentScenario.dataSource) {
+                let today = data.EpochStartTime ? moment.utc(data.EpochStartTime).toDate() : new Date();
+                let nextDay = moment(today).add(1, 'days');
+                let utcStart = moment(today).utc().format();
+                let utcEnd = moment(nextDay).utc().format();
+                let option = {
+                    name: data.ScenarioName,
+                    centralBody: data.CentralBody,
+                    startTime: utcStart,
+                    endTime: utcEnd,
+                    id: data.Id,
+                    uploader: { id: userViewerModel.userId },
+                    description: data.Description,
+                    globalAttribute: {
+                        DIS: {
+                            Entity: {
+                                noFindCreate: true,
+                                Connection: {
+                                    url: data.Host,
+                                    dataAdapter: data.Parser
+                                }
                             }
                         }
                     }
-                }
-            };
-            if (!currentScenario.dataSource) {
+                };
                 currentScenario.createScene(option).then(ret => {
-                    //     const globalAttribute = currentScenario.dataSource.globalAttribute;
-                    //     globalAttribute.DIS.Entity.Connection.url = data.Host;
-                    //     globalAttribute.DIS.Entity.Connection.dataAdapter = data.Parser;
-                    //     globalAttribute.DIS.Entity.noFindCreate = true;
-                    //     currentScenario.dataSource.globalAttribute = globalAttribute;
                     this.setDataAdapterHandler(data.Parser);
                 });
             } else {
@@ -961,8 +973,37 @@
         setDataAdapterHandler: function (dataAdapter) {
             const signalRDataAdapter = Cesium.DataAdapter.get(dataAdapter);
             signalRDataAdapter.messageHandler = (data) => {
+                if (!signalRDataAdapter.startJd) {
+                    if (_formula.EpochStartTime) {
+                        let time = _formula.EpochStartTime.replace("UTCG", "");
+                        signalRDataAdapter.startJd = Cesium.JulianDate.fromIso8601(time);
+                    } else {
+                        signalRDataAdapter.startJd = signalRDataAdapter.dataJd;
+                    }
+                }
                 dataParser.onReceiveSpaceData(data);
             }
+        },
+
+        openFormulaWindow: function (formulaData, updateName) {
+            const _this = this;
+            layer.open({
+                type: 1,
+                title: ['更新方案', 'color:#fff;'],
+                shadeClose: true,
+                shade: false,
+                area: ['600px', '900px'], // 宽高
+                success: function (layero, index) {
+                    let formulaTree = new FormulaTree();
+                    formulaTree.render(formulaData);
+                    // 添加事件
+                    formulaTree.addEvent(updateName, formulaTree.event.apply, (formulaData) => {
+                        _this.showSubWindows(formulaData[0]);
+                        _this.loadScenario(formulaData[0]);
+                    });
+                },
+                content: $('#json-editor'),
+            });
         },
 
         formulaSettingWindow: function (parentLayerIndex) {
@@ -985,42 +1026,17 @@
                 btn: [],
             });
         },
-        loadOpenPlanWindow: function (planData, updateName) {
-            let newPlanLayerIndex = 0
-            const closeNewPlanLayer = () => {
-                layer.closeLast()
-            }
-            const _this = this;
-            newPlanLayerIndex = layer.open({
-                type: 1,
-                title: ['更新方案', 'color:#fff;'],
-                shadeClose: true,
-                shade: false,
-                area: ['600px', '900px'], // 宽高
-                success: function (layero, index) {
-                    let formulaTree = new FormulaTree();
-                    formulaTree.render(planData);
-                    // 添加事件
-                    formulaTree.addEvent(updateName);
-                },
-                content: $('#json-editor'),
-            });
-        },
-        loadUploadPlanWindow: function () {
-            let uploadPlanLayerIndex = 0
-            const closeUploadPlanLayer = () => {
-                layer.closeLast()
-            }
-            const _this = this;
-            const uploadFileName = document.getElementById('upload-plan-select-label');
-            const fileNameInput = document.getElementById('upload-plan-input');
-            let fileContent = '';
-            const uploadPlanSelectBtn = document.getElementById('upload-select-btn');
-            const uploadInput = document.getElementById('upload-plan-select-input');
-            const uploadBtn = document.getElementById('upload-plan-btn');
 
-            function handleUploadPlanSelectBtnClick() {
-                console.log('uploadPlanSelectBtn 上传按钮被点击');
+        uploadFormulaWindow: function () {
+            const _this = this;
+            const uploadFileName = document.getElementById('upload-formula-select-label');
+            const fileNameInput = document.getElementById('upload-formula-input');
+            let fileContent = '';
+            const uploadFormulaBtn = document.getElementById('upload-select-btn');
+            const uploadInput = document.getElementById('upload-formula-select-input');
+            const uploadBtn = document.getElementById('upload-formula-btn');
+
+            function handleuploadFormulaBtnClick() {
                 uploadInput.click();
             }
 
@@ -1039,8 +1055,6 @@
             function handleUploadBtnClick() {
                 // 获取 fileNameInput 的值
                 const fileName = fileNameInput.value;
-                console.log('文件名: ', fileName);
-                console.log('文件内容: ', fileContent);
                 if (!fileName) {
                     layer.msg('请输入文件名', {
                         icon: 0, // 图标类型，0表示警告图标
@@ -1061,12 +1075,10 @@
                 // 校验 json 格式 fileContent
                 try {
                     const json = JSON.parse(fileContent);
-                    console.log('上传文件 json: ', json);
                     // 上传文件
                     // 校验成功后，将 fileName 文件名和 fileContent 传给后端
-                    const name = `${fileName}.json`;
                     const data = {
-                        name: name,
+                        name: fn.getFormulaFileName(fileName),
                         pluginId: 'aerospace',
                         folder: 'data',
                         content: fileContent,
@@ -1087,7 +1099,7 @@
                 }
             }
 
-            uploadPlanLayerIndex = layer.open({
+            uploadFormulaLayerIndex = layer.open({
                 type: 1,
                 title: ['上传方案', 'color:#fff;'],
                 shadeClose: true,
@@ -1095,7 +1107,7 @@
                 area: ['600px', '400px'], // 宽高
                 success: function (layero, index) {
                     // 点击选择文件，弹出文件选择框
-                    uploadPlanSelectBtn.addEventListener('click', handleUploadPlanSelectBtnClick);
+                    uploadFormulaBtn.addEventListener('click', handleuploadFormulaBtnClick);
                     // 为 input 添加 change 事件监听器
                     uploadInput.addEventListener('change', handleUploadInputChange);
                     uploadBtn.addEventListener('click', handleUploadBtnClick);
@@ -1107,20 +1119,19 @@
                     uploadFileName.innerText = '选择的文件名: ';
                     fileContent = '';
                     // 移除现有的事件监听器
-                    uploadPlanSelectBtn.removeEventListener('click', handleUploadPlanSelectBtnClick);
+                    uploadFormulaBtn.removeEventListener('click', handleuploadFormulaBtnClick);
                     uploadInput.removeEventListener('change', handleUploadInputChange);
                     uploadBtn.removeEventListener('click', handleUploadBtnClick);
                 },
-                content: $('#upload-plan-container'),
+                content: $('#upload-formula-container'),
             });
         },
-        loadNewPlanWindow: function () {
-            let newPlanLayerIndex = 0
-            const closeNewPlanLayer = () => {
-                layer.closeLast()
-            }
+        /**
+         * 新建方案窗口
+         */
+        newFormulaWindow: function (formulaArr) {
             const _this = this;
-            newPlanLayerIndex = layer.open({
+            layer.open({
                 type: 1,
                 title: ['新建方案', 'color:#fff;'],
                 shadeClose: true,
@@ -1128,9 +1139,16 @@
                 area: ['600px', '900px'], // 宽高
                 success: function (layero, index) {
                     let formulaTree = new FormulaTree();
-                    formulaTree.render(formulaTree.getTemplate());
-                    // 添加事件
-                    formulaTree.addEvent(null);
+                    // formulaTree.render(formulaTree.getTemplate());
+                    formulaTree.newFormulaByTemplate(formulaArr).then(template => {
+                        formulaTree.render(template);
+                        // 添加事件
+                        formulaTree.addEvent(null, formulaTree.event.apply, (template) => {
+                            _this.removeSubWindows();
+                            _this.showSubWindows(template[0]);
+                            _this.loadScenario(template[0]);
+                        });
+                    });
                 },
                 content: $('#json-editor'),
             });
@@ -1180,13 +1198,12 @@
                         // 处理删除按钮点击事件
                         table.on('tool(data_table)', function (obj) {
                             const currentData = obj.data; // 获取当前行数据
-                            console.log("🚀 ~ currentData:", currentData)
-                            const fileName = currentData.name;
+                            const fileName = fn.getFormulaFileName(currentData.name);
                             const layEvent = obj.event; // 获取 lay-event 对应的值
                             if (layEvent === 'delete') {
                                 layer.confirm('确定删除这行吗？', function (index) {
                                     // 发送请求到服务器删除数据
-                                    $.get('/m/pluginFile/delFile?pluginId=aerospace' + '&folder=data' + '&name=' + fileName + ".json", function (ret) {
+                                    $.get('/m/pluginFile/delFile?pluginId=aerospace&folder=data&name=' + fileName, function (ret) {
                                         if (ret.messageType == "SUCCESS") {
                                             layer.msg("删除成功！");
                                             obj.del(); // 删除对应行（tr）的DOM结构，并更新缓存
@@ -1202,13 +1219,13 @@
                         // 上传方案
                         document.getElementById('uploadBtn').onclick = function () {
                             closeLayer();
-                            _this.loadUploadPlanWindow();
+                            _this.uploadFormulaWindow();
                         }
 
                         // 新建方案
                         document.getElementById('formulaBtn').onclick = function () {
                             closeLayer();
-                            _this.loadNewPlanWindow();
+                            _this.newFormulaWindow(arr);
                         }
 
                         // 打开方案
@@ -1222,9 +1239,9 @@
                                 const path = lineData.path + '?t=' + new Date().getTime();
                                 const response = await fetch(path);
                                 const content = await response.json();
-                                const planData = [content]
-                                const updateName = `${lineData.name}.json`
-                                _this.loadOpenPlanWindow(planData, updateName);
+                                const formulaData = [content]
+                                const updateName = fn.getFormulaFileName(lineData.name);
+                                _this.openFormulaWindow(formulaData, updateName);
                             } else {
                                 layui.use('layer', function () {
                                     var layer = layui.layer;
@@ -1240,7 +1257,7 @@
 
                     });
 
-                    // 绑定按钮事件
+                    // 打开方案
                     document.getElementById('confirmBtn').onclick = async function () {
                         // 获取表格的选中行数据
                         var checkedLine = layui.table.checkStatus('data_table');
@@ -1250,8 +1267,8 @@
                             const path = lineData.path + '?t=' + new Date().getTime();
                             const response = await fetch(path);
                             const content = await response.json();
-                            _this.loadScenario(content);
                             _this.showSubWindows(content);
+                            _this.loadScenario(content);
                             closeLayer()
                         } else {
                             layui.use('layer', function () {
@@ -1269,6 +1286,30 @@
                 content: $('#plugins_aerospace_container'),
             });
         },
+        /**
+         * 移除子窗口
+         */
+        removeSubWindows: function () {
+            // 移除所有的id 为divReport开头的Div层
+            const divReports = document.querySelectorAll('div[id^="divReport"]');
+            divReports.forEach(div => div.remove());
+            // 移除所有的id 为divChart开头的Div层
+            const divCharts = document.querySelectorAll('div[id^="divChart"]');
+            divCharts.forEach(div => div.remove());
+            // 移除所有的id 为divTime开头的Div层
+            const divTimes = document.querySelectorAll('div[id^="divTime"]');
+            divTimes.forEach(div => div.remove());
+            // 移除所有的id 为divMessage开头的Div层
+            const divMessages = document.querySelectorAll('div[id^="divMessage"]');
+            divMessages.forEach(div => div.remove());
+            // 移除所有的id 为divBusiness开头的Div层
+            const divBusinesse = document.querySelectorAll('div[id^="divBusiness"]');
+            divBusinesse.forEach(div => div.remove());
+        },
+        /**
+         * 显示子窗口
+         * @param {*} data 
+         */
         showSubWindows: function (data) {
             let self = this;
             _formula = fn.initFormulaConfig(data);
@@ -1281,7 +1322,6 @@
         },
 
         showMultiWindow: function (boxSettings) {
-            console.log('boxSetting: ', boxSettings);
             if (!boxSettings || boxSettings.length == 0) return;
 
             if (document.getElementById(fn.generateWindowId(boxSettings[0].WindowType, 0))) {
@@ -1336,7 +1376,7 @@
             };
         },
         showGridWindow: function (boxSettings) {
-            if (!boxSettings) return;
+            if (!boxSettings || boxSettings.length == 0) return;
 
             if (document.getElementById(fn.generateWindowId(boxSettings[0].WindowType, 0))) {
                 return;

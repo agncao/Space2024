@@ -3,14 +3,14 @@
     "Id": "1",
     "Name": "态势展示方案",
     "ScenarioName": "航空态势展示",
-    "Host": "https://localhost:7234/receiver",
+    "Host": "http://astrox.cn:9876/receivemessagehub",
     "EpochStartTime": null,
     "CentralBody": "Earth",
-    "Parser": "spaceDataParser",
+    "Parser": "signalR",
     "Description": "航空态势展示",
     "Settings": [
       {
-        "Name": "数据报表L1",
+        "Name": "数据报表-1",
         "WindowType": "Report",
         "EntityId": "Satellite/ICO_G1_32763",
         "ReportName": "大地纬度-经度",
@@ -29,7 +29,7 @@
         }
       },
       {
-        "Name": "数据报表L2",
+        "Name": "数据报表-2",
         "WindowType": "Report",
         "EntityId": "Satellite/ICO_G1_32763",
         "ReportName": "固定系位置-速度",
@@ -48,7 +48,7 @@
         }
       },
       {
-        "Name": "数据报表L3",
+        "Name": "数据报表-3",
         "WindowType": "Report",
         "EntityId": "Satellite/ICO_G1_32763",
         "ReportName": "惯性系位置、速度",
@@ -67,7 +67,7 @@
         }
       },
       {
-        "Name": "数据报表L4",
+        "Name": "数据报表-4",
         "WindowType": "Report",
         "EntityId": "Satellite/CARTOSAT-2A_32783",
         "ReportName": "大地纬度-经度-高度-速度大小",
@@ -86,7 +86,7 @@
         }
       },
       {
-        "Name": "数据报表L5",
+        "Name": "数据报表-5",
         "WindowType": "Report",
         "EntityId": "Satellite/CALSPHERE_1_00900",
         "ReportName": "大地纬度-经度",
@@ -105,10 +105,11 @@
         }
       },
       {
-        "Name": "XXX统计图1",
+        "Name": "统计图-1",
         "WindowType": "Chart",
         "EntityId": "Satellite/CARTOSAT-2A_32783",
         "ReportName": "固定系位置-速度",
+        "XScaleCount": 500,
         "Display": {
           "Box": {
             "Name": "固定系位置-速度",
@@ -124,10 +125,11 @@
         }
       },
       {
-        "Name": "XXX统计图2",
+        "Name": "统计图-2",
         "WindowType": "Chart",
         "EntityId": "Satellite/CARTOSAT-2A_32783",
         "ReportName": "Beta角度",
+        "XScaleCount": 500,
         "Display": {
           "Box": {
             "Name": "Beta角度",
@@ -143,7 +145,7 @@
         }
       },
       {
-        "Name": "时间T1",
+        "Name": "时间-1",
         "WindowType": "Time",
         "Precision": 3,
         "EntityId": "",
@@ -163,7 +165,7 @@
         }
       },
       {
-        "Name": "时间T2",
+        "Name": "时间-2",
         "WindowType": "Time",
         "Precision": 3,
         "EntityId": "",
@@ -183,7 +185,7 @@
         }
       },
       {
-        "Name": "消息M1",
+        "Name": "消息-1",
         "WindowType": "Message",
         "EntityId": "",
         "Display": {
@@ -219,7 +221,7 @@
         }
       },
       {
-        "Name": "温度计R1",
+        "Name": "温度计-1",
         "WindowType": "Business",
         "EntityId": "",
         "Display": {
@@ -244,7 +246,7 @@
         }
       },
       {
-        "Name": "温度仪表盘",
+        "Name": "温度仪表盘-1",
         "WindowType": "Business",
         "EntityId": "",
         "Display": {
