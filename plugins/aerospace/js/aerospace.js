@@ -318,7 +318,10 @@
                         }
                     });
                 } catch (err) {
-                    console.error(err);
+                    console.error("windowType:", setting.WindowType,
+                        "; entityId:", setting.EntityId,
+                        "; reportName:", setting.ReportName,
+                        "; err:", err);
                 }
             }
         },
@@ -652,7 +655,7 @@
                 // 使用正则表达式匹配键名
                 const match = key.match(/^y(\d*)$/);
                 if (match) {    // y轴
-                    dataChart.setPostureYAxisAndSeries(graphResult, key);
+                    dataChart.setPostureYAxisAndSeries(graphResult, key, setting);
                 } else {    // x轴
                     dataChart.setPostureXAxis(graphResult, key);
                 }
@@ -695,7 +698,7 @@
          * @param {*} graphResult 
          * @param {*} key 
          */
-        setPostureYAxisAndSeries: function (graphResult, key) {
+        setPostureYAxisAndSeries: function (graphResult, key, setting) {
             let ydata = graphResult.res[key];
             let yList = ydata ? ydata.values : [];
             if (yList.length > 2) {
@@ -736,7 +739,7 @@
                 }
             }
 
-            this.setPostureSeries(graphResult, key);
+            this.setPostureSeries(graphResult, key, setting);
 
             for (let i = 0; i < chartOption.yAxis.length; i++) {
                 let yAxis = chartOption.yAxis[i];
@@ -756,7 +759,7 @@
          * 如果key==='y',match[1] 将是空字符串，这时 index 将保持为 0。
          *      如果key为y{数字}，如 y2，则 match[1] 为 2，index 将被设置为 2 - 1 = 1
          */
-        setPostureSeries: function (graphResult, key) {
+        setPostureSeries: function (graphResult, key, setting) {
             let ydata = graphResult.res[key];
             let chartOption = _postureEChartOptions[graphResult.dataIndex];
             let y = ydata ? ydata.values : [];
@@ -765,7 +768,7 @@
                 if (chartOption.series.length > 0) {
                     for (let j = 0; j < chartOption.series.length; j++) {
                         if (chartOption.series[j].yKey === key && chartOption.series[j].yi === yi) {
-                            dataChart.doSetPostureSeries(graphResult, key, yi, j);
+                            dataChart.doSetPostureSeries(graphResult, key, yi, j, setting);
                             isSeriesFinded = true;
                             break;
                         }
@@ -818,13 +821,14 @@
          * @param {*} yi 
          * @param {*} seriesIndex 
          */
-        doSetPostureSeries: function (graphResult, key, yi, seriesIndex) {
+        doSetPostureSeries: function (graphResult, key, yi, seriesIndex, setting) {
             let res = graphResult.res;
             let y = res[key].values;
             let chartOption = _postureEChartOptions[graphResult.dataIndex];
             if (!chartOption) return;
             if (res.chartType === _postureChartType.Time.id) {
-                if (_echartsSerieDataLength < chartOption.series[seriesIndex].data.length) {
+                let scaleCount = setting.XScaleCount || _echartsSerieDataLength;
+                if (scaleCount < chartOption.series[seriesIndex].data.length) {
                     chartOption.series[seriesIndex].data.shift();
 
                 }
@@ -998,6 +1002,7 @@
                     formulaTree.render(formulaData);
                     // 添加事件
                     formulaTree.addEvent(updateName, formulaTree.event.apply, (formulaData) => {
+                        _this.removeSubWindows();
                         _this.showSubWindows(formulaData[0]);
                         _this.loadScenario(formulaData[0]);
                     });

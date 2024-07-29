@@ -15,6 +15,10 @@ class FormulaTree {
             save: 'save',
             apply: 'apply'
         }
+        this.valueConvertParam = {
+            pos: 'Position',
+            string: 'String'
+        }
 
         this.jsonDataCopy = [];
 
@@ -87,8 +91,12 @@ class FormulaTree {
                 let node = getKeyNode('Box', 'display-box');
                 let offsetNode = getLeafNode('Offset', arrayToStr(setting.Display.Box.Offset), 'display-box-offset');
                 offsetNode.validation = 'validatePosition';
+                offsetNode.valueConvert = 'string2Array';
+                offsetNode.valueConvertParam = self.valueConvertParam.pos;
                 let areaNode = getLeafNode('Area', arrayToStr(setting.Display.Box.Area), 'display-box-area');
                 areaNode.validation = 'validatePosition';
+                areaNode.valueConvert = 'string2Array';
+                areaNode.valueConvertParam = self.valueConvertParam.pos;
                 node.children = [
                     getLeafNode('Name', setting.Display.Box.Name, 'display-box-name'),
                     offsetNode,
@@ -100,8 +108,12 @@ class FormulaTree {
                 node = getKeyNode('Content', 'display-content');
                 let cOffNode = getLeafNode('Offset', arrayToStr(setting.Display.Content.Offset), 'display-content-offset');
                 cOffNode.validation = 'validatePosition';
+                cOffNode.valueConvert = 'string2Array';
+                cOffNode.valueConvertParam = self.valueConvertParam.pos;
                 let cAreaNode = getLeafNode('Area', arrayToStr(setting.Display.Content.Area), 'display-content-area');
                 cAreaNode.validation = 'validatePosition';
+                cAreaNode.valueConvert = 'string2Array';
+                cAreaNode.valueConvertParam = self.valueConvertParam.pos;
                 node.children = [
                     cOffNode,
                     cAreaNode,
@@ -122,7 +134,9 @@ class FormulaTree {
                 obj.children.push(getLeafNode('EntityId', setting.EntityId));
                 obj.children.push(getLeafNode('ReportName', setting.ReportName));
                 if (setting.WindowType === "Chart") {
-                    obj.children.push(getLeafNode('XScaleCount', setting.XScaleCount));
+                    let node = getLeafNode('XScaleCount', setting.XScaleCount);
+                    node.validation = 'isPositiveInteger';
+                    obj.children.push(node);
                 }
             } else if (setting.WindowType === "Time") {
                 obj.children.push(getLeafNode('Precision', setting.Precision));
@@ -189,25 +203,29 @@ class FormulaTree {
                 if (id.includes('setting') && len > 2) {
                     index = id.split('-')[2]
                 }
-                self.layerui.layer.prompt(
-                    function (text, renderIndex) {
-                        if (data.validation) {
-                            const yes = self[data.validation](text);
-                            if (!yes) {
-                                return;
-                            }
+                const dataArr = data.title.split(':')
+                const key = dataArr.length > 1 ? dataArr[0] : null;
+                const defaultValue = dataArr.length > 1 ? dataArr[1] : '';
+                self.layerui.layer.prompt({
+                    formType: 2,
+                    value: defaultValue,
+                    title: key ? '请输入[' + key + ']的值' : '请输入值',
+                    area: ['300px', '40px'] // 自定义文本域宽高
+                }, function (text, renderIndex) {
+                    if (data.validation) {
+                        const yes = self[data.validation](text);
+                        if (!yes) {
+                            return;
                         }
-                        const dataArr = data.title.split(':')
-                        const changeId = data.id;
-                        if (dataArr.length > 1) {
-                            const key = dataArr[0]
-                            self.updateSetting(key, text, jsonArr, index, changeId, len, boxOrContent, isKeyValue, itemIndex);
-                        } else {
-                            self.updateSetting(null, text, jsonArr, index, changeId, len, boxOrContent, isKeyValue, itemIndex);
-                        }
-
-                        self.layerui.layer.close(renderIndex);
                     }
+                    if (data.valueConvert) {
+                        text = self[data.valueConvert](text, data.valueConvertParam);
+                    }
+                    const changeId = data.id;
+                    self.updateSetting(key, text, jsonArr, index, changeId, len, boxOrContent, isKeyValue, itemIndex);
+
+                    self.layerui.layer.close(renderIndex);
+                }
                 );
             }
         });
@@ -511,32 +529,74 @@ class FormulaTree {
         };
     }
 
+    string2Array = (pos, convertType = this.valueConvertParam.string) => {
+        if (!pos) return [];
+        return pos
+            .replace(/[\[\]]/g, '') // Remove square brackets
+            .split(',')             // Split by comma
+            .map(item => {
+                let val = item.trim();
+                if (convertType == this.valueConvertParam.pos) {
+                    val = val.replace(/^['"]|['"]$/g, '');
+                    if (!this.isPercentFormat(val)) {
+                        val = parseFloat(val);
+                    }
+                }
+                return val;
+            }) // Trim whitespace
+    };
+
+    isPercentFormat = (value) => {
+        return /^\d+(\.\d+)?%$/.test(value);
+    }
+
+    isPositiveInteger = (value) => {
+        const regex = /^[1-9]\d*$/;
+        const isValid = regex.test(value);
+        if (!isValid) {
+            this.layerui.layer.msg('输入的数据必须是正整数');
+        }
+        return isValid;
+    };
+
     validatePosition = (position) => {
         if (!position) {
             return true;
         }
-        const regex = /^\[([+-]?\d+(\.\d+)?%?,\s*){1}[+-]?\d+(\.\d+)?%?\]$/;
-        let yes = regex.test(position);
+
+        const posArr = this.string2Array(position);
+        let yes = true;
+        if (posArr.length != 2) {
+            yes = false;
+        } else {
+            //每个元素可以转换成float，或者可以转换成小数的百分数字符串
+            posArr.forEach(item => {
+                const num = parseFloat(item);
+                if (isNaN(num) && !this.isPercentFormat(item)) {
+                    yes = false;
+                }
+            });
+        }
         if (!yes) {
-            self.layerui.layer.msg('输入的数据格式不正确');
+            this.layerui.layer.msg('输入的数据格式不正确');
         }
         return yes;
     };
     validateItems = (items) => {
         if (!items) {
-            self.layerui.layer.msg('输入的数据必须是JSON格式');
+            this.layerui.layer.msg('输入的数据必须是JSON格式');
             return;
         }
         try {
             JSON.parse(items);
         } catch (e) {
-            self.layerui.layer.msg('输入的数据必须是JSON格式');
+            this.layerui.layer.msg('输入的数据必须是JSON格式');
             return;
         }
     };
     notEmptyValidate = (text) => {
         if (!text || text.trim() === '') {
-            self.layerui.layer.msg('不可为空');
+            this.layerui.layer.msg('不可为空');
             return false;
         }
         return true;
