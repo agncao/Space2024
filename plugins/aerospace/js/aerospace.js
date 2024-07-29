@@ -118,7 +118,6 @@
 
             div.setAttribute("class", display.Content.Class);
             parentWin.appendChild(div);
-            console.log("generateChartContainer:", parentWin.innerHTML);
             return div;
         },
         generateChartContainerId: function (parentWin, index) {
@@ -1268,7 +1267,6 @@
                         var checkedLine = layui.table.checkStatus('data_table');
                         if (checkedLine.data.length > 0) {
                             const lineData = checkedLine.data[0]
-                            console.log("🚀 ~ lineData:", lineData)
                             const path = lineData.path + '?t=' + new Date().getTime();
                             const response = await fetch(path);
                             const content = await response.json();

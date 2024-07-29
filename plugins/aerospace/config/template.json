@@ -12,31 +12,27 @@
       {
         "Name": "数据报表-1",
         "WindowType": "Report",
-        "EntityId": "Satellite/ICO_G1_32763",
-        "ReportName": "大地纬度-经度",
+        "EntityId": "Satellite/earth-css",
+        "ReportName": "J2000系位置-速度",
         "Display": {
           "Box": {
-            "Name": "大地纬度-经度",
+            "Name": "J2000系位置-速度",
             "Offset": [106, -50],
             "Area": [],
             "Class": "data-layout"
           },
-          "Content": {
-            "Offset": [],
-            "Area": [0, 0],
-            "Class": "data-content"
-          }
+          "Content": { "Offset": [], "Area": [0, 0], "Class": "data-content" }
         }
       },
       {
         "Name": "数据报表-2",
         "WindowType": "Report",
-        "EntityId": "Satellite/ICO_G1_32763",
+        "EntityId": "Satellite/earth-css",
         "ReportName": "固定系位置-速度",
         "Display": {
           "Box": {
             "Name": "固定系位置-速度",
-            "Offset": [302, -50],
+            "Offset": [402, -50],
             "Area": [],
             "Class": "data-layout"
           },
@@ -50,12 +46,12 @@
       {
         "Name": "数据报表-3",
         "WindowType": "Report",
-        "EntityId": "Satellite/ICO_G1_32763",
+        "EntityId": "Satellite/earth-sz",
         "ReportName": "惯性系位置、速度",
         "Display": {
           "Box": {
             "Name": "惯性系位置、速度",
-            "Offset": [610, -50],
+            "Offset": [700, -50],
             "Area": [],
             "Class": "data-layout"
           },
@@ -69,31 +65,12 @@
       {
         "Name": "数据报表-4",
         "WindowType": "Report",
-        "EntityId": "Satellite/CARTOSAT-2A_32783",
+        "EntityId": "Satellite/earth-css",
         "ReportName": "大地纬度-经度-高度-速度大小",
         "Display": {
           "Box": {
             "Name": "大地纬度-经度-高度-速度大小",
-            "Offset": [908, -50],
-            "Area": [],
-            "Class": "data-layout"
-          },
-          "Content": {
-            "Offset": [32, 4],
-            "Area": [0, 0],
-            "Class": "data-content"
-          }
-        }
-      },
-      {
-        "Name": "数据报表-5",
-        "WindowType": "Report",
-        "EntityId": "Satellite/CALSPHERE_1_00900",
-        "ReportName": "大地纬度-经度",
-        "Display": {
-          "Box": {
-            "Name": "大地纬度-经度",
-            "Offset": [1168, -50],
+            "Offset": [994, -50],
             "Area": [],
             "Class": "data-layout"
           },
@@ -107,7 +84,7 @@
       {
         "Name": "统计图-1",
         "WindowType": "Chart",
-        "EntityId": "Satellite/CARTOSAT-2A_32783",
+        "EntityId": "Satellite/earth-sz",
         "ReportName": "固定系位置-速度",
         "XScaleCount": 500,
         "Display": {
@@ -117,17 +94,13 @@
             "Area": [500, 320],
             "Class": "data-layout"
           },
-          "Content": {
-            "Offset": [40, 0],
-            "Area": [],
-            "Class": "data-content"
-          }
+          "Content": { "Offset": [40, 0], "Area": [], "Class": "data-content" }
         }
       },
       {
         "Name": "统计图-2",
         "WindowType": "Chart",
-        "EntityId": "Satellite/CARTOSAT-2A_32783",
+        "EntityId": "Satellite/earth-sz",
         "ReportName": "Beta角度",
         "XScaleCount": 500,
         "Display": {
@@ -137,11 +110,7 @@
             "Area": [500, 320],
             "Class": "data-layout"
           },
-          "Content": {
-            "Offset": [40, 0],
-            "Area": [],
-            "Class": "data-content"
-          }
+          "Content": { "Offset": [40, 0], "Area": [], "Class": "data-content" }
         }
       },
       {
@@ -152,15 +121,11 @@
         "Display": {
           "Box": {
             "Name": "仿真时间",
-            "Offset": [33, 680],
+            "Offset": [33, 580],
             "Area": [430, 40],
             "Class": "time-layout"
           },
-          "Content": {
-            "Offset": [0, 0],
-            "Area": [],
-            "Class": ""
-          },
+          "Content": { "Offset": [0, 0], "Area": [], "Class": "" },
           "Items": "UTCG"
         }
       },
@@ -176,11 +141,7 @@
             "Area": [250, 40],
             "Class": "time-layout"
           },
-          "Content": {
-            "Offset": [0, 0],
-            "Area": [],
-            "Class": ""
-          },
+          "Content": { "Offset": [0, 0], "Area": [], "Class": "" },
           "Items": "EpSec"
         }
       },
@@ -195,28 +156,12 @@
             "Area": [500, 254],
             "Class": "data-layout"
           },
-          "Content": {
-            "Offset": [15, 0],
-            "Area": [],
-            "Class": "message"
-          },
+          "Content": { "Offset": [15, 0], "Area": [], "Class": "message" },
           "Items": [
-            {
-              "Id": "Level",
-              "Label": "级别"
-            },
-            {
-              "Id": "EntityId",
-              "Label": "实体Id"
-            },
-            {
-              "Id": "Content",
-              "Label": "内容"
-            },
-            {
-              "Id": "Time",
-              "Label": "消息时间"
-            }
+            { "Id": "Level", "Label": "级别" },
+            { "Id": "EntityId", "Label": "实体Id" },
+            { "Id": "Content", "Label": "内容" },
+            { "Id": "Time", "Label": "消息时间" }
           ]
         }
       },
@@ -232,17 +177,8 @@
             "Area": [238, 216],
             "Class": "data-layout"
           },
-          "Content": {
-            "Offset": [32, 0],
-            "Area": [],
-            "Class": "data-content"
-          },
-          "Items": [
-            {
-              "Id": "averageTemperature",
-              "Label": "平均温度"
-            }
-          ]
+          "Content": { "Offset": [32, 0], "Area": [], "Class": "data-content" },
+          "Items": [{ "Id": "averageTemperature", "Label": "平均温度" }]
         }
       },
       {
@@ -257,17 +193,8 @@
             "Area": [238, 216],
             "Class": "data-layout"
           },
-          "Content": {
-            "Offset": [32, 0],
-            "Area": [],
-            "Class": "data-content"
-          },
-          "Items": [
-            {
-              "Id": "enveromentTemperature",
-              "Label": "环境温度"
-            }
-          ]
+          "Content": { "Offset": [32, 0], "Area": [], "Class": "data-content" },
+          "Items": [{ "Id": "enveromentTemperature", "Label": "环境温度" }]
         }
       },
       {

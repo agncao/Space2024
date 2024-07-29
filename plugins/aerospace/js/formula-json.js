@@ -7,7 +7,8 @@ class FormulaTree {
         };
         this.valueType = {
             keyValue: 'key-value',
-            json: 'json'
+            json: 'json',
+            text: 'text'
         };
         this.event = {
             add: 'add',
@@ -37,7 +38,7 @@ class FormulaTree {
             }
             const templateData = await response.json();
             templateData[0].Id = new Date().getTime();
-            templateData[0].Name = FileUtils.createUniqueName("态势展示方案", formulaArr, "name");
+            templateData[0].Name = FileUtils.createUniqueName(templateData[0].Name, formulaArr, "name");
             this.initialData = templateData;
             return templateData;
         } catch (error) {
@@ -77,6 +78,7 @@ class FormulaTree {
                 if (setting.WindowType === "Business" || setting.WindowType === "Message") {
                     let node = getLeafNode('Items', arrayToStr(setting.Display.Items), 'display-items');
                     node.validation = 'validateItems';
+                    node.valueType = self.valueType.json;
                     res.push(node);
                 }
                 if (setting.WindowType === "Time") {
@@ -155,12 +157,13 @@ class FormulaTree {
                 spread: true,
                 nodeType: self.nodeType.root,
                 validation: 'notEmptyValidate',
+                valueType: self.valueType.text,
                 children: [
-                    { title: `ScenarioName: ${item.ScenarioName}`, id: `${item.Id}-scenarioname`, nodeType: self.nodeType.leaf, validation: 'notEmptyValidate' },
-                    { title: `Host: ${item.Host}`, id: `${item.Id}-host`, nodeType: self.nodeType.leaf, validation: 'notEmptyValidate' },
-                    { title: `CentralBody: ${item.CentralBody}`, id: `${item.Id}-centralbody`, nodeType: self.nodeType.leaf, validation: 'notEmptyValidate' },
-                    { title: `Parser: ${item.Parser}`, id: `${item.Id}-parser`, nodeType: self.nodeType.leaf, validation: 'notEmptyValidate' },
-                    { title: `Description: ${item.Description}`, id: `${item.Id}-description`, nodeType: self.nodeType.leaf, validation: 'notEmptyValidate' },
+                    { title: `ScenarioName: ${item.ScenarioName}`, id: `${item.Id}-scenarioname`, nodeType: self.nodeType.leaf, validation: 'notEmptyValidate', valueType: self.valueType.keyValue },
+                    { title: `Host: ${item.Host}`, id: `${item.Id}-host`, nodeType: self.nodeType.leaf, validation: 'notEmptyValidate', valueType: self.valueType.keyValue },
+                    { title: `CentralBody: ${item.CentralBody}`, id: `${item.Id}-centralbody`, nodeType: self.nodeType.leaf, validation: 'notEmptyValidate', valueType: self.valueType.keyValue },
+                    { title: `Parser: ${item.Parser}`, id: `${item.Id}-parser`, nodeType: self.nodeType.leaf, validation: 'notEmptyValidate', valueType: self.valueType.keyValue },
+                    { title: `Description: ${item.Description}`, id: `${item.Id}-description`, nodeType: self.nodeType.leaf, validation: 'notEmptyValidate', valueType: self.valueType.keyValue },
                     {
                         title: 'Settings',
                         id: `${item.Id}-settings`,
@@ -187,7 +190,6 @@ class FormulaTree {
                 if (data.nodeType === self.nodeType.keyword) {
                     return;
                 }
-                const isKeyValue = data.valueType === self.valueType.keyValue
                 let index = -1;
                 let itemIndex = -1;
                 const id = data.id + '';
@@ -203,14 +205,23 @@ class FormulaTree {
                 if (id.includes('setting') && len > 2) {
                     index = id.split('-')[2]
                 }
-                const dataArr = data.title.split(':')
+                const dataArr = data.title.split(':');
                 const key = dataArr.length > 1 ? dataArr[0] : null;
-                const defaultValue = dataArr.length > 1 ? dataArr[1] : '';
+                let defaultValue = data.title;
+                let area = ['300px', '40px'] // 自定义文本域宽高
+                if (data.valueType == self.valueType.keyValue) {
+                    defaultValue = dataArr[1];
+                }
+                if (data.valueType == self.valueType.json) {
+                    //将defaultValue 移除 key部分
+                    defaultValue = defaultValue.replace(key + ':', '').trim();
+                    area = ['300px', '100px'] // 自定义文本域宽高
+                }
                 self.layerui.layer.prompt({
                     formType: 2,
                     value: defaultValue,
                     title: key ? '请输入[' + key + ']的值' : '请输入值',
-                    area: ['300px', '40px'] // 自定义文本域宽高
+                    area: area
                 }, function (text, renderIndex) {
                     if (data.validation) {
                         const yes = self[data.validation](text);
@@ -222,7 +233,7 @@ class FormulaTree {
                         text = self[data.valueConvert](text, data.valueConvertParam);
                     }
                     const changeId = data.id;
-                    self.updateSetting(key, text, jsonArr, index, changeId, len, boxOrContent, isKeyValue, itemIndex);
+                    self.updateSetting(key, text, jsonArr, index, changeId, len, boxOrContent, data.valueType, itemIndex);
 
                     self.layerui.layer.close(renderIndex);
                 }
@@ -230,7 +241,7 @@ class FormulaTree {
             }
         });
 
-        this.updateSetting = (key, value, jsonArr, index, changeId, len, boxOrContent, isKeyValue, itemIndex) => {
+        this.updateSetting = (key, value, jsonArr, index, changeId, len, boxOrContent, valueType, itemIndex) => {
             // 找到 jsonArr 中对应的 key，然后修改为 value
             const data = jsonArr[0]
             let isFind = false;
@@ -259,9 +270,10 @@ class FormulaTree {
                         if (display) {
                             const item = display.Items;
                             if (item) {
-                                if (isKeyValue) {
-                                    display.Items = value;
+                                if (valueType == self.valueType.json) {
+                                    value = JSON.parse(value);
                                 }
+                                display.Items = value;
                             }
                         }
                     } else if (len == 6) {
@@ -336,7 +348,6 @@ class FormulaTree {
             // 弹窗显示 select 组件
             let addSettingLayerIndex = 0
             const closeAddSettingLayer = () => {
-                console.log('closeAddSettingLayer');
                 const selectElem = document.getElementById('add-setting-select-container');
                 if (selectElem) {
                     selectElem.remove();
@@ -425,8 +436,6 @@ class FormulaTree {
                     </div>
                     `,
                 success: function (layero, index) {
-                    debugger
-
                     // 动态生成 checkbox 数据
                     //_this.jsonDataCopy[0].Settings过滤出WindowType!=Header
                     const settings = _this.jsonDataCopy[0].Settings.filter(setting => setting.WindowType != 'Header');
@@ -585,14 +594,15 @@ class FormulaTree {
     validateItems = (items) => {
         if (!items) {
             this.layerui.layer.msg('输入的数据必须是JSON格式');
-            return;
+            return false;
         }
         try {
             JSON.parse(items);
         } catch (e) {
             this.layerui.layer.msg('输入的数据必须是JSON格式');
-            return;
+            return false;
         }
+        return true;
     };
     notEmptyValidate = (text) => {
         if (!text || text.trim() === '') {
