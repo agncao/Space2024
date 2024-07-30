@@ -19,7 +19,7 @@
     let _echartsxAxisNum = 5;
     let _postureEChartOptions = [];
     let _echartsSerieDataLength = 500;
-    const basePath = '/plugins/aerospace';
+    const basePath = '/plugins/taishi';
 
     const fn = {
         initFormulaConfig: function (config) {
@@ -883,8 +883,8 @@
     }
 
 
-    const Aerospace = {
-        id: "Plugins_aerospace",
+    const Taishi = {
+        id: "Plugins_taishi",
         menu: {
             click: function (ele) {
                 //如果没登录则提示登录
@@ -898,8 +898,8 @@
                 }
                 // 获取方案
                 HttpClient.build().get(
-                    '/m/pluginFile/getFiles?pluginId=aerospace' + '&folder=data' + '&name=',
-                    Aerospace,
+                    '/m/pluginFile/getFiles?pluginId=taishi' + '&folder=data' + '&name=',
+                    Taishi,
                     "afterFormulaReceived"
                 );
             }
@@ -931,7 +931,7 @@
                 success: function (layero, index) {
                     self.loadFormulaWindow(newArr);
                 },
-                content: $('#plugins_aerospace_container'),
+                content: $('#plugins_taishi_container'),
                 anim: -1, // 0-6 的动画形式，-1 不开启
                 btn: [],
             });
@@ -1025,7 +1025,7 @@
                     let fs = new FormulaSetting();
                     fs.renderTree();
                 },
-                content: $('#plugins_aerospace_container'),
+                content: $('#plugins_taishi_container'),
                 anim: -1, // 0-6 的动画形式，-1 不开启
                 btn: [],
             });
@@ -1083,7 +1083,7 @@
                     // 校验成功后，将 fileName 文件名和 fileContent 传给后端
                     const data = {
                         name: fn.getFormulaFileName(fileName),
-                        pluginId: 'aerospace',
+                        pluginId: 'taishi',
                         folder: 'data',
                         content: fileContent,
                     };
@@ -1207,7 +1207,7 @@
                             if (layEvent === 'delete') {
                                 layer.confirm('确定删除这行吗？', function (index) {
                                     // 发送请求到服务器删除数据
-                                    $.get('/m/pluginFile/delFile?pluginId=aerospace&folder=data&name=' + fileName, function (ret) {
+                                    $.get('/m/pluginFile/delFile?pluginId=taishi&folder=data&name=' + fileName, function (ret) {
                                         if (ret.messageType == "SUCCESS") {
                                             layer.msg("删除成功！");
                                             obj.del(); // 删除对应行（tr）的DOM结构，并更新缓存
@@ -1286,7 +1286,7 @@
                         }
                     };
                 },
-                content: $('#plugins_aerospace_container'),
+                content: $('#plugins_taishi_container'),
             });
         },
         /**
@@ -1403,9 +1403,5 @@
         }
     };
 
-    // HttpClient.build().get(WebApi.spaceData.formulaUrl, Aerospace, "afterFormulaReceived");
-    // HttpClient.build().get('/m/pluginFile/getFiles?pluginId=aerospace' + '&folder=data' + '&name=', Aerospace, "afterFormulaReceived");
-    //    远程调用方案
-    // SignalRClient.build(WebApi.spaceData.hub).listen("receiveSpaceData", dataParser);
-    Plugins.add(Aerospace);
+    Plugins.add(Taishi);
 })();

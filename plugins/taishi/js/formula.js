@@ -32,7 +32,7 @@ class FormulaTree {
 
     newFormulaByTemplate = async (formulaArr) => {
         try {
-            const response = await fetch('/plugins/aerospace/config/template.json');
+            const response = await fetch('/plugins/taishi/config/template.json');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -48,7 +48,7 @@ class FormulaTree {
 
     getContentFromTemplate = async () => {
         try {
-            const response = await fetch('/plugins/aerospace/config/template.json');
+            const response = await fetch('/plugins/taishi/config/template.json');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -515,7 +515,7 @@ class FormulaTree {
             const name = `${_this.jsonDataCopy[0].Name}.json`;
             const data = {
                 name: updateName ? updateName : name,
-                pluginId: 'aerospace',
+                pluginId: 'taishi',
                 folder: 'data',
                 content: JSON.stringify(_this.jsonDataCopy[0]),
             };

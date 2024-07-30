@@ -1,0 +1,12 @@
+{
+  "description": "json文件名必须和上级文件夹名称一致，以下带有_description的内容都可以删掉",
+  "id": "Plugins_taishi",
+  "main": "index.html",
+  "menu": {
+    "parent": "Menu_Plugins",
+    "icon": "plugins/taishi/taishi.png",
+    "name": "航天态势",
+    "width": 120,
+    "click": "click"
+  }
+}
