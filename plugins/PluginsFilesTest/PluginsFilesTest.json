@@ -1,13 +1,13 @@
 {
 	"description":"json文件名必须和上级文件夹名称一致，以下带有_description的内容都可以删掉",
-	"id": "Plugins_aerospace",
+	"id": "Plugins_PluginsFilesTest",
 	"main":"index.html",
 	"menu":
 	{
 		"parent": "Menu_Plugins",
-		"icon": "plugins/aerospace/aerospace.png",
-		"name": "航天态势",
-		"width": 120,
+		"icon": "plugins/PluginsFilesTest/Demo.png",
+		"name": "插件文件接口示例[knockout模式]",
+		"width": 160,
 		"click": "click"
 	}
 }

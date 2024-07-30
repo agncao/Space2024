@@ -19,6 +19,7 @@
     let _echartsxAxisNum = 5;
     let _postureEChartOptions = [];
     let _echartsSerieDataLength = 500;
+    const basePath = '/plugins/taishi';
 
     const fn = {
         initFormulaConfig: function (config) {
@@ -117,7 +118,6 @@
 
             div.setAttribute("class", display.Content.Class);
             parentWin.appendChild(div);
-            console.log("generateChartContainer:", parentWin.innerHTML);
             return div;
         },
         generateChartContainerId: function (parentWin, index) {
@@ -192,14 +192,17 @@
         getEntityType: function (entityId) {
             if (!entityId || entityId.indexOf("/") <= 0) return null;
             return entityId.split("/")[0];
+        },
+        getFormulaFileName: function (fileName) {
+            return fileName.concat(".json");
         }
     };
 
     const dataParser = {
-        onReceiveSpaceData: function (msg) {
+        onReceiveSpaceData: function (spaceData) {
             if (!_formula || !currentScenario.dataSource) return;
 
-            let spaceData = JSON.parse(msg);
+            // let spaceData = JSON.parse(msg);
             let bizzList = spaceData && spaceData.Bizz ? spaceData.Bizz : [];
             let messageList = spaceData && spaceData.Logs ? spaceData.Logs : [];
             messageList.forEach(item => {
@@ -273,10 +276,10 @@
 
 
             let signalRDataAdapter = Cesium.DataAdapter.get(_formula.Parser);
-            signalRDataAdapter.rtNetWork = Cesium.RTNetWork;
-            signalRDataAdapter.rtNetWork.noFindCreate = true;
-            signalRDataAdapter.rtNetWork.dataSource = currentScenario.dataSource;
-            signalRDataAdapter.parse(postureData);
+            // signalRDataAdapter.rtNetWork = Cesium.RTNetWork;
+            // signalRDataAdapter.rtNetWork.noFindCreate = true;
+            // signalRDataAdapter.rtNetWork.dataSource = currentScenario.dataSource;
+            // signalRDataAdapter.parse(postureData);
 
             dataChart.generateTimeGrid(signalRDataAdapter.startJd, signalRDataAdapter.dataJd);
             if (reportSettings && reportSettings.length > 0) {
@@ -314,7 +317,10 @@
                         }
                     });
                 } catch (err) {
-                    console.error(err);
+                    console.error("windowType:", setting.WindowType,
+                        "; entityId:", setting.EntityId,
+                        "; reportName:", setting.ReportName,
+                        "; err:", err);
                 }
             }
         },
@@ -381,11 +387,11 @@
                     if (content.includes("info") || content.includes("warn") || content.includes("error")) {
                         const img = document.createElement("img");
                         if (content.includes("info")) {
-                            img.src = "./images/info.svg";
+                            img.src = basePath + "/images/info.svg";
                         } else if (content.includes("warn")) {
-                            img.src = "./images/warning.svg";
+                            img.src = basePath + "/images/warning.svg";
                         } else {
-                            img.src = "./images/error.svg";
+                            img.src = basePath + "/images/error.svg";
                         }
                         img.style.width = "16px";
                         img.style.height = "16px";
@@ -648,7 +654,7 @@
                 // 使用正则表达式匹配键名
                 const match = key.match(/^y(\d*)$/);
                 if (match) {    // y轴
-                    dataChart.setPostureYAxisAndSeries(graphResult, key);
+                    dataChart.setPostureYAxisAndSeries(graphResult, key, setting);
                 } else {    // x轴
                     dataChart.setPostureXAxis(graphResult, key);
                 }
@@ -691,7 +697,7 @@
          * @param {*} graphResult 
          * @param {*} key 
          */
-        setPostureYAxisAndSeries: function (graphResult, key) {
+        setPostureYAxisAndSeries: function (graphResult, key, setting) {
             let ydata = graphResult.res[key];
             let yList = ydata ? ydata.values : [];
             if (yList.length > 2) {
@@ -732,7 +738,7 @@
                 }
             }
 
-            this.setPostureSeries(graphResult, key);
+            this.setPostureSeries(graphResult, key, setting);
 
             for (let i = 0; i < chartOption.yAxis.length; i++) {
                 let yAxis = chartOption.yAxis[i];
@@ -752,7 +758,7 @@
          * 如果key==='y',match[1] 将是空字符串，这时 index 将保持为 0。
          *      如果key为y{数字}，如 y2，则 match[1] 为 2，index 将被设置为 2 - 1 = 1
          */
-        setPostureSeries: function (graphResult, key) {
+        setPostureSeries: function (graphResult, key, setting) {
             let ydata = graphResult.res[key];
             let chartOption = _postureEChartOptions[graphResult.dataIndex];
             let y = ydata ? ydata.values : [];
@@ -761,7 +767,7 @@
                 if (chartOption.series.length > 0) {
                     for (let j = 0; j < chartOption.series.length; j++) {
                         if (chartOption.series[j].yKey === key && chartOption.series[j].yi === yi) {
-                            dataChart.doSetPostureSeries(graphResult, key, yi, j);
+                            dataChart.doSetPostureSeries(graphResult, key, yi, j, setting);
                             isSeriesFinded = true;
                             break;
                         }
@@ -814,13 +820,14 @@
          * @param {*} yi 
          * @param {*} seriesIndex 
          */
-        doSetPostureSeries: function (graphResult, key, yi, seriesIndex) {
+        doSetPostureSeries: function (graphResult, key, yi, seriesIndex, setting) {
             let res = graphResult.res;
             let y = res[key].values;
             let chartOption = _postureEChartOptions[graphResult.dataIndex];
             if (!chartOption) return;
             if (res.chartType === _postureChartType.Time.id) {
-                if (_echartsSerieDataLength < chartOption.series[seriesIndex].data.length) {
+                let scaleCount = setting.XScaleCount || _echartsSerieDataLength;
+                if (scaleCount < chartOption.series[seriesIndex].data.length) {
                     chartOption.series[seriesIndex].data.shift();
 
                 }
@@ -875,13 +882,24 @@
         }
     }
 
-    const Aerospace = {
-        id: "Plugins_aerospace",
+
+    const Taishi = {
+        id: "Plugins_taishi",
         menu: {
             click: function (ele) {
+                //如果没登录则提示登录
+                if (!userViewerModel.isLogin) {
+                    layer.msg('请先登录', {
+                        icon: 0, // 图标类型，0表示警告图标
+                        offset: 't', // 显示在屏幕顶部
+                        time: 2000 // 显示时间（毫秒）
+                    });
+                    return;
+                }
+                // 获取方案
                 HttpClient.build().get(
-                    WebApi.spaceData.formulaUrl,
-                    Aerospace,
+                    '/m/pluginFile/getFiles?pluginId=taishi' + '&folder=data' + '&name=',
+                    Taishi,
                     "afterFormulaReceived"
                 );
             }
@@ -891,6 +909,16 @@
          * @param {*} arr json数据 array
          */
         afterFormulaReceived: function (arr) {
+            arr = arr.result;
+            const newArr = arr.map(item => {
+                return {
+                    id: item.name,
+                    name: item.name,
+                    localTime: new Date(item.time).toLocaleString(),
+                    ...item
+                }
+            })
+
             let self = this;
             let width = 660;
             openNewLayerIndex = layer.open({
@@ -901,54 +929,233 @@
                 area: [width + 'px', '400px'], // 宽高
                 offset: ['140px', ($(window).width() - width) / 2 + 'px'],
                 success: function (layero, index) {
-                    self.loadFormulaWindow(arr);
+                    self.loadFormulaWindow(newArr);
                 },
-                content: $('#plugins_aerospace_container'),
+                content: $('#plugins_taishi_container'),
                 anim: -1, // 0-6 的动画形式，-1 不开启
                 btn: [],
             });
         },
+        /**
+         * 加载方案
+         * @param {*} data 
+         */
         loadScenario: function (data) {
-            let self = this;
-            let today = data.EpochStartTime ? moment.utc(data.EpochStartTime).toDate() : new Date();
-            let nextDay = moment(today).add(1, 'days');
-            let utcStart = moment(today).utc().format();
-            let utcEnd = moment(nextDay).utc().format();
-            let option = {
-                name: data.ScenarioName,
-                centralBody: data.CentralBody,
-                startTime: utcStart,
-                endTime: utcEnd,
-                id: data.Id,
-                uploader: { id: userViewerModel.userId },
-                description: data.Description,
-            };
-            HttpClient.build().post(WebApi.spaceData.czmlUrl, {
-                sceneName: data.ScenarioName,
-                formularId: data.Id,
-                userId: userViewerModel.userId
-            }, function (res) {
-                let sceneBean = { ...option, fileUrl: res.url, name: option.ScenarioName }
-                currentScenario.initTree(sceneBean)
-
-                var dataSource = new Cesium.CzmlDataSource(sceneBean.name);
-                dataSource.addVGTChange();
-                var promise = dataSource.load(sceneBean.fileUrl);
-                return solarSystem.addDataSource(promise, true).then(function (ds) {
-                    solarSystem.topViewer.clockViewModel.shouldAnimate = false;
-                    if (!ds.globalAttribute) ds.globalAttribute = currentScenario.getGlobalAttribute();
-                    currentScenario.setCZMLDataSource(ds);
-                    var entities = ds.entities.values;
-                    currentScenario.addTreeNode(sceneBean.id, entities);
-                    return Promise.resolve(ds);
-                }).catch(function (e) {
-                    currentScenario.createScene(option);
+            if (!currentScenario.dataSource) {
+                let today = data.EpochStartTime ? moment.utc(data.EpochStartTime).toDate() : new Date();
+                let nextDay = moment(today).add(1, 'days');
+                let utcStart = moment(today).utc().format();
+                let utcEnd = moment(nextDay).utc().format();
+                let option = {
+                    name: data.ScenarioName,
+                    centralBody: data.CentralBody,
+                    startTime: utcStart,
+                    endTime: utcEnd,
+                    id: data.Id,
+                    uploader: { id: userViewerModel.userId },
+                    description: data.Description,
+                    globalAttribute: {
+                        DIS: {
+                            Entity: {
+                                noFindCreate: true,
+                                Connection: {
+                                    url: data.Host,
+                                    dataAdapter: data.Parser
+                                }
+                            }
+                        }
+                    }
+                };
+                currentScenario.createScene(option).then(ret => {
+                    this.setDataAdapterHandler(data.Parser);
                 });
+            } else {
+                this.setDataAdapterHandler(data.Parser);
+            }
+        },
+        setDataAdapterHandler: function (dataAdapter) {
+            const signalRDataAdapter = Cesium.DataAdapter.get(dataAdapter);
+            signalRDataAdapter.messageHandler = (data) => {
+                if (!signalRDataAdapter.startJd) {
+                    if (_formula.EpochStartTime) {
+                        let time = _formula.EpochStartTime.replace("UTCG", "");
+                        signalRDataAdapter.startJd = Cesium.JulianDate.fromIso8601(time);
+                    } else {
+                        signalRDataAdapter.startJd = signalRDataAdapter.dataJd;
+                    }
+                }
+                dataParser.onReceiveSpaceData(data);
+            }
+        },
 
-            }, function (err) {
-                currentScenario.createScene(option);
-            })
+        openFormulaWindow: function (formulaData, updateName) {
+            const _this = this;
+            layer.open({
+                type: 1,
+                title: ['更新方案', 'color:#fff;'],
+                shadeClose: true,
+                shade: false,
+                area: ['600px', '900px'], // 宽高
+                success: function (layero, index) {
+                    let formulaTree = new FormulaTree();
+                    formulaTree.render(formulaData);
+                    // 添加事件
+                    formulaTree.addEvent(updateName, formulaTree.event.apply, (formulaData) => {
+                        _this.removeSubWindows();
+                        _this.showSubWindows(formulaData[0]);
+                        _this.loadScenario(formulaData[0]);
+                    });
+                },
+                content: $('#json-editor'),
+            });
+        },
 
+        formulaSettingWindow: function (parentLayerIndex) {
+            let self = this;
+            let width = 700;
+            openNewLayerIndex = layer.open({
+                type: 1,
+                title: ['太空态势方案选择', 'color:#fff;'],
+                shadeClose: true,
+                shade: false,
+                area: [width + 'px', '800px'], // 宽高
+                offset: ['140px', ($(window).width() - width) / 2 + 'px'],
+                success: function (layero, index) {
+                    layer.close(parentLayerIndex);
+                    let fs = new FormulaSetting();
+                    fs.renderTree();
+                },
+                content: $('#plugins_taishi_container'),
+                anim: -1, // 0-6 的动画形式，-1 不开启
+                btn: [],
+            });
+        },
+
+        uploadFormulaWindow: function () {
+            const _this = this;
+            const uploadFileName = document.getElementById('upload-formula-select-label');
+            const fileNameInput = document.getElementById('upload-formula-input');
+            let fileContent = '';
+            const uploadFormulaBtn = document.getElementById('upload-select-btn');
+            const uploadInput = document.getElementById('upload-formula-select-input');
+            const uploadBtn = document.getElementById('upload-formula-btn');
+
+            function handleuploadFormulaBtnClick() {
+                uploadInput.click();
+            }
+
+            function handleUploadInputChange(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        fileContent = e.target.result;
+                        uploadFileName.innerText = `选择的文件名: ${file.name}`;
+                    };
+                    reader.readAsText(file);
+                }
+            }
+
+            function handleUploadBtnClick() {
+                // 获取 fileNameInput 的值
+                const fileName = fileNameInput.value;
+                if (!fileName) {
+                    layer.msg('请输入文件名', {
+                        icon: 0, // 图标类型，0表示警告图标
+                        offset: 't', // 显示在屏幕顶部
+                        time: 2000 // 显示时间（毫秒）
+                    });
+                    return
+                }
+                if (!fileContent) {
+                    layer.msg('请选择文件', {
+                        icon: 0, // 图标类型，0表示警告图标
+                        offset: 't', // 显示在屏幕顶部
+                        time: 2000 // 显示时间（毫秒）
+                    });
+                    return
+                }
+
+                // 校验 json 格式 fileContent
+                try {
+                    const json = JSON.parse(fileContent);
+                    // 上传文件
+                    // 校验成功后，将 fileName 文件名和 fileContent 传给后端
+                    const data = {
+                        name: fn.getFormulaFileName(fileName),
+                        pluginId: 'taishi',
+                        folder: 'data',
+                        content: fileContent,
+                    };
+                    $.post(ctx + '/m/pluginFile/uploadFile', data, function (ret) {
+                        if (ret.messageType === 'SUCCESS') {
+                            layer.msg("上传成功");
+                        } else {
+                            layer.msg('上传失败:' + ret.content);
+                        }
+                    });
+                } catch (e) {
+                    layer.msg('文件内容格式不正确', {
+                        icon: 0, // 图标类型，0表示警告图标
+                        offset: 't', // 显示在屏幕顶部
+                        time: 2000 // 显示时间（毫秒）
+                    });
+                }
+            }
+
+            uploadFormulaLayerIndex = layer.open({
+                type: 1,
+                title: ['上传方案', 'color:#fff;'],
+                shadeClose: true,
+                shade: false,
+                area: ['600px', '400px'], // 宽高
+                success: function (layero, index) {
+                    // 点击选择文件，弹出文件选择框
+                    uploadFormulaBtn.addEventListener('click', handleuploadFormulaBtnClick);
+                    // 为 input 添加 change 事件监听器
+                    uploadInput.addEventListener('change', handleUploadInputChange);
+                    uploadBtn.addEventListener('click', handleUploadBtnClick);
+
+                },
+                end: function () {
+                    // 清除数据
+                    fileNameInput.value = '';
+                    uploadFileName.innerText = '选择的文件名: ';
+                    fileContent = '';
+                    // 移除现有的事件监听器
+                    uploadFormulaBtn.removeEventListener('click', handleuploadFormulaBtnClick);
+                    uploadInput.removeEventListener('change', handleUploadInputChange);
+                    uploadBtn.removeEventListener('click', handleUploadBtnClick);
+                },
+                content: $('#upload-formula-container'),
+            });
+        },
+        /**
+         * 新建方案窗口
+         */
+        newFormulaWindow: function (formulaArr) {
+            const _this = this;
+            layer.open({
+                type: 1,
+                title: ['新建方案', 'color:#fff;'],
+                shadeClose: true,
+                shade: false,
+                area: ['600px', '900px'], // 宽高
+                success: function (layero, index) {
+                    let formulaTree = new FormulaTree();
+                    // formulaTree.render(formulaTree.getTemplate());
+                    formulaTree.newFormulaByTemplate(formulaArr).then(template => {
+                        formulaTree.render(template);
+                        // 添加事件
+                        formulaTree.addEvent(null, formulaTree.event.apply, (template) => {
+                            _this.removeSubWindows();
+                            _this.showSubWindows(template[0]);
+                            _this.loadScenario(template[0]);
+                        });
+                    });
+                },
+                content: $('#json-editor'),
+            });
         },
         /**
          * 加载方案窗口
@@ -977,12 +1184,10 @@
                             elem: '#data_table',
                             even: true, // 启用斑马纹效果
                             cols: [[
-                                { field: 'Id', title: 'ID', hide: true },
-                                { field: 'Name', title: '方案名称', width: 140 },
-                                { field: 'Host', title: '服务地址', width: 220 },
-                                { field: 'Parser', title: '解析器', width: 120 },
-                                { field: 'EpochStartTime', title: '轨道历元时刻', width: 180 },
-                                { field: 'ScenarioName', title: '场景名称', width: 140 }
+                                { field: 'name', title: 'ID', hide: true },
+                                { field: 'name', title: '方案名称' },
+                                { field: 'localTime', title: '最后修改时间' },
+                                { title: '操作', toolbar: '#deleteBtnTpl', width: 100 } // 添加操作列
                             ]],
                             data: arr
                         });
@@ -994,26 +1199,79 @@
                             });
                         });
 
-                        // 查询按钮点击事件
-                        document.getElementById('queryBtn').onclick = function () {
-                            var queryValue = document.getElementById('queryInput').value;
-                            HttpClient.build().post(WebApi.spaceData.queryFormulaUrl, {
-                                name: queryValue
-                            }, (res) => {
-                                table.reload('data_table', { data: res });
-                            });
-                        };
+                        // 处理删除按钮点击事件
+                        table.on('tool(data_table)', function (obj) {
+                            const currentData = obj.data; // 获取当前行数据
+                            const fileName = fn.getFormulaFileName(currentData.name);
+                            const layEvent = obj.event; // 获取 lay-event 对应的值
+                            if (layEvent === 'delete') {
+                                layer.confirm('确定删除这行吗？', function (index) {
+                                    // 发送请求到服务器删除数据
+                                    $.get('/m/pluginFile/delFile?pluginId=taishi&folder=data&name=' + fileName, function (ret) {
+                                        if (ret.messageType == "SUCCESS") {
+                                            layer.msg("删除成功！");
+                                            obj.del(); // 删除对应行（tr）的DOM结构，并更新缓存
+                                            layer.close(index);
+                                        } else {
+                                            layer.msg(ret.content);
+                                        }
+                                    });
+                                });
+                            }
+                        });
+
+                        // 上传方案
+                        document.getElementById('uploadBtn').onclick = function () {
+                            closeLayer();
+                            _this.uploadFormulaWindow();
+                        }
+
+                        // 新建方案
+                        document.getElementById('formulaBtn').onclick = function () {
+                            closeLayer();
+                            _this.newFormulaWindow(arr);
+                        }
+
+                        // 打开方案
+                        document.getElementById('openBtn').onclick = async function () {
+                            // 获取表格的选中行数据
+                            var checkedLine = layui.table.checkStatus('data_table');
+                            if (checkedLine.data.length > 0) {
+                                closeLayer();
+                                const lineData = checkedLine.data[0]
+                                // 请求方案数据
+                                const path = lineData.path + '?t=' + new Date().getTime();
+                                const response = await fetch(path);
+                                const content = await response.json();
+                                const formulaData = [content]
+                                const updateName = fn.getFormulaFileName(lineData.name);
+                                _this.openFormulaWindow(formulaData, updateName);
+                            } else {
+                                layui.use('layer', function () {
+                                    var layer = layui.layer;
+                                    // 显示一个提示框
+                                    layer.msg('请选择要打开的方案', {
+                                        icon: 0, // 图标类型，0表示警告图标
+                                        offset: 't', // 显示在屏幕顶部
+                                        time: 3000 // 显示时间（毫秒）
+                                    });
+                                });
+                            }
+                        }
 
                     });
 
-                    // 绑定按钮事件
-                    document.getElementById('confirmBtn').onclick = function () {
+                    // 打开方案
+                    document.getElementById('confirmBtn').onclick = async function () {
                         // 获取表格的选中行数据
                         var checkedLine = layui.table.checkStatus('data_table');
                         if (checkedLine.data.length > 0) {
                             const lineData = checkedLine.data[0]
-                            _this.loadScenario(lineData);
-                            _this.showSubWindows(lineData);
+                            const path = lineData.path + '?t=' + new Date().getTime();
+                            const response = await fetch(path);
+                            const content = await response.json();
+                            _this.showSubWindows(content);
+                            _this.loadScenario(content);
                             closeLayer()
                         } else {
                             layui.use('layer', function () {
@@ -1027,29 +1285,34 @@
                             });
                         }
                     };
-
-                    // 绑定按钮事件
-                    document.getElementById('saveBtn').onclick = function () {
-                        Cesium.WStatusUtils.start("正在保存场景【" + currentScenario.sceneName() + "】", 5);
-                        let czmlWriter = new Cesium.CZMLWriter;
-                        let content = czmlWriter.toCZML(currentScenario.dataSource, currentScenario.sceneName());
-                        HttpClient.build()
-                            .post(WebApi.spaceData.saveUrl, {
-                                sceneName: currentScenario.sceneName(),
-                                content: content,
-                                formularId: _formula.Id,
-                                userId: userViewerModel.userId
-                            }, function (res) {
-                                Cesium.WStatusUtils.stop();
-                            }, function (err) {
-                                Cesium.WStatusUtils.stop();
-                            })
-                        closeLayer()
-                    };
                 },
-                content: $('#plugins_aerospace_container'),
+                content: $('#plugins_taishi_container'),
             });
         },
+        /**
+         * 移除子窗口
+         */
+        removeSubWindows: function () {
+            // 移除所有的id 为divReport开头的Div层
+            const divReports = document.querySelectorAll('div[id^="divReport"]');
+            divReports.forEach(div => div.remove());
+            // 移除所有的id 为divChart开头的Div层
+            const divCharts = document.querySelectorAll('div[id^="divChart"]');
+            divCharts.forEach(div => div.remove());
+            // 移除所有的id 为divTime开头的Div层
+            const divTimes = document.querySelectorAll('div[id^="divTime"]');
+            divTimes.forEach(div => div.remove());
+            // 移除所有的id 为divMessage开头的Div层
+            const divMessages = document.querySelectorAll('div[id^="divMessage"]');
+            divMessages.forEach(div => div.remove());
+            // 移除所有的id 为divBusiness开头的Div层
+            const divBusinesse = document.querySelectorAll('div[id^="divBusiness"]');
+            divBusinesse.forEach(div => div.remove());
+        },
+        /**
+         * 显示子窗口
+         * @param {*} data 
+         */
         showSubWindows: function (data) {
             let self = this;
             _formula = fn.initFormulaConfig(data);
@@ -1116,7 +1379,7 @@
             };
         },
         showGridWindow: function (boxSettings) {
-            if (!boxSettings) return;
+            if (!boxSettings || boxSettings.length == 0) return;
 
             if (document.getElementById(fn.generateWindowId(boxSettings[0].WindowType, 0))) {
                 return;
@@ -1140,8 +1403,5 @@
         }
     };
 
-    HttpClient.build().get(WebApi.spaceData.formulaUrl, Aerospace, "afterFormulaReceived");
-    //    远程调用方案
-    SignalRClient.build(WebApi.spaceData.hub).listen("receiveSpaceData", dataParser);
-    Plugins.add(Aerospace);
+    Plugins.add(Taishi);
 })();

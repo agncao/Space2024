@@ -1,0 +1,178 @@
+.confirm_btn_container {
+    display: flex !important;
+    justify-content: right !important;
+    padding: 10px !important;
+}
+
+.layui-form-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0 !important;
+    padding: 10px;
+}
+
+.layui-form-item .layui-input-inline {
+    width: 100% !important;
+}
+
+.layui-btn-primary {
+    background: white !important;
+}
+
+.layui-layer-page .layui-layer-content {
+    overflow: hidden !important;
+}
+
+.layui-table-body {
+    height: calc(100% - 40px);
+}
+
+.layui-table-box {
+    height: 295px !important;
+}
+
+/* 自定义斑马纹颜色 */
+.layui-table-click,
+.layui-table-hover,
+.layui-table[lay-even] tbody tr:nth-child(even) {
+    background-color: none;
+}
+
+/* 设置奇数行的背景颜色 */
+.layui-table[lay-even] tbody tr:nth-child(odd) {
+    background-color: #daffef;
+}
+
+/* 设置偶数行的背景颜色 */
+/* .layui-table[lay-even] tbody tr:nth-child(even) {
+    background-color: white;
+} */
+
+/* 设置行的 hover 颜色 */
+/* .layui-table[lay-even] tbody tr:hover {
+    background-color: #faffda;
+} */
+
+/* 点击行的颜色 #84c8ff*/
+/* tr.layui-table-checked {
+    background-color: #84c8ff !important;
+} */
+
+/* 设置偶数行的背景颜色 */
+.layui-table[lay-even] tbody tr:nth-child(even) {
+    background-color: white !important;
+}
+
+/* 设置行的 hover 颜色 */
+.layui-table[lay-even] tbody tr:hover {
+    background-color: #faffda !important;
+}
+
+/* 点击行的颜色 #84c8ff*/
+.layui-table[lay-even] tbody tr.layui-table-checked {
+    background-color: #84c8ff !important;
+}
+
+#json-editor {
+    background: white;
+}
+
+#settings-container {
+    overflow: auto;
+    height: calc(100% - 60px);
+}
+
+.json-editor-btn-container {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding-right: 20px;
+    height: 60px;
+    border-top: 1px solid #eee;
+}
+
+#add-setting-select-container {
+    padding: 10px;
+    overflow: auto;
+    height: 100%;
+}
+
+.add-setting-btn-container {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding-right: 20px;
+    height: 60px;
+    border-top: 1px solid #eee;
+}
+
+.delete-setting-btn-container {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding-right: 20px;
+    height: 60px;
+    border-top: 1px solid #eee;
+}
+
+#delete-setting-layer {
+    height: 100%;
+}
+
+#delete-checkbox-container {
+    overflow: auto;
+    height: calc(100% - 60px);
+}
+
+.layui-form-item {
+    justify-content: unset !important;
+    align-items: unset !important;
+    padding: 0 10px !important;
+}
+
+.layui-form-label {
+    width: auto !important;
+}
+
+.layui-layer-title {
+    color: white !important;
+}
+
+.layui-layer-btn {
+    padding: 0 !important;
+}
+
+.upload-formula-input-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+#upload-select-btn {
+    margin-left: 20px;
+}
+
+.upload-formula-btn-container {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding-right: 20px;
+    height: 60px;
+    border-top: 1px solid #eee;
+}
+
+#upload-formula-select-input {
+    display: none;
+}
+
+.upload-formula-input-label {
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.upload-select-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}

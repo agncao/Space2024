@@ -1,0 +1,79 @@
+<!-- 引入相关js文件 -->
+<link rel="stylesheet" href="/plugins/taishi/css/layuibtn.css">
+<link rel="stylesheet" href="/plugins/taishi/css/layuitable.css">
+<!-- 引入 layui.css -->
+<!-- <link href="//unpkg.com/layui@2.9.13/dist/css/layui.css" rel="stylesheet"> -->
+<link href="/plugins/taishi/js/utils/layui/v2.9.14/css/layui.css" rel="stylesheet">
+<!-- 引入 layui.js -->
+<!-- <script src="//unpkg.com/layui@2.9.13/dist/layui.js"></script> -->
+<script src="/plugins/taishi/js/utils/layui/v2.9.14/layui.js"></script>
+
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.2/dist/echarts.min.js"></script> -->
+<script src="/plugins/taishi/js/utils/echarts/v5.3.1/echarts.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> -->
+<script src="/plugins/taishi/js/utils/moment/v2.29.1/moment.min.js"></script>
+<script src="/plugins/taishi/js/thermometer.js"></script>
+<script src="/plugins/taishi/js/formula.js"></script>
+<script src="/plugins/taishi/js/taishi.js"></script>
+
+
+<link rel="stylesheet" href="/plugins/taishi/css/taishi.css">
+<link rel="stylesheet" href="/plugins/taishi/css/thermometer.css">
+
+<!-- 定义界面内容 -->
+<!-- <button onclick="Plugins.values['Plugins_taishi'].showSubWindows();">选择数据</button> -->
+<div id="plugins_taishi_container" style="display:none;">
+    <!-- 输入框和查询按钮 -->
+    <div class="layui-form">
+        <!-- <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <input type="text" id="queryInput" placeholder="请输入方案名称查询" class="layui-input">
+            </div>
+            <button id="queryBtn" class="layui-btn layui-btn-sm layui-btn-primary">查询</button>
+        </div> -->
+    </div>
+    <table id="data_table"></table> <!-- 表格容器 -->
+    <div class="confirm_btn_container">
+        <button id="uploadBtn" type="button" class="layui-btn layui-bg-blue layui-btn-sm">上传方案</button>
+        <button id="formulaBtn" type="button" class="layui-btn layui-btn-sm layui-btn-primary">新建方案</button>
+        <button id="openBtn" type="button" class="layui-btn layui-btn-sm layui-btn-primary">编辑方案</button>
+        <button id="confirmBtn" type="button" class="layui-btn layui-bg-blue layui-btn-sm">打开方案</button>
+        <!-- <button id="saveBtn" type="button" class="layui-btn layui-btn-sm layui-btn-primary">保存场景</button> -->
+    </div>
+</div>
+
+
+<!-- 方案 -->
+<div id="json-editor">
+    <!-- <ul id="settings-tree" class="layui-tree"></ul> -->
+    <div id="settings-container"></div>
+    <div class="json-editor-btn-container">
+        <button id="add-setting" type="button" class="layui-btn layui-btn-sm layui-btn-primary">增加 Setting</button>
+        <button id="delete-setting" type="button" class="layui-btn layui-btn-sm layui-btn-primary">删除 Setting</button>
+        <button id="save-json" type="button" class="layui-btn layui-bg-blue layui-btn-sm">保存 JSON</button>
+        <button id="apply-json" type="button" class="layui-btn layui-bg-blue layui-btn-sm">应用</button>
+    </div>
+</div>
+
+<!-- 上传方案 -->
+<div id="upload-formula-container">
+    <div class="upload-formula-input-container">
+        <span class="upload-formula-input-label">方案名称:</span>
+        <input type="text" id="upload-formula-input" placeholder="请输入方案名称">
+    </div>
+
+    <div class="upload-select-container">
+        <span id="upload-formula-select-label">选择的文件名:</span>
+        <input type="file" id="upload-formula-select-input" placeholder="请选择文件">
+        <button id="upload-select-btn" type="button" class="layui-btn layui-btn-sm layui-btn-primary">选择文件</button>
+    </div>
+
+    <div class="upload-formula-btn-container">
+        <button id="upload-formula-btn" type="button" class="layui-btn layui-bg-blue layui-btn-sm">上传</button>
+    </div>
+</div>
+
+<div id="deleteBtnTpl">
+    <button class="layui-btn layui-bg-blue layui-btn-xs" lay-event="delete">删除</button>
+</div>

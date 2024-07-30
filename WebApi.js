@@ -97,18 +97,18 @@ const WebApi = {
 	"AzElMask": {
 		url: "{AeroSpaceUrl}/Terrain/AzElMaskSimple"
 	},
-	// "DIS":{
-	// 	realTime:{
-	// 		url:"{RealTimeUrl}/receivemessagehub",
-	// 		defaultDataAdapter:"signalR"
-	// 	}
-	// },
 	"DIS": {
 		realTime: {
-			url: "{RealTimeUrl}/receiver",
-			defaultDataAdapter: "spaceData"
+			url: "{RealTimeUrl}/receivemessagehub",
+			defaultDataAdapter: "signalR"
 		}
 	},
+	// "DIS": {
+	// 	realTime: {
+	// 		url: "{RealTimeUrl}/receiver",
+	// 		defaultDataAdapter: "spaceData"
+	// 	}
+	// },
 	"RGServer": {
 		"LightingTimes": [
 			{
@@ -163,12 +163,4 @@ const WebApi = {
 			"AB", "ABS", "AC", "ALG", "ANG", "ARGN", "ASRA", "AUS", "AZER", "BEL", "BELA", "BGD", "BHUT", "BOL", "BRAZ", "BUL", "CA", "CHBZ", "CHLE", "CIS", "COL", "CRI", "CZCH", "DEN", "ECU", "EGYP", "ESA", "ESRO", "EST", "EUME", "EUTE", "FGER", "FIN", "FR", "FRIT", "GER", "GHA", "GLOB", "GREC", "GRSA", "GUAT", "HUN", "IM", "IND", "INDO", "IRAN", "IRAQ", "ISRA", "ISS", "IT", "ITSO", "JOR", "JPN", "KAZ", "KEN", "LAOS", "LKA", "LTU", "LUXE", "MA", "MALA", "MEX", "MMR", "MNG", "MUS", "NATO", "NETH", "NICO", "NIG", "NKOR", "NOR", "NPL", "NZ", "O3B", "ORB", "PAKI", "PERU", "POL", "POR", "PRC", "PRY", "RASC", "ROC", "ROM", "RP", "RWA", "SAFR", "SAUD", "SDN", "SEAL", "SES", "SGJP", "SING", "SKOR", "SPN", "STCT", "SVN", "SWED", "SWTZ", "TBD", "THAI", "TMMC", "TUN", "TURK", "UAE", "UK", "UKR", "URY", "US", "USBZ", "VENZ", "VTNM",
 		],
 	},
-
-	spaceData: {
-		hub: "{RealTimeUrl}/receiver",
-		formulaUrl: "{RealTimeUrl}/formula/get",
-		queryFormulaUrl: "{RealTimeUrl}/formula/query",
-		saveUrl: "{RealTimeUrl}/formula/saveScene",
-		czmlUrl: "{RealTimeUrl}/formula/czml",
-	}
 }
